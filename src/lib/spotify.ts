@@ -3,16 +3,21 @@ const client_secret = import.meta.env.SPOTIFY_CLIENT_SECRET;
 const artist_id = import.meta.env.SPOTIFY_ARTIST_ID;
 
 async function getAccessToken() {
-  const response = await fetch('https://accounts.spotify.com/api/token', {
-    method: 'POST',
-    headers: {
-      'Authorization': 'Basic ' + btoa(client_id + ':' + client_secret),
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body: 'grant_type=client_credentials',
-  });
-  const data = await response.json();
-  return data.access_token;
+  try {
+    const response = await fetch('https://accounts.spotify.com/api/token', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Basic ' + btoa(client_id + ':' + client_secret),
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: 'grant_type=client_credentials',
+    });
+    const data = await response.json();
+    return data.access_token;
+  } catch (error) {
+    console.error("Spotify Auth Error:", error);
+    return null;
+  }
 }
 
 export async function getArtistAlbums() {
@@ -20,6 +25,7 @@ export async function getArtistAlbums() {
     const access_token = await getAccessToken();
     if (!access_token) return [];
 
+    // ΕΔΩ Η ΔΙΟΡΘΩΣΗ: Χρησιμοποιούμε ${artist_id} και το κανονικό Spotify API URL
     const response = await fetch(
       `https://api.spotify.com/v1/artists/${artist_id}/albums?include_groups=album,single&limit=20&market=GR`,
       {
@@ -32,8 +38,10 @@ export async function getArtistAlbums() {
 
     const seen = new Set();
     return data.items.filter((item: any) => {
-      const isDuplicate = seen.has(item.name);
-      seen.add(item.name);
+      // Μετατρέπουμε σε lowercase για να πιάνουμε διπλότυπα ακόμα και με μικρά/κεφαλαία
+      const itemName = item.name.toLowerCase();
+      const isDuplicate = seen.has(itemName);
+      seen.add(itemName);
       return !isDuplicate;
     });
   } catch (error) {
