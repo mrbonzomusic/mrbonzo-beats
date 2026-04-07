@@ -8,7 +8,7 @@ import Hero from "../components/Hero.astro";
 import ServicesSection from "../components/ServicesSection.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import TypeBeatGrid from "../components/TypeBeatGrid.astro";
-import { fetchArtistReleases, type SpotifyRelease, type SpotifyFetchStatus } from "../lib/spotify";
+import { getArtistAlbums as fetchArtistReleases } from '../lib/spotify';
 
 const fallbackReleases: SpotifyRelease[] = [
   {
