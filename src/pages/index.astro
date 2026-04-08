@@ -4,12 +4,11 @@ import Hero from "../components/Hero.astro";
 import CollaborationsSection from "../components/CollaborationsSection.astro";
 import TypeBeatGrid from "../components/TypeBeatGrid.astro";
 import FeaturedBeatstars from "../components/FeaturedBeatstars.astro";
+import DrumKits from "../components/DrumKits.astro"; // Το νέο import
 import AboutSection from "../components/AboutSection.astro";
 import ServicesSection from "../components/ServicesSection.astro";
 import ContactSection from "../components/ContactSection.astro";
 import SiteFooter from "../components/SiteFooter.astro";
-
-// Σημείωση: Το Spotify API logic μπορεί να προστεθεί αργότερα αν χρειαστεί.
 ---
 
 <BaseLayout title="Mr. Bonzo | Beatmaker Portfolio">
@@ -18,7 +17,10 @@ import SiteFooter from "../components/SiteFooter.astro";
   <CollaborationsSection />
 
   <TypeBeatGrid />
+  
   <FeaturedBeatstars />
+
+  <DrumKits />
 
   <AboutSection />
 
