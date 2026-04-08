@@ -26,22 +26,35 @@ const ytBeats = "https://www.youtube.com/@mrbonzobeatz";
     <title>{title}</title>
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <style is:global>
-      /* Fix για να μην κρύβεται το header πίσω από iframes */
-      header {
-        z-index: 9999 !important;
+      /* ΑΥΤΟ ΤΟ ΚΡΑΤΑΕΙ ΠΑΝΤΑ ΠΑΝΩ */
+      header#main-header {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        z-index: 2147483647 !important; /* Το μέγιστο z-index */
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
       }
-      /* Καθαρισμός scroll όταν είναι ανοιχτό το μενού */
-      .menu-open {
-        overflow: hidden;
+
+      body {
+        padding-top: 80px !important; /* Δημιουργεί χώρο για το fixed header */
+        background-color: black;
+      }
+
+      /* Fix για τα iframes */
+      iframe, .beatstars-player {
+        z-index: 1 !important;
+        position: relative !important;
       }
     </style>
   </head>
 
   <body class="min-h-screen antialiased bg-black text-white">
-    <main class="mx-auto max-w-7xl px-4 pb-6 pt-0 sm:px-6 lg:px-8">
-      
-      <header class="sticky top-2 z-50 mb-4">
-        <div class="rounded-full border border-fuchsia-500/20 bg-black/90 backdrop-blur-md px-3 py-1.5 sm:px-6">
+    
+    <header id="main-header">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="rounded-full border border-fuchsia-500/20 bg-black/90 backdrop-blur-md px-3 py-1.5 sm:px-6 shadow-lg">
           <div class="flex items-center justify-between gap-1 sm:gap-4">
             
             <a href="/" class="flex-shrink-0 transition hover:scale-105">
@@ -49,11 +62,11 @@ const ytBeats = "https://www.youtube.com/@mrbonzobeatz";
             </a>
 
             <nav class="hidden lg:flex items-center gap-x-5">
-              <a href="#beats" class="text-[9px] font-bold uppercase tracking-widest text-fuchsia-100/70 transition hover:text-fuchsia-400" data-i18n="nav.beats">Beats</a>
-              <a href="#drumkits" class="text-[9px] font-bold uppercase tracking-widest text-fuchsia-100/70 transition hover:text-fuchsia-400" data-i18n="nav.kits">Kits</a>
+              <a href="#beats" class="text-[9px] font-bold uppercase tracking-widest text-fuchsia-100/70 hover:text-fuchsia-400 transition">Beats</a>
+              <a href="#drumkits" class="text-[9px] font-bold uppercase tracking-widest text-fuchsia-100/70 hover:text-fuchsia-400 transition">Kits</a>
               
               <div class="relative group cursor-pointer text-left">
-                <button type="button" class="text-[9px] font-bold uppercase tracking-widest text-fuchsia-100/70 transition hover:text-fuchsia-400 flex items-center gap-0.5 outline-none">
+                <button type="button" class="text-[9px] font-bold uppercase tracking-widest text-fuchsia-100/70 hover:text-fuchsia-400 flex items-center gap-0.5 outline-none">
                   YouTube 
                   <svg class="h-2 w-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-width="3" d="M19 9l-7 7-7-7"/></svg>
                 </button>
@@ -63,108 +76,75 @@ const ytBeats = "https://www.youtube.com/@mrbonzobeatz";
                 </div>
               </div>
 
-              <a href={socialLinks.spotify} target="_blank" class="text-[9px] font-bold uppercase tracking-widest text-fuchsia-100/70 transition hover:text-fuchsia-400">Spotify</a>
-              <a href={discordInvite} target="_blank" class="text-[9px] font-bold uppercase tracking-widest text-fuchsia-100/70 transition hover:text-fuchsia-400">Discord</a>
-              <a href={pond5Link} target="_blank" class="text-[9px] font-bold uppercase tracking-widest text-fuchsia-100/70 transition hover:text-fuchsia-400">Pond5</a>
-              <a href="#about" class="text-[9px] font-bold uppercase tracking-widest text-fuchsia-100/70 transition hover:text-fuchsia-400" data-i18n="about.label">About</a>
-              <a href="#contact" class="text-[9px] font-bold uppercase tracking-widest text-fuchsia-100/70 transition hover:text-fuchsia-400" data-i18n="contact.label">Contact</a>
+              <a href={socialLinks.spotify} target="_blank" class="text-[9px] font-bold uppercase tracking-widest text-fuchsia-100/70 hover:text-fuchsia-400 transition">Spotify</a>
+              <a href={discordInvite} target="_blank" class="text-[9px] font-bold uppercase tracking-widest text-fuchsia-100/70 hover:text-fuchsia-400 transition">Discord</a>
+              <a href="#about" class="text-[9px] font-bold uppercase tracking-widest text-fuchsia-100/70 hover:text-fuchsia-400 transition">About</a>
+              <a href="#contact" class="text-[9px] font-bold uppercase tracking-widest text-fuchsia-100/70 hover:text-fuchsia-400 transition">Contact</a>
             </nav>
 
             <div class="flex items-center gap-2">
                <div class="hidden xs:flex items-center gap-1 font-bold text-[8px] border-r border-fuchsia-500/20 pr-2">
-                  <button type="button" data-lang-switch="en" class="text-fuchsia-200/40 transition data-[active=true]:text-fuchsia-400 px-1">EN</button>
-                  <button type="button" data-lang-switch="el" class="text-fuchsia-200/40 transition data-[active=true]:text-fuchsia-400 px-1">EL</button>
+                  <button type="button" data-lang-switch="en" class="text-fuchsia-200/40 data-[active=true]:text-fuchsia-400 px-1">EN</button>
+                  <button type="button" data-lang-switch="el" class="text-fuchsia-200/40 data-[active=true]:text-fuchsia-400 px-1">EL</button>
                </div>
                
-               <a href={beatstarsLinks.profile} target="_blank" class="flex-shrink-0 rounded-full bg-fuchsia-600/20 border border-fuchsia-500/30 px-3 py-1.5 text-[8px] md:text-[9px] font-bold uppercase tracking-widest text-fuchsia-300 hover:bg-fuchsia-600 hover:text-white transition">Store</a>
+               <a href={beatstarsLinks.profile} target="_blank" class="rounded-full bg-fuchsia-600/20 border border-fuchsia-500/30 px-3 py-1.5 text-[8px] md:text-[9px] font-bold uppercase text-fuchsia-300 hover:bg-fuchsia-600 hover:text-white transition">Store</a>
 
-               <button id="mobile-menu-btn" class="lg:hidden p-1.5 text-fuchsia-100/70 hover:text-fuchsia-400 transition outline-none">
-                <svg id="burger-icon" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/>
-                </svg>
-                <svg id="close-icon" class="hidden w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                </svg>
+               <button id="burger-btn" class="lg:hidden p-1 text-fuchsia-100/70">
+                <svg id="b-open" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16m-7 6h7"/></svg>
+                <svg id="b-close" class="hidden w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M6 18L18 6M6 6l12 12"/></svg>
                </button>
             </div>
-
           </div>
         </div>
 
-        <div id="mobile-menu" class="hidden lg:hidden absolute top-full left-0 right-0 mt-2 mx-2 rounded-3xl border border-fuchsia-500/20 bg-black/95 backdrop-blur-xl p-6 shadow-2xl z-50">
-          <nav class="flex flex-col gap-5">
-            <a href="#beats" class="mobile-link text-xs font-bold uppercase tracking-[0.2em] text-fuchsia-100/70">Beats</a>
-            <a href="#drumkits" class="mobile-link text-xs font-bold uppercase tracking-[0.2em] text-fuchsia-100/70">Kits</a>
-            <a href={ytBeats} target="_blank" class="mobile-link text-xs font-bold uppercase tracking-[0.2em] text-fuchsia-100/70">YouTube</a>
-            <a href={socialLinks.spotify} target="_blank" class="mobile-link text-xs font-bold uppercase tracking-[0.2em] text-fuchsia-100/70">Spotify</a>
-            <a href={discordInvite} target="_blank" class="mobile-link text-xs font-bold uppercase tracking-[0.2em] text-fuchsia-100/70">Discord</a>
-            <a href="#about" class="mobile-link text-xs font-bold uppercase tracking-[0.2em] text-fuchsia-100/70">About</a>
-            <a href="#contact" class="mobile-link text-xs font-bold uppercase tracking-[0.2em] text-fuchsia-400">Contact</a>
+        <div id="mobile-menu" class="hidden lg:hidden mt-2 mx-2 rounded-2xl border border-fuchsia-500/20 bg-black/95 backdrop-blur-xl p-6 shadow-2xl">
+          <nav class="flex flex-col gap-4 text-center">
+            <a href="#beats" class="m-link text-[10px] font-bold uppercase tracking-widest text-fuchsia-100/70">Beats</a>
+            <a href="#drumkits" class="m-link text-[10px] font-bold uppercase tracking-widest text-fuchsia-100/70">Kits</a>
+            <a href={socialLinks.spotify} target="_blank" class="m-link text-[10px] font-bold uppercase tracking-widest text-fuchsia-100/70">Spotify</a>
+            <a href="#about" class="m-link text-[10px] font-bold uppercase tracking-widest text-fuchsia-100/70">About</a>
+            <a href="#contact" class="m-link text-[10px] font-bold uppercase tracking-widest text-fuchsia-400">Contact</a>
           </nav>
         </div>
-      </header>
+      </div>
+    </header>
 
+    <main class="mx-auto max-w-7xl px-4 pb-6 sm:px-6 lg:px-8">
       <slot />
     </main>
 
     <script is:inline define:vars={{ i18nPayload }}>
-      // --- LANGUAGE LOGIC ---
+      // Lang Logic
       const dictionaries = i18nPayload;
-      const getByPath = (obj, path) => path.split(".").reduce((acc, key) => (acc ? acc[key] : undefined), obj);
-      
       const applyLanguage = (lang) => {
-        const dict = dictionaries[lang] || dictionaries.en;
-        document.documentElement.lang = lang;
         localStorage.setItem("site-lang", lang);
-        
-        document.querySelectorAll("[data-i18n]").forEach((node) => {
-          const key = node.getAttribute("data-i18n");
-          const value = key ? getByPath(dict, key) : null;
-          if (typeof value === "string") node.innerHTML = value;
-        });
-        
-        document.querySelectorAll("[data-lang-switch]").forEach((btn) => {
+        document.querySelectorAll("[data-lang-switch]").forEach(btn => {
           btn.setAttribute("data-active", btn.getAttribute("data-lang-switch") === lang ? "true" : "false");
         });
       };
-
       applyLanguage(localStorage.getItem("site-lang") || "en");
       document.querySelectorAll("[data-lang-switch]").forEach(btn => {
         btn.addEventListener("click", () => applyLanguage(btn.getAttribute("data-lang-switch")));
       });
 
-      // --- MOBILE MENU LOGIC ---
-      const btn = document.getElementById('mobile-menu-btn');
-      const menu = document.getElementById('mobile-menu');
-      const burgerIcon = document.getElementById('burger-icon');
-      const closeIcon = document.getElementById('close-icon');
+      // Burger Logic
+      const bBtn = document.getElementById('burger-btn');
+      const mMenu = document.getElementById('mobile-menu');
+      const bOpen = document.getElementById('b-open');
+      const bClose = document.getElementById('b-close');
 
-      const toggleMenu = () => {
-        const isOpen = !menu.classList.contains('hidden');
-        if (isOpen) {
-          menu.classList.add('hidden');
-          burgerIcon.classList.remove('hidden');
-          closeIcon.classList.add('hidden');
-          document.body.classList.remove('menu-open');
-        } else {
-          menu.classList.remove('hidden');
-          burgerIcon.classList.add('hidden');
-          closeIcon.classList.remove('hidden');
-          document.body.classList.add('menu-open');
-        }
-      };
-
-      btn.addEventListener('click', toggleMenu);
-
-      // Κλείσιμο μενού όταν πατάμε ένα link
-      document.querySelectorAll('.mobile-link').forEach(link => {
-        link.addEventListener('click', () => {
-          menu.classList.add('hidden');
-          burgerIcon.classList.remove('hidden');
-          closeIcon.classList.add('hidden');
-          document.body.classList.remove('menu-open');
-        });
+      bBtn.addEventListener('click', () => {
+        const isHidden = mMenu.classList.toggle('hidden');
+        bOpen.classList.toggle('hidden', !isHidden);
+        bClose.classList.toggle('hidden', isHidden);
       });
+
+      document.querySelectorAll('.m-link').forEach(l => l.addEventListener('click', () => {
+        mMenu.classList.add('hidden');
+        bOpen.classList.remove('hidden');
+        bClose.classList.add('hidden');
+      }));
     </script>
   </body>
 </html>
