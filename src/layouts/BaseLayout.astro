@@ -22,6 +22,7 @@ const discordInvite = socialLinks.discord || "https://discord.gg/hmpCHd4J";
 const pond5Link = "https://www.pond5.com/artist/mrbonzobeats";
 const tikTokLink = "https://www.tiktok.com/@mrbonzomusic"; 
 const ytBeats = "https://www.youtube.com/@mrbonzobeatz";
+const ytArtist = "https://www.youtube.com/@mrbonzomusic"; // Το link για το artist channel
 ---
 
 <!doctype html>
@@ -33,7 +34,7 @@ const ytBeats = "https://www.youtube.com/@mrbonzobeatz";
     <meta name="description" content={siteDescription} />
 
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="apple-touch-icon" href="/mrbonzo-logo.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     
     <link rel="manifest" href="/site.webmanifest" />
     
@@ -41,23 +42,11 @@ const ytBeats = "https://www.youtube.com/@mrbonzobeatz";
     <meta name="apple-mobile-web-app-title" content="Mr. Bonzo" />
     <meta name="theme-color" content="#000000" />
 
-    <meta property="fb:app_id" content="123456789" /> 
     <meta property="og:type" content="website" />
     <meta property="og:url" content={siteURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={siteDescription} />
     <meta property="og:image" content={`${ogImageURL}?v=2`} />
-    <meta property="og:image:secure_url" content={`${ogImageURL}?v=2`} />
-    <meta property="og:image:type" content="image/jpeg" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:locale" content="en_US" />
-
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={siteURL} />
-    <meta property="twitter:title" content={title} />
-    <meta property="twitter:description" content={siteDescription} />
-    <meta property="twitter:image" content={`${ogImageURL}?v=2`} />
     
     <style is:global>
       header#main-header {
@@ -75,6 +64,41 @@ const ytBeats = "https://www.youtube.com/@mrbonzobeatz";
       #mobile-menu {
         max-height: calc(100vh - 120px);
         overflow-y: auto;
+      }
+
+      /* Dropdown CSS */
+      .nav-dropdown {
+        position: relative;
+        display: inline-block;
+      }
+      .nav-dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: rgba(0, 0, 0, 0.95);
+        min-width: 140px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
+        z-index: 1;
+        border: 1px solid rgba(217, 70, 239, 0.2);
+        border-radius: 12px;
+        margin-top: 8px;
+        backdrop-filter: blur(10px);
+      }
+      .nav-dropdown:hover .nav-dropdown-content {
+        display: block;
+      }
+      .nav-dropdown-content a {
+        color: rgba(250, 232, 255, 0.7);
+        padding: 10px 14px;
+        text-decoration: none;
+        display: block;
+        font-size: 8.5px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .nav-dropdown-content a:hover {
+        color: #e879f9;
+        background-color: rgba(255, 255, 255, 0.05);
       }
     </style>
   </head>
@@ -94,7 +118,17 @@ const ytBeats = "https://www.youtube.com/@mrbonzobeatz";
               <a href="#player" class="text-[8.5px] font-bold uppercase tracking-widest text-fuchsia-400 hover:text-fuchsia-300 transition">Player</a>
               <a href="#beats" class="text-[8.5px] font-bold uppercase tracking-widest text-fuchsia-100/70 hover:text-fuchsia-400 transition">Beats</a>
               <a href="#drumkits" class="text-[8.5px] font-bold uppercase tracking-widest text-fuchsia-100/70 hover:text-fuchsia-400 transition">Kits</a>
-              <a href={ytBeats} target="_blank" class="text-[8.5px] font-bold uppercase tracking-widest text-fuchsia-100/70 hover:text-fuchsia-400 transition">YouTube</a>
+              
+              <div class="nav-dropdown">
+                <button class="text-[8.5px] font-bold uppercase tracking-widest text-fuchsia-100/70 hover:text-fuchsia-400 transition flex items-center gap-1">
+                  YouTube <svg class="w-2 h-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="nav-dropdown-content">
+                  <a href={ytBeats} target="_blank">Beats Channel</a>
+                  <a href={ytArtist} target="_blank">Artist Channel</a>
+                </div>
+              </div>
+
               <a href={socialLinks.spotify} target="_blank" class="text-[8.5px] font-bold uppercase tracking-widest text-fuchsia-100/70 hover:text-fuchsia-400 transition">Spotify</a>
               <a href={tikTokLink} target="_blank" class="text-[8.5px] font-bold uppercase tracking-widest text-fuchsia-100/70 hover:text-fuchsia-400 transition">TikTok</a>
               <a href={discordInvite} target="_blank" class="text-[8.5px] font-bold uppercase tracking-widest text-fuchsia-100/70 hover:text-fuchsia-400 transition">Discord</a>
@@ -104,7 +138,7 @@ const ytBeats = "https://www.youtube.com/@mrbonzobeatz";
             </nav>
 
             <div class="flex items-center gap-2">
-               <div class="hidden xs:flex items-center gap-1 font-bold text-[8px] border-r border-fuchsia-500/20 pr-2">
+               <div class="flex items-center gap-1 font-bold text-[8px] border-r border-fuchsia-500/20 pr-2">
                   <button type="button" data-lang-switch="en" class="text-fuchsia-200/40 data-[active=true]:text-fuchsia-400 px-1">EN</button>
                   <button type="button" data-lang-switch="el" class="text-fuchsia-200/40 data-[active=true]:text-fuchsia-400 px-1">EL</button>
                </div>
@@ -124,7 +158,8 @@ const ytBeats = "https://www.youtube.com/@mrbonzobeatz";
             <a href="#player" class="m-link text-[11px] font-black uppercase tracking-[0.2em] text-fuchsia-400">Player</a>
             <a href="#beats" class="m-link text-[11px] font-black uppercase tracking-[0.2em] text-fuchsia-100/80">Beats</a>
             <a href="#drumkits" class="m-link text-[11px] font-black uppercase tracking-[0.2em] text-fuchsia-100/80">Drum Kits</a>
-            <a href={ytBeats} target="_blank" class="m-link text-[11px] font-black uppercase tracking-[0.2em] text-fuchsia-100/80">YouTube</a>
+            <a href={ytBeats} target="_blank" class="m-link text-[11px] font-black uppercase tracking-[0.2em] text-fuchsia-100/80">YouTube Beats</a>
+            <a href={ytArtist} target="_blank" class="m-link text-[11px] font-black uppercase tracking-[0.2em] text-fuchsia-100/80">YouTube Artist</a>
             <a href={socialLinks.spotify} target="_blank" class="m-link text-[11px] font-black uppercase tracking-[0.2em] text-fuchsia-100/80">Spotify</a>
             <a href={tikTokLink} target="_blank" class="m-link text-[11px] font-black uppercase tracking-[0.2em] text-fuchsia-100/80">TikTok</a>
             <a href={discordInvite} target="_blank" class="m-link text-[11px] font-black uppercase tracking-[0.2em] text-fuchsia-100/80">Discord</a>
