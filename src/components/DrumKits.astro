@@ -1,11 +1,12 @@
 ---
-// Εδώ είναι το δικό σου Sound Kit
+// Δεδομένα για το Drum Kit σου
 const drumKits = [
   {
     title: "MR. BONZO - FREE KIT",
     description: "A professional collection of high-quality sounds to level up your production. Includes signature kicks, snares, and perks used in my beats.",
     price: "FREE",
-    image: "/images/free-kit-cover.webp", // Φρόντισε να έχεις μια εικόνα με αυτό το όνομα
+    // Το απευθείας link της εικόνας από τη Beatstars
+    image: "https://main.v2.beatstars.com/content/media/object/sound-kit/153315/image/1715694205/600", 
     link: "https://www.beatstars.com/mrbonzobeats/sound-kits/153315"
   }
 ];
@@ -19,35 +20,38 @@ const drumKits = [
     <div class="h-1.5 w-24 bg-fuchsia-600 mt-4 rounded-full shadow-[0_0_20px_rgba(192,38,211,1)]"></div>
   </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-6xl mx-auto">
+  <div class="grid grid-cols-1 md:grid-cols-1 gap-10 max-w-4xl mx-auto">
     {drumKits.map((kit) => (
       <div class="group relative overflow-hidden rounded-[2.5rem] border border-white/5 bg-gradient-to-b from-white/10 to-transparent p-6 transition-all duration-500 hover:border-fuchsia-500/50 hover:shadow-[0_0_30px_rgba(192,38,211,0.15)]">
-        <div class="flex flex-col lg:flex-row gap-8 items-center">
+        <div class="flex flex-col md:flex-row gap-8 items-center">
           
-          <div class="relative w-48 h-48 flex-shrink-0">
+          <div class="relative w-56 h-56 flex-shrink-0">
              <div class="absolute -inset-2 bg-fuchsia-600 rounded-2xl blur-lg opacity-0 group-hover:opacity-20 transition-opacity"></div>
-             <div class="absolute top-2 left-2 z-10 bg-fuchsia-600 text-white text-[10px] font-black px-3 py-1 rounded-full shadow-lg">
-                DOWNLOAD
+             
+             <div class="absolute -top-2 -left-2 z-10 bg-fuchsia-600 text-white text-[10px] font-black px-4 py-1.5 rounded-full shadow-lg transform -rotate-12">
+                FREE DOWNLOAD
              </div>
+
              <img 
                src={kit.image} 
                alt={kit.title} 
-               class="relative h-full w-full object-cover rounded-2xl border border-white/10 shadow-2xl transition-transform duration-500 group-hover:scale-105 group-hover:-rotate-2" 
+               class="relative h-full w-full object-cover rounded-2xl border border-white/10 shadow-2xl transition-transform duration-500 group-hover:scale-105 group-hover:rotate-2" 
              />
           </div>
           
-          <div class="flex-grow text-center lg:text-left">
-            <h3 class="text-2xl font-bold text-white mb-3 tracking-tight">{kit.title}</h3>
-            <p class="text-gray-400 text-sm leading-relaxed mb-6 max-w-md">
+          <div class="flex-grow text-center md:text-left">
+            <h3 class="text-3xl font-bold text-white mb-3 tracking-tight">{kit.title}</h3>
+            <p class="text-gray-400 text-base leading-relaxed mb-8 max-w-md">
               {kit.description}
             </p>
             
-            <div class="flex items-center justify-center lg:justify-start gap-6">
-              <span class="text-2xl font-black text-fuchsia-400 animate-pulse">{kit.price}</span>
+            <div class="flex items-center justify-center md:justify-start gap-8">
+              <span class="text-3xl font-black text-fuchsia-400 animate-pulse">{kit.price}</span>
+              
               <a 
                 href={kit.link} 
                 target="_blank"
-                class="inline-flex items-center justify-center rounded-full bg-white px-8 py-3 text-xs font-black uppercase tracking-widest text-black transition-all hover:bg-fuchsia-500 hover:text-white hover:scale-105 active:scale-95"
+                class="inline-flex items-center justify-center rounded-full bg-white px-10 py-4 text-sm font-black uppercase tracking-widest text-black transition-all hover:bg-fuchsia-500 hover:text-white hover:scale-105 active:scale-95 shadow-xl"
               >
                 Get Free Kit
               </a>
