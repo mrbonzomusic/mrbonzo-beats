@@ -40,9 +40,8 @@ const ytBeats = "https://www.youtube.com/@mrbonzobeatz";
         background-color: black;
       }
 
-      /* Για να μην κλείνει το μενού αν πατήσουμε κατά λάθος το background στο dropdown */
       #mobile-menu {
-        max-height: calc(100vh - 100px);
+        max-height: calc(100vh - 120px);
         overflow-y: auto;
       }
     </style>
@@ -56,15 +55,16 @@ const ytBeats = "https://www.youtube.com/@mrbonzobeatz";
           <div class="flex items-center justify-between">
             
             <a href="/" class="flex-shrink-0 transition hover:scale-105">
-              <img src={logoPath} alt="Logo" class="h-[22px] w-auto sm:h-[30px]" />
+              <img src={logoPath} alt="Logo" class="h-[22px] w-auto sm:h-[28px]" />
             </a>
 
-            <nav class="hidden lg:flex items-center gap-x-6">
+            <nav class="hidden lg:flex items-center gap-x-4 xl:gap-x-6">
               <a href="#beats" class="text-[9px] font-bold uppercase tracking-widest text-fuchsia-100/70 hover:text-fuchsia-400 transition">Beats</a>
               <a href="#drumkits" class="text-[9px] font-bold uppercase tracking-widest text-fuchsia-100/70 hover:text-fuchsia-400 transition">Kits</a>
               <a href={ytBeats} target="_blank" class="text-[9px] font-bold uppercase tracking-widest text-fuchsia-100/70 hover:text-fuchsia-400 transition">YouTube</a>
               <a href={socialLinks.spotify} target="_blank" class="text-[9px] font-bold uppercase tracking-widest text-fuchsia-100/70 hover:text-fuchsia-400 transition">Spotify</a>
               <a href={discordInvite} target="_blank" class="text-[9px] font-bold uppercase tracking-widest text-fuchsia-100/70 hover:text-fuchsia-400 transition">Discord</a>
+              <a href={pond5Link} target="_blank" class="text-[9px] font-bold uppercase tracking-widest text-fuchsia-100/70 hover:text-fuchsia-400 transition">Pond5</a>
               <a href="#about" class="text-[9px] font-bold uppercase tracking-widest text-fuchsia-100/70 hover:text-fuchsia-400 transition">About</a>
               <a href="#contact" class="text-[9px] font-bold uppercase tracking-widest text-fuchsia-100/70 hover:text-fuchsia-400 transition">Contact</a>
             </nav>
@@ -77,7 +77,7 @@ const ytBeats = "https://www.youtube.com/@mrbonzobeatz";
                
                <a href={beatstarsLinks.profile} target="_blank" class="rounded-full bg-fuchsia-600 px-4 py-1.5 text-[9px] font-black uppercase text-white hover:bg-fuchsia-500 transition shadow-lg shadow-fuchsia-600/20">Store</a>
 
-               <button id="burger-btn" class="lg:hidden p-1 text-fuchsia-100/70 hover:text-fuchsia-400 transition">
+               <button id="burger-btn" class="lg:hidden p-1 text-fuchsia-100/70 hover:text-fuchsia-400 transition outline-none">
                 <svg id="b-open" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M4 6h16M4 12h16m-7 6h7"/></svg>
                 <svg id="b-close" class="hidden w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M6 18L18 6M6 6l12 12"/></svg>
                </button>
@@ -87,14 +87,14 @@ const ytBeats = "https://www.youtube.com/@mrbonzobeatz";
 
         <div id="mobile-menu" class="hidden lg:hidden mt-3 mx-1 rounded-3xl border border-fuchsia-500/20 bg-black/95 backdrop-blur-2xl p-8 shadow-2xl transition-all">
           <nav class="flex flex-col gap-6 text-center">
-            <a href="#beats" class="m-link text-xs font-black uppercase tracking-[0.2em] text-fuchsia-100/80">Beats</a>
-            <a href="#drumkits" class="m-link text-xs font-black uppercase tracking-[0.2em] text-fuchsia-100/80">Drum Kits</a>
-            <a href={ytBeats} target="_blank" class="m-link text-xs font-black uppercase tracking-[0.2em] text-fuchsia-100/80">YouTube</a>
-            <a href={socialLinks.spotify} target="_blank" class="m-link text-xs font-black uppercase tracking-[0.2em] text-fuchsia-100/80">Spotify</a>
-            <a href={discordInvite} target="_blank" class="m-link text-xs font-black uppercase tracking-[0.2em] text-fuchsia-100/80">Discord</a>
-            <a href={pond5Link} target="_blank" class="m-link text-xs font-black uppercase tracking-[0.2em] text-fuchsia-100/80">Pond5</a>
-            <a href="#about" class="m-link text-xs font-black uppercase tracking-[0.2em] text-fuchsia-100/80">About</a>
-            <a href="#contact" class="m-link text-xs font-black uppercase tracking-[0.2em] text-fuchsia-400">Contact</a>
+            <a href="#beats" class="m-link text-[11px] font-black uppercase tracking-[0.2em] text-fuchsia-100/80">Beats</a>
+            <a href="#drumkits" class="m-link text-[11px] font-black uppercase tracking-[0.2em] text-fuchsia-100/80">Drum Kits</a>
+            <a href={ytBeats} target="_blank" class="m-link text-[11px] font-black uppercase tracking-[0.2em] text-fuchsia-100/80">YouTube</a>
+            <a href={socialLinks.spotify} target="_blank" class="m-link text-[11px] font-black uppercase tracking-[0.2em] text-fuchsia-100/80">Spotify</a>
+            <a href={discordInvite} target="_blank" class="m-link text-[11px] font-black uppercase tracking-[0.2em] text-fuchsia-100/80">Discord</a>
+            <a href={pond5Link} target="_blank" class="m-link text-[11px] font-black uppercase tracking-[0.2em] text-fuchsia-100/80">Pond5</a>
+            <a href="#about" class="m-link text-[11px] font-black uppercase tracking-[0.2em] text-fuchsia-100/80">About</a>
+            <a href="#contact" class="m-link text-[11px] font-black uppercase tracking-[0.2em] text-fuchsia-400">Contact</a>
             
             <div class="flex justify-center gap-4 pt-4 border-t border-white/5">
               <button type="button" data-lang-switch="en" class="text-[10px] font-bold text-fuchsia-200/40 data-[active=true]:text-fuchsia-400 px-3 py-1">ENGLISH</button>
@@ -110,7 +110,6 @@ const ytBeats = "https://www.youtube.com/@mrbonzobeatz";
     </main>
 
     <script is:inline define:vars={{ i18nPayload }}>
-      // Lang Logic
       const dictionaries = i18nPayload;
       const getByPath = (obj, path) => path.split(".").reduce((acc, key) => (acc ? acc[key] : undefined), obj);
       
@@ -118,13 +117,11 @@ const ytBeats = "https://www.youtube.com/@mrbonzobeatz";
         const dict = dictionaries[lang] || dictionaries.en;
         document.documentElement.lang = lang;
         localStorage.setItem("site-lang", lang);
-        
         document.querySelectorAll("[data-i18n]").forEach((node) => {
           const key = node.getAttribute("data-i18n");
           const value = key ? getByPath(dict, key) : null;
           if (typeof value === "string") node.innerHTML = value;
         });
-        
         document.querySelectorAll("[data-lang-switch]").forEach((btn) => {
           btn.setAttribute("data-active", btn.getAttribute("data-lang-switch") === lang ? "true" : "false");
         });
@@ -135,20 +132,17 @@ const ytBeats = "https://www.youtube.com/@mrbonzobeatz";
         btn.addEventListener("click", () => applyLanguage(btn.getAttribute("data-lang-switch")));
       });
 
-      // Burger Logic
       const bBtn = document.getElementById('burger-btn');
       const mMenu = document.getElementById('mobile-menu');
       const bOpen = document.getElementById('b-open');
       const bClose = document.getElementById('b-close');
 
-      const toggleMenu = () => {
+      bBtn.addEventListener('click', () => {
         const isHidden = mMenu.classList.toggle('hidden');
         bOpen.classList.toggle('hidden', !isHidden);
         bClose.classList.toggle('hidden', isHidden);
         document.body.style.overflow = isHidden ? 'auto' : 'hidden';
-      };
-
-      bBtn.addEventListener('click', toggleMenu);
+      });
 
       document.querySelectorAll('.m-link').forEach(l => l.addEventListener('click', () => {
         mMenu.classList.add('hidden');
