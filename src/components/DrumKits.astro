@@ -1,10 +1,10 @@
 ---
 const drumKits = [
   {
-    title: "MR. BONZO - FREE KIT",
-    description: "A professional collection of high-quality sounds to level up your production. Includes signature kicks, snares, and perks used in my beats.",
+    title: "TRIPPY DRUM KIT",
+    description: "Elevate your production with 120+ high-quality Trap sounds. Essential kicks, sharp snares, and trippy percussion designed for modern heavy-hitters.",
     price: "FREE",
-    // Εδώ είναι το νέο σου αρχείο χωρίς κενά
+    // Το αρχείο που μετονομάσαμε και καθαρίσαμε
     image: "/images/Trippy-Drum-kit.webp", 
     link: "https://www.beatstars.com/mrbonzobeats/sound-kits/153315"
   }
@@ -31,19 +31,21 @@ const drumKits = [
              <img 
                src={kit.image} 
                alt={kit.title} 
-               class="relative w-full h-full object-contain transition-transform duration-700 ease-out group-hover:scale-110 group-hover:-rotate-3 group-hover:-translate-y-4 drop-shadow-[0_15px_35px_rgba(0,0,0,0.6)]" 
+               class="relative w-full h-full object-contain transition-transform duration-700 ease-out group-hover:scale-110 group-hover:-rotate-3 group-hover:-translate-y-4 drop-shadow-[0_20px_50px_rgba(0,0,0,0.7)]" 
                onerror="this.src='/images/logo-main.webp'; this.style.padding='40px';"
              />
           </div>
           
           <div class="flex-grow">
-            <h3 class="text-3xl font-bold text-white mb-4 tracking-tight uppercase italic">{kit.title}</h3>
+            <h3 class="text-3xl font-bold text-white mb-4 tracking-tight uppercase italic">
+              {kit.title}
+            </h3>
             <p class="text-gray-400 text-lg leading-relaxed mb-8 max-w-md" data-i18n="drumkits.description">
               {kit.description}
             </p>
             
             <div class="flex items-center justify-center md:justify-start gap-8">
-              <span class="text-4xl font-black text-fuchsia-500 drop-shadow-[0_0_10px_rgba(192,38,211,0.5)] tracking-tighter italic uppercase" data-i18n="drumkits.price">
+              <span class="text-4xl font-black text-fuchsia-500 drop-shadow-[0_0_10px_rgba(192,38,211,0.5)] tracking-tighter italic uppercase">
                 {kit.price}
               </span>
               
