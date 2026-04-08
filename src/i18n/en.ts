@@ -6,7 +6,8 @@ const en = {
     spotify: "Spotify",
     youtube: "YouTube",
     tiktok: "TikTok",
-    store: "Store"
+    store: "Store",
+    discord: "Discord"
   },
   hero: {
     label: "Beatmaker Portfolio",
@@ -19,21 +20,30 @@ const en = {
     viewAll: "View All",
     open: "Open",
     shop: "Shop on Beatstars",
-    free: "Free Download" // Προστέθηκε αυτό
+    free: "Free Download"
   },
   about: {
-    label: "About Mr. Bonzo",
+    label: "The Artist",
     title: "The Architect of Energy",
     bio: "Alexandros Pilatos is a music producer/audio engineer in Athens, active since 2003. Founder of Purple Sound Studio (2007). His signature sound blends Boom Bap, Lofi, Trap, Dnb, Reggae, Breakbeat, Electronica, and Progressive House.",
-    contact: "Contact for Customs",
     beatmaker: "Beatmaker",
     engineer: "Studio Engineer",
-    producer: "Audio Producer"
+    producer: "Audio Producer",
+    // New Keys for Slider
+    termsLabel: "Terms & Usage",
+    licensingTitle: "Licensing Guide",
+    policyLabel: "Claims & Whitelisting",
+    policyTitle: "Usage Policy",
+    freeSectionTitle: "100% Free Beats",
+    freeSectionDesc: "Beats in the 'Free Section' are 100% free for profit. If you get a copyright claim, just contact me with your video link to whitelist you immediately.",
+    boughtTitle: "Bought a License?",
+    boughtDesc: "If you receive a claim on a purchased beat, send me your YouTube link and a screenshot of your receipt (PayPal or Beatstars). I will clear the claim within 24 hours.",
+    contactBtn: "Contact for Customs"
   },
   collaborations: {
     title: "Collaborations",
     subtitle: "Artists and projects developed through Purple Sound Studio.",
-    items: [] // Προστέθηκε κενή λίστα για να μην σκάει το .length
+    items: [] 
   },
   releases: {
     title: "Official Releases",
@@ -46,7 +56,7 @@ const en = {
   services: {
     title: "Professional Services",
     subtitle: "Built for artists, labels, and audiovisual projects.",
-    items: [] // Προστέθηκε κενή λίστα για να μην σκάει το .length
+    items: [] 
   },
   footer: {
     rights: "All rights reserved.",

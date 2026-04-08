@@ -7,7 +7,7 @@ const el = {
     youtube: "YouTube",
     tiktok: "TikTok",
     store: "Store",
-    discord: "Discord" // Προστέθηκε
+    discord: "Discord"
   },
   hero: {
     label: "Πορτφόλιο Beatmaker",
@@ -23,13 +23,22 @@ const el = {
     free: "Δωρεάν Download"
   },
   about: {
-    label: "Σχετικά με τον Mr. Bonzo",
+    label: "Ο Καλλιτέχνης", // Πιο σύντομο για το label
     title: "Ο Αρχιτέκτονας της Ενέργειας",
     bio: "Ο Αλέξανδρος Πιλάτος είναι music producer και audio engineer στην Αθήνα, ενεργός από το 2003. Είναι ο ιδρυτής του Purple Sound Studio (2007). Ο ήχος του συνδυάζει Boom Bap, Lofi, Trap, Dnb, Reggae, Breakbeat, Electronica και Progressive House.",
-    contact: "Επικοινωνία για Customs",
     beatmaker: "Beatmaker",
     engineer: "Studio Engineer",
-    producer: "Audio Producer"
+    producer: "Audio Producer",
+    // Νέα κλειδιά για το Slider
+    termsLabel: "Όροι & Χρήση",
+    licensingTitle: "Οδηγός Αδειών",
+    policyLabel: "Claims & Whitelisting",
+    policyTitle: "Πολιτική Χρήσης",
+    freeSectionTitle: "100% Δωρεάν Beats",
+    freeSectionDesc: "Τα beats στην ενότητα 'Free Section' είναι 100% δωρεάν για κερδοσκοπική χρήση. Αν λάβετε copyright claim, στείλτε μου το link του video σας για να σας βάλω αμέσως σε whitelist.",
+    boughtTitle: "Αγοράσατε Άδεια;",
+    boughtDesc: "Αν λάβετε claim σε αγορασμένο beat, στείλτε μου το link και ένα screenshot της απόδειξης (PayPal ή Beatstars). Θα το καθαρίσω εντός 24 ωρών.",
+    contactBtn: "Επικοινωνία για Customs"
   },
   collaborations: {
     title: "Συνεργασίες",
