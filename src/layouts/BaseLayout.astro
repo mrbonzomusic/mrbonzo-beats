@@ -21,13 +21,11 @@ const siteUrl = "https://mrbonzo-beats.pages.dev/";
 ---
 
 <!doctype html>
-<html lang="en">
-  <head>
+<html lang="en" class="scroll-smooth"> <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content="Official beat store and portfolio of Mr. Bonzo." />
-    <meta property="og:image" content={`${siteUrl}images/logo-main.webp`} />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   </head>
 
@@ -45,36 +43,32 @@ const siteUrl = "https://mrbonzo-beats.pages.dev/";
             <nav class="flex items-center gap-x-3 lg:gap-x-6">
               <a href="/" class="hidden lg:block text-[9px] font-bold uppercase tracking-[0.2em] text-fuchsia-100/70 transition hover:text-fuchsia-400" data-i18n="nav.home">Home</a>
               <a href="#beats" class="text-[9px] font-bold uppercase tracking-[0.2em] text-fuchsia-100/70 transition hover:text-fuchsia-400" data-i18n="nav.beats">Beats</a>
-              <a href="#featured" class="hidden md:block text-[9px] font-bold uppercase tracking-[0.2em] text-fuchsia-100/70 transition hover:text-fuchsia-400">Featured Player</a>
+              
+              <a href="#featured-player" class="hidden md:block text-[9px] font-bold uppercase tracking-[0.2em] text-fuchsia-100/70 transition hover:text-fuchsia-400">Featured Player</a>
               
               <div class="relative group cursor-pointer">
                 <span class="text-[9px] font-bold uppercase tracking-[0.2em] text-red-500/80 transition hover:text-red-500 flex items-center gap-1">
-                  YouTube
-                  <svg class="h-2 w-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"/></svg>
+                  YouTube <svg class="h-2 w-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"/></svg>
                 </span>
                 <div class="invisible group-hover:visible opacity-0 group-hover:opacity-100 absolute top-full left-0 mt-2 w-32 rounded-lg border border-white/10 bg-black/95 p-1 shadow-2xl transition-all">
-                  <a href={ytArtist} target="_blank" class="block rounded px-3 py-2 text-[8px] font-bold uppercase text-white hover:bg-red-600/20">Artist Channel</a>
-                  <a href={ytBeats} target="_blank" class="block rounded px-3 py-2 text-[8px] font-bold uppercase text-white hover:bg-red-600/20 border-t border-white/5">Beats Channel</a>
+                  <a href={ytArtist} target="_blank" class="block rounded px-3 py-2 text-[8px] font-bold uppercase text-white hover:bg-red-600/20">Artist</a>
+                  <a href={ytBeats} target="_blank" class="block rounded px-3 py-2 text-[8px] font-bold uppercase text-white hover:bg-red-600/20 border-t border-white/5">Beats</a>
                 </div>
               </div>
 
               <a href={pond5Link} target="_blank" class="hidden sm:block text-[9px] font-bold uppercase tracking-[0.2em] text-orange-500/80 transition hover:text-orange-500">Pond5</a>
-              
               <a href={socialLinks.spotify} target="_blank" class="text-[9px] font-bold uppercase tracking-[0.2em] text-green-500/80 transition hover:text-green-500">Spotify</a>
-
               <a href={discordInvite} target="_blank" class="text-[9px] font-bold uppercase tracking-[0.2em] text-[#5865F2] transition hover:text-[#7289da]">Discord</a>
             </nav>
 
             <div class="flex items-center gap-3">
                <div class="hidden xs:flex items-center gap-1.5 font-bold text-[8px] tracking-widest border-r border-fuchsia-500/20 pr-3 text-fuchsia-100/40">
-                  <button type="button" data-lang-switch="en" class="transition data-[active=true]:text-fuchsia-400 hover:text-fuchsia-300">EN</button>
+                  <button type="button" data-lang-switch="en" class="transition data-[active=true]:text-fuchsia-400">EN</button>
                   <span>/</span>
-                  <button type="button" data-lang-switch="el" class="transition data-[active=true]:text-fuchsia-400 hover:text-fuchsia-300">EL</button>
+                  <button type="button" data-lang-switch="el" class="transition data-[active=true]:text-fuchsia-400">EL</button>
                </div>
-               
                <a href={beatstarsLinks.profile} target="_blank" class="flex-shrink-0 rounded-full bg-fuchsia-600/20 border border-fuchsia-500/30 px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.2em] text-fuchsia-300 transition hover:bg-fuchsia-500 hover:text-white" data-i18n="nav.store">Store</a>
             </div>
-
           </div>
         </div>
       </header>
