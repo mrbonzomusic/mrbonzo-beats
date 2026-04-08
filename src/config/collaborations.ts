@@ -12,5 +12,18 @@ export const collaborators = [
   "Rocklee",
   "Underground Company",
   "Logos Timis",
-  "Elefthero Pnevma"
+  "Elefthero Pnevma",
+  "Zanoe",
+  "Alekan",
+  "Obnoxious Kas",
+  "Ink",
+  "Krak47",
+  "LefKay",
+  "Plain X Mode",
+  "Foxae",
+  "Mavros Vales",
+  "542",
+  "KFA",
+  
+
 ];
