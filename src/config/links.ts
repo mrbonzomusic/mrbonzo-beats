@@ -1,10 +1,13 @@
 export const socialLinks = {
-  spotify: "https://open.spotify.com/artist/your-id", // Βάλε το κανονικό σου Spotify link εδώ
+  // Αντικατάστησε το 0 με το κανονικό σου Artist Link στο Spotify
+  spotify: "https://open.spotify.com/artist/YOUR_ID_HERE", 
   youtube: "https://www.youtube.com/@mrbonzobeatz",
   tiktok: "https://www.tiktok.com/@mr.bonzobeats",
   instagram: "https://www.instagram.com/mrbonzobeats/",
-  discord: "https://discord.gg/YOUR_INVITE_LINK", // <--- Πρόσθεσε το δικό σου Discord link εδώ
-  email: "mrbonzomusic@gmail.com" // Το κρατάμε καθαρό εδώ
+  discord: "https://discord.gg/hmpCHd4J", // Εδώ έβαλα αυτό που είδα στον κώδικά σου πριν
+  
+  // ΠΡΟΣΟΧΗ: Προσθέτουμε το mailto: εδώ για να δουλεύει απευθείας το κλικ
+  email: "mailto:mrbonzomusic@gmail.com" 
 };
 
 export const beatstarsLinks = {
