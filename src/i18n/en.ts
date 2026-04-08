@@ -29,7 +29,6 @@ const en = {
     beatmaker: "Beatmaker",
     engineer: "Studio Engineer",
     producer: "Audio Producer",
-    // New Keys for Slider
     termsLabel: "Terms & Usage",
     licensingTitle: "Licensing Guide",
     policyLabel: "Claims & Whitelisting",
@@ -39,6 +38,12 @@ const en = {
     boughtTitle: "Bought a License?",
     boughtDesc: "If you receive a claim on a purchased beat, send me your YouTube link and a screenshot of your receipt (PayPal or Beatstars). I will clear the claim within 24 hours.",
     contactBtn: "Contact for Customs"
+  },
+  // Added Contact Section keys
+  contact: {
+    label: "Get In Touch",
+    title: "Let's Create <span class='text-fuchsia-500'>History</span>",
+    subtitle: "For custom beats, mixing & mastering, or business inquiries, reach out through your preferred platform."
   },
   collaborations: {
     title: "Collaborations",
