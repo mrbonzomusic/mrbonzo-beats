@@ -112,7 +112,7 @@ const ytArtist = "https://www.youtube.com/@mrbonzomusic";
         padding: 12px 16px;
         text-decoration: none;
         display: block;
-        font-size: 11px; /* Μεγαλύτερο κείμενο στο dropdown */
+        font-size: 11px;
         font-weight: bold;
         text-transform: uppercase;
         letter-spacing: 0.05em;
@@ -122,6 +122,17 @@ const ytArtist = "https://www.youtube.com/@mrbonzomusic";
         color: #e879f9;
         background-color: rgba(255, 255, 255, 0.08);
         border-radius: 10px;
+      }
+
+      /* Tooltip for Copy Feedback */
+      #share-tooltip {
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+      #share-tooltip.show {
+        visibility: visible;
+        opacity: 1;
       }
     </style>
   </head>
@@ -166,6 +177,19 @@ const ytArtist = "https://www.youtube.com/@mrbonzomusic";
                   <button type="button" data-lang-switch="el" class="text-fuchsia-200/40 data-[active=true]:text-fuchsia-400 px-1 hover:text-fuchsia-100 transition">EL</button>
                </div>
                
+               <div class="relative flex items-center">
+                 <button 
+                  id="share-btn" 
+                  class="p-2 text-fuchsia-400 hover:text-white transition-all active:scale-90"
+                  aria-label="Share Website"
+                 >
+                   <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                   </svg>
+                 </button>
+                 <span id="share-tooltip" class="absolute -bottom-10 left-1/2 -translate-x-1/2 bg-fuchsia-600 text-[10px] font-black uppercase px-2 py-1 rounded-md text-white whitespace-nowrap">Link Copied!</span>
+               </div>
+
                <a href={beatstarsLinks.profile} target="_blank" class="rounded-full bg-fuchsia-600 px-5 py-2 text-[10px] font-black uppercase text-white hover:bg-fuchsia-500 transition shadow-lg shadow-fuchsia-600/20">Store</a>
 
                <button id="burger-btn" class="lg:hidden p-1 text-fuchsia-100/70 hover:text-fuchsia-400 transition outline-none">
@@ -203,7 +227,8 @@ const ytArtist = "https://www.youtube.com/@mrbonzomusic";
       <slot />
     </main>
 
-    <script is:inline define:vars={{ i18nPayload }}>
+    <script is:inline define:vars={{ i18nPayload, title, siteURL }}>
+      // --- I18N LOGIC ---
       const dictionaries = i18nPayload;
       const getByPath = (obj, path) => path.split(".").reduce((acc, key) => (acc ? acc[key] : undefined), obj);
       
@@ -226,6 +251,7 @@ const ytArtist = "https://www.youtube.com/@mrbonzomusic";
         btn.addEventListener("click", () => applyLanguage(btn.getAttribute("data-lang-switch")));
       });
 
+      // --- MOBILE MENU ---
       const bBtn = document.getElementById('burger-btn');
       const mMenu = document.getElementById('mobile-menu');
       const bOpen = document.getElementById('b-open');
@@ -244,6 +270,34 @@ const ytArtist = "https://www.youtube.com/@mrbonzomusic";
         bClose.classList.add('hidden');
         document.body.style.overflow = 'auto';
       }));
+
+      // --- SMART SHARE LOGIC ---
+      const shareBtn = document.getElementById('share-btn');
+      const tooltip = document.getElementById('share-tooltip');
+
+      shareBtn?.addEventListener('click', async () => {
+        if (navigator.share) {
+          // Native Share for Mobile
+          try {
+            await navigator.share({
+              title: title,
+              text: 'Check out Mr. Bonzo Beats - Professional Trap Production',
+              url: siteURL
+            });
+          } catch (err) {
+            console.log('Share cancelled or failed');
+          }
+        } else {
+          // Fallback: Copy Link for Desktop
+          try {
+            await navigator.clipboard.writeText(siteURL);
+            tooltip.classList.add('show');
+            setTimeout(() => tooltip.classList.remove('show'), 2000);
+          } catch (err) {
+            alert('URL: ' + siteURL);
+          }
+        }
+      });
     </script>
   </body>
 </html>
