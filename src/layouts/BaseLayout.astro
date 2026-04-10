@@ -100,6 +100,21 @@ const spotifyLink = socialLinks.spotify || "http://googleusercontent.com/spotify
         from { opacity: 0; transform: translateY(5px); }
         to { opacity: 1; transform: translateY(0); }
       }
+
+      /* CSS για το Mobile Menu */
+      #mobile-menu.hidden {
+        display: none;
+      }
+      .mobile-link {
+        display: block;
+        padding: 1rem;
+        color: white;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        font-size: 13px;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+      }
     </style>
   </head>
 
@@ -155,6 +170,16 @@ const spotifyLink = socialLinks.spotify || "http://googleusercontent.com/spotify
             </div>
           </div>
         </div>
+
+        <div id="mobile-menu" class="hidden lg:hidden mt-2">
+          <div class="rounded-3xl border border-fuchsia-500/20 bg-black/95 backdrop-blur-xl p-4 shadow-2xl">
+            <a href="#player" class="mobile-link text-fuchsia-400">Player</a>
+            <a href="#beats" class="mobile-link">Beats</a>
+            <a href="#drumkits" class="mobile-link">Kits</a>
+            <a href={spotifyLink} target="_blank" class="mobile-link">Spotify</a>
+            <a href={discordInvite} target="_blank" class="mobile-link">Discord</a>
+          </div>
+        </div>
       </div>
     </header>
 
@@ -163,9 +188,28 @@ const spotifyLink = socialLinks.spotify || "http://googleusercontent.com/spotify
     </main>
 
     <script is:inline>
+      // Διορθωμένο Script για το Burger
       const bBtn = document.getElementById('burger-btn');
       const mMenu = document.getElementById('mobile-menu');
-      bBtn?.addEventListener('click', () => mMenu.classList.toggle('hidden'));
+      
+      if (bBtn && mMenu) {
+        bBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          mMenu.classList.toggle('hidden');
+        });
+
+        // Κλείσιμο αν πατήσεις οπουδήποτε αλλού
+        document.addEventListener('click', (e) => {
+          if (!mMenu.contains(e.target) && !bBtn.contains(e.target)) {
+            mMenu.classList.add('hidden');
+          }
+        });
+
+        // Κλείσιμο όταν πατάς ένα link του μενού
+        mMenu.querySelectorAll('a').forEach(link => {
+          link.addEventListener('click', () => mMenu.classList.add('hidden'));
+        });
+      }
     </script>
   </body>
 </html>
