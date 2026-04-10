@@ -11,14 +11,8 @@ interface Props {
 const { title = "Mr. Bonzo | Official" } = Astro.props;
 const logoPath = "/images/logo-main.webp";
 
-const siteDescription = "Official website of Mr. Bonzo. High-quality trap beats and exclusive drum kits.";
-const siteURL = "https://mrbonzo-beats.pages.dev/";
-
 const discordInvite = socialLinks.discord || "https://discord.gg/hmpCHd4J"; 
-const pond5Link = "https://www.pond5.com/artist/mrbonzobeats";
-const tikTokLink = "https://www.tiktok.com/@mrbonzomusic"; 
-const ytBeats = "https://www.youtube.com/@mrbonzobeatz";
-const ytArtist = "https://www.youtube.com/@mrbonzomusic";
+const tikTokLink = socialLinks.tiktok || "https://www.tiktok.com/@mrbonzomusic"; 
 const spotifyLink = socialLinks.spotify || "http://googleusercontent.com/spotify.com/6";
 ---
 
@@ -74,9 +68,6 @@ const spotifyLink = socialLinks.spotify || "http://googleusercontent.com/spotify
         display: block; font-size: 11px; font-weight: bold;
         text-transform: uppercase; letter-spacing: 0.05em;
       }
-      .nav-dropdown-content a:hover {
-        background-color: rgba(217, 70, 239, 0.1); color: #f5d0fe;
-      }
       .nav-dropdown:hover .nav-dropdown-content {
         display: block; animation: dropdownFade 0.2s ease-out;
       }
@@ -85,64 +76,45 @@ const spotifyLink = socialLinks.spotify || "http://googleusercontent.com/spotify
         to { opacity: 1; transform: translateY(0); }
       }
 
-      /* Mobile Menu Styles */
       #mobile-menu.hidden { display: none; }
       .mobile-link {
         display: block; padding: 0.85rem 1rem; color: #e5e7eb;
         font-weight: 800; text-transform: uppercase;
         letter-spacing: 0.1em; font-size: 11px;
       }
-      .mobile-section-label {
-        font-size: 9px; font-weight: 900; text-transform: uppercase;
-        letter-spacing: 0.2em; color: #d946ef;
-        padding: 1.5rem 1rem 0.5rem 1rem; opacity: 0.8;
-      }
     </style>
   </head>
 
   <body class="min-h-screen antialiased bg-black text-white">
     <header id="main-header">
-      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="rounded-full border border-fuchsia-500/20 bg-black/90 backdrop-blur-md px-5 py-2.5 shadow-2xl">
-          <div class="flex items-center justify-between">
+      <div class="mx-auto max-w-7xl px-4">
+        <div class="rounded-full border border-fuchsia-500/20 bg-black/90 backdrop-blur-md px-4 py-2.5 shadow-2xl flex items-center justify-between">
+            
             <a href="/" class="flex-shrink-0 transition hover:scale-105">
-              <img src={logoPath} alt="Logo" class="h-[22px] w-auto sm:h-[30px]" />
+              <img src={logoPath} alt="Logo" class="h-[20px] w-auto sm:h-[28px]" />
             </a>
 
-            <nav class="hidden lg:flex items-center gap-x-3 xl:gap-x-4">
+            <nav class="hidden lg:flex items-center gap-x-4">
               <a href="#player" class="text-[11px] font-bold uppercase tracking-wider text-fuchsia-400 hover:text-fuchsia-300 transition">Player</a>
               <a href="#beats" class="text-[11px] font-bold uppercase tracking-wider text-fuchsia-100/70 hover:text-fuchsia-400 transition">Beats</a>
-              <a href="#drumkits" class="text-[11px] font-bold uppercase tracking-wider text-fuchsia-100/70 hover:text-fuchsia-400 transition">Kits</a>
-              
-              <div class="nav-divider"></div>
-
-              <div class="nav-dropdown" tabindex="0">
-                <button class="text-[11px] font-bold uppercase tracking-wider text-fuchsia-100/70 hover:text-fuchsia-400 transition flex items-center gap-1.5 outline-none">
-                  YouTube <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"></path></svg>
-                </button>
-                <div class="nav-dropdown-content">
-                  <a href={ytBeats} target="_blank">Beats Channel</a>
-                  <a href={ytArtist} target="_blank">Artist Channel</a>
-                </div>
-              </div>
-
               <a href={spotifyLink} target="_blank" class="text-[11px] font-bold uppercase tracking-wider text-fuchsia-100/70 hover:text-fuchsia-400 transition">Spotify</a>
-              <a href={tikTokLink} target="_blank" class="text-[11px] font-bold uppercase tracking-wider text-fuchsia-100/70 hover:text-fuchsia-400 transition">TikTok</a>
               <a href={discordInvite} target="_blank" class="text-[11px] font-bold uppercase tracking-wider text-fuchsia-100/70 hover:text-fuchsia-400 transition">Discord</a>
-              
-              <div class="nav-divider"></div>
-
-              <a href="#contact" class="text-[11px] font-bold uppercase tracking-wider text-fuchsia-100/70 hover:text-fuchsia-400 transition">Contact</a>
             </nav>
 
-            <div class="flex items-center gap-2">
-               <button id="share-btn" class="p-2 text-fuchsia-400 hover:text-fuchsia-300 transition-all active:scale-90" aria-label="Share">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 sm:w-6 sm:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <div class="flex items-center gap-1 sm:gap-3">
+               
+               <div class="flex items-center gap-0.5 font-bold text-[9px] sm:text-[10px] border-r border-fuchsia-500/20 pr-2 sm:pr-3 mr-1">
+                  <button type="button" data-lang-switch="en" class="text-fuchsia-200/40 data-[active=true]:text-fuchsia-400 px-1 transition">EN</button>
+                  <button type="button" data-lang-switch="el" class="text-fuchsia-200/40 data-[active=true]:text-fuchsia-400 px-1 transition">EL</button>
+               </div>
+
+               <button id="share-btn" class="p-1.5 text-fuchsia-400 hover:text-fuchsia-300 active:scale-90 transition-all" aria-label="Share">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
                 </svg>
                </button>
 
-               <a href={beatstarsLinks.profile} target="_blank" class="hidden sm:block rounded-full bg-fuchsia-600 px-4 py-1.5 text-[10px] font-black uppercase text-white hover:bg-fuchsia-500 transition">Store</a>
+               <a href={beatstarsLinks.profile} target="_blank" class="hidden xs:block rounded-full bg-fuchsia-600 px-3 py-1.5 text-[9px] sm:text-[10px] font-black uppercase text-white hover:bg-fuchsia-500 transition">Store</a>
                
                <button id="burger-btn" class="lg:hidden p-1 text-fuchsia-400">
                  <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
@@ -150,33 +122,27 @@ const spotifyLink = socialLinks.spotify || "http://googleusercontent.com/spotify
                  </svg>
                </button>
             </div>
-          </div>
         </div>
 
         <div id="mobile-menu" class="hidden lg:hidden mt-2">
-          <div class="rounded-3xl border border-fuchsia-500/20 bg-black/95 backdrop-blur-xl p-2 shadow-2xl max-h-[80vh] overflow-y-auto">
-            <div class="mobile-section-label">Navigation</div>
+          <div class="rounded-3xl border border-fuchsia-500/20 bg-black/95 backdrop-blur-xl p-2 shadow-2xl overflow-hidden">
             <a href="#player" class="mobile-link text-fuchsia-400">Player</a>
             <a href="#beats" class="mobile-link">Beats</a>
-            <a href="#drumkits" class="mobile-link">Kits</a>
-            <a href={beatstarsLinks.profile} target="_blank" class="mobile-link text-fuchsia-600 font-black">Open Store</a>
-            
-            <div class="mobile-section-label">Social</div>
-            <a href={ytBeats} target="_blank" class="mobile-link">YouTube</a>
-            <a href={spotifyLink} target="_blank" class="mobile-link">Spotify</a>
-            <a href={tikTokLink} target="_blank" class="mobile-link">TikTok</a>
-            <a href={discordInvite} target="_blank" class="mobile-link">Discord</a>
+            <a href="#drumkits" class="mobile-link">Drum Kits</a>
+            <a href={beatstarsLinks.profile} target="_blank" class="mobile-link text-fuchsia-600 font-black border-t border-white/5">Open Store</a>
+            <a href={spotifyLink} target="_blank" class="mobile-link opacity-70">Spotify</a>
+            <a href={discordInvite} target="_blank" class="mobile-link opacity-70">Discord</a>
           </div>
         </div>
       </div>
     </header>
 
-    <main class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <main class="mx-auto max-w-7xl px-4">
       <slot />
     </main>
 
     <script is:inline>
-      // BURGER LOGIC
+      // BURGER
       const bBtn = document.getElementById('burger-btn');
       const mMenu = document.getElementById('mobile-menu');
       if (bBtn && mMenu) {
@@ -184,22 +150,15 @@ const spotifyLink = socialLinks.spotify || "http://googleusercontent.com/spotify
         document.addEventListener('click', (e) => { if (!mMenu.contains(e.target) && !bBtn.contains(e.target)) mMenu.classList.add('hidden'); });
       }
 
-      // SHARE LOGIC
+      // SHARE
       const shareBtn = document.getElementById('share-btn');
       if (shareBtn) {
         shareBtn.addEventListener('click', async () => {
           if (navigator.share) {
-            try {
-              await navigator.share({
-                title: 'Mr. Bonzo Official',
-                text: 'Check out high-quality trap beats and drum kits by Mr. Bonzo!',
-                url: window.location.href
-              });
-            } catch (err) { console.log('Share failed'); }
+            try { await navigator.share({ title: 'Mr. Bonzo', url: window.location.href }); } catch (err) {}
           } else {
-            // Fallback: Copy to clipboard if navigator.share is not supported (Desktops)
             navigator.clipboard.writeText(window.location.href);
-            alert('Link copied to clipboard!');
+            alert('Link copied!');
           }
         });
       }
