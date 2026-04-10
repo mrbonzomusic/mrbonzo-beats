@@ -12,26 +12,6 @@ import { socialLinks } from "../config/links";
         </p>
       </div>
 
-      <div class="flex flex-col items-center">
-        <span class="text-[9px] font-black uppercase tracking-[0.2em] text-fuchsia-500 mb-2">Global Traffic</span>
-        <div class="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-4 py-2">
-          <div class="flex flex-col items-center border-r border-white/10 pr-3">
-            <img 
-              id="goat-svg"
-              src="https://mrbonzo.goatcounter.com/counter/total.svg?style=none" 
-              alt="Hits"
-              class="h-5 brightness-200 grayscale contrast-200 opacity-90 transition-opacity duration-500"
-              onload="this.style.opacity='1'"
-            />
-            <span class="text-[7px] uppercase tracking-tighter text-white/40 mt-1">Total Hits</span>
-          </div>
-          <div class="flex items-center gap-2">
-            <div class="w-2 h-2 bg-fuchsia-500 rounded-full animate-pulse"></div>
-            <span class="text-[10px] font-bold uppercase tracking-widest text-white/80">Active</span>
-          </div>
-        </div>
-      </div>
-
       <div class="flex flex-wrap justify-center gap-6">
         <a href={socialLinks.instagram} target="_blank" class="text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-fuchsia-400 transition">Instagram</a>
         <a href="https://www.youtube.com/@mrbonzobeatz" target="_blank" class="text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-fuchsia-400 transition">YouTube</a>
@@ -43,15 +23,3 @@ import { socialLinks } from "../config/links";
     </div>
   </div>
 </footer>
-
-<script is:inline>
-  // Ανανέωση του SVG κάθε 30 δευτερόλεπτα για να δείχνει τα νέα hits
-  setInterval(() => {
-    const img = document.getElementById('goat-svg');
-    if (img) {
-      const baseUrl = "https://mrbonzo.goatcounter.com/counter/total.svg?style=none";
-      // Προσθήκη τυχαίας παραμέτρου για να μην διαβάζει ο browser από την προσωρινή μνήμη (cache)
-      img.src = `${baseUrl}&rnd=${Math.random()}`;
-    }
-  }, 30000);
-</script>
