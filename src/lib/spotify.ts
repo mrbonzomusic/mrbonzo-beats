@@ -136,6 +136,9 @@ export async function getReleasesFromSpotifyPage({
       ...escapedMatches.map((m) => ({ id: m[1], index: m.index ?? 0 })),
     ];
 
+    const toHdSpotifyImage = (url: string) =>
+      url.replace("/ab67616d00001e02/", "/ab67616d0000b273/").replace("/ab67616d00004851/", "/ab67616d0000b273/");
+
     for (const album of albumIds) {
       if (releases.length >= 8) break;
       const albumId = album.id;
@@ -155,10 +158,30 @@ export async function getReleasesFromSpotifyPage({
         windowHtml.match(/src="([^"]+)"/i);
       const yearMatch = windowHtml.match(/\b(20\d{2}|19\d{2})\b/);
 
+      // Try Spotify oEmbed for reliable title/thumbnail without auth.
+      let finalTitle = titleMatch ? stripHtml(titleMatch[1]) : "";
+      let finalCover = imageMatch ? decodeXml(imageMatch[1]) : "";
+      try {
+        const oembedResponse = await fetch(`https://open.spotify.com/oembed?url=${encodeURIComponent(spotify)}`, {
+          headers: { "User-Agent": "Mozilla/5.0" },
+        });
+        if (oembedResponse.ok) {
+          const oembedData = await oembedResponse.json();
+          if (typeof oembedData?.title === "string" && oembedData.title.trim()) {
+            finalTitle = oembedData.title.trim();
+          }
+          if (typeof oembedData?.thumbnail_url === "string" && oembedData.thumbnail_url.trim()) {
+            finalCover = oembedData.thumbnail_url.trim();
+          }
+        }
+      } catch {
+        // Keep HTML-extracted fallback metadata.
+      }
+
       releases.push({
-        title: titleMatch ? stripHtml(titleMatch[1]) : "Untitled Release",
+        title: finalTitle || "Latest Release",
         year: yearMatch ? yearMatch[1] : "",
-        cover: imageMatch ? decodeXml(imageMatch[1]) : fallbackCover,
+        cover: finalCover ? toHdSpotifyImage(finalCover) : fallbackCover,
         spotify,
       });
     }
