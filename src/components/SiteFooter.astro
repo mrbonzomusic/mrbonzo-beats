@@ -59,32 +59,36 @@ import { socialLinks } from "../config/links";
     if (!el) return;
     
     try {
-      // Προσθέτουμε ?t=[timestamp] για να είναι πάντα μοναδικό το request
-      const response = await fetch(`https://mrbonzo.goatcounter.com/counter//total.json?t=${Date.now()}`, {
+      // Χρησιμοποιούμε το endpoint για το συγκεκριμένο path "/" για πιο άμεση ενημέρωση
+      // Προσθέτουμε rnd παράμετρο για να σπάσουμε πλήρως την cache των browsers/CDN
+      const url = `https://mrbonzo.goatcounter.com/counter/%2f.json?rnd=${Math.random()}`;
+      
+      const response = await fetch(url, {
         method: 'GET',
-        cache: 'no-store', // Απαγορεύει στον browser να διαβάσει από την cache
-        headers: {
-          'Cache-Control': 'no-cache'
-        }
+        mode: 'cors',
+        cache: 'no-store'
       });
       
       const data = await response.json();
       
-      if (data && data.count) {
-        // Καθαρίζουμε το νούμερο από κενά ή κόμματα
-        const cleanCount = data.count.replace(/\s/g, '').replace(/,/g, '');
-        // Το εμφανίζουμε με 4 ψηφία (π.χ. 0002)
-        el.innerText = cleanCount.padStart(4, '0');
-        console.log("Counter synced:", cleanCount);
+      // Το GoatCounter επιστρέφει το νούμερο στο πεδίο "count"
+      if (data && data.count !== undefined) {
+        // Αφαιρούμε τα κενά αν υπάρχουν και μετατρέπουμε σε string
+        const countValue = data.count.toString().replace(/\s/g, '').replace(/,/g, '');
+        
+        // Αν το νούμερο είναι 0 αλλά το dashboard δείχνει παραπάνω, 
+        // ίσως το API αργεί 1-2 λεπτά να κάνει sync.
+        el.innerText = countValue.padStart(4, '0');
+        console.log("GoatCounter Sync:", countValue);
       }
     } catch (e) {
-      console.log("Counter update pending...");
+      console.error("Stats error:", e);
     }
   }
 
-  // Εκτέλεση αμέσως μόλις φορτώσει η σελίδα
+  // Πρώτο φόρτωμα
   loadGoatStats();
 
-  // Ανανέωση κάθε 5 δευτερόλεπτα 
-  setInterval(loadGoatStats, 5000);
+  // Refresh κάθε 10 δευτερόλεπτα για να βλέπεις τις αλλαγές live
+  setInterval(loadGoatStats, 10000);
 </script>
