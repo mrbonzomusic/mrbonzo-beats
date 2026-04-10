@@ -12,13 +12,15 @@ import { socialLinks } from "../config/links";
       </p>
     </div>
 
-    <div class="order-3 lg:order-2 flex flex-col items-center gap-1.5 opacity-50 hover:opacity-100 transition-opacity duration-500">
-      <span class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-400/70">Traffic</span>
-      <img 
-        src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fmrbonzo-beats.pages.dev&count_bg=%23d946ef&title_bg=%231a1a1a&icon=&icon_color=%23E7E7E7&title=Visits&edge_flat=true" 
-        alt="Visitor Counter"
-        class="h-4 w-auto grayscale contrast-125"
-      />
+    <div class="order-3 lg:order-2 flex flex-col items-center gap-1.5 opacity-40 hover:opacity-100 transition-opacity duration-500">
+      <span class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-400">Live Traffic</span>
+      <div class="flex items-center gap-2">
+        <span class="relative flex h-1.5 w-1.5">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-fuchsia-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-fuchsia-500"></span>
+        </span>
+        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">System Active</span>
+      </div>
     </div>
 
     <div class="order-1 lg:order-3 flex flex-wrap items-center justify-center gap-x-6 gap-y-4 lg:justify-end">
