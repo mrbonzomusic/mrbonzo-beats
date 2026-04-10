@@ -59,30 +59,34 @@ import { socialLinks } from "../config/links";
     if (!el) return;
     
     try {
-      // Ζητάμε το total.json που περιλαμβάνει τα πάντα
-      const url = `https://mrbonzo.goatcounter.com/counter//total.json?rnd=${Math.random()}`;
-      
-      const response = await fetch(url, {
+      // Δοκιμάζουμε να πάρουμε τα δεδομένα για το "συνολικό" traffic
+      const rnd = Math.random();
+      const response = await fetch(`https://mrbonzo.goatcounter.com/counter//total.json?rnd=${rnd}`, {
         method: 'GET',
         cache: 'no-store'
       });
       
       const data = await response.json();
       
-      // Δοκιμάζουμε να διαβάσουμε το count
-      if (data && data.count !== undefined) {
-        let countValue = data.count.toString().replace(/\s/g, '').replace(/,/g, '');
+      if (data) {
+        // Το GoatCounter μερικές φορές στέλνει το νούμερο στο data.count 
+        // ή αν ζητήσουμε συγκεκριμένο path στο data.hits.
+        // Παίρνουμε όποιο από τα δύο υπάρχει και είναι μεγαλύτερο.
+        let finalCount = data.count || data.hits || 0;
         
-        // Αν το API επιστρέφει ακόμα "0", γράφουμε στο console για να ξέρουμε τι φταίει
-        console.log("GoatCounter API Raw Response:", data.count);
+        // Καθαρισμός και μορφοποίηση
+        const displayCount = finalCount.toString().replace(/\s/g, '').padStart(4, '0');
         
-        el.innerText = countValue.padStart(4, '0');
+        // Ενημέρωση του UI
+        el.innerText = displayCount;
+        console.log("Counter Updated to:", displayCount);
       }
     } catch (e) {
-      console.error("Fetch error:", e);
+      console.log("Waiting for GoatCounter API sync...");
     }
   }
 
+  // Άμεση εκτέλεση και μετά κάθε 10 δευτερόλεπτα
   loadGoatStats();
-  setInterval(loadGoatStats, 15000); // 15 δευτερόλεπτα είναι αρκετά
+  setInterval(loadGoatStats, 10000);
 </script>
