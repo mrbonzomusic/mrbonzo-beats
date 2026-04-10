@@ -101,19 +101,32 @@ const spotifyLink = socialLinks.spotify || "http://googleusercontent.com/spotify
         to { opacity: 1; transform: translateY(0); }
       }
 
-      /* CSS για το Mobile Menu */
+      /* Mobile Menu Styles */
       #mobile-menu.hidden {
         display: none;
       }
       .mobile-link {
         display: block;
-        padding: 1rem;
-        color: white;
+        padding: 0.85rem 1rem;
+        color: #e5e7eb;
         font-weight: 800;
         text-transform: uppercase;
         letter-spacing: 0.1em;
-        font-size: 13px;
-        border-bottom: 1px solid rgba(255,255,255,0.05);
+        font-size: 11px;
+        transition: all 0.2s;
+      }
+      .mobile-link:active {
+        background-color: rgba(217, 70, 239, 0.1);
+        color: #f5d0fe;
+      }
+      .mobile-section-label {
+        font-size: 9px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        color: #d946ef;
+        padding: 1.5rem 1rem 0.5rem 1rem;
+        opacity: 0.8;
       }
     </style>
   </head>
@@ -172,12 +185,28 @@ const spotifyLink = socialLinks.spotify || "http://googleusercontent.com/spotify
         </div>
 
         <div id="mobile-menu" class="hidden lg:hidden mt-2">
-          <div class="rounded-3xl border border-fuchsia-500/20 bg-black/95 backdrop-blur-xl p-4 shadow-2xl">
+          <div class="rounded-3xl border border-fuchsia-500/20 bg-black/95 backdrop-blur-xl p-2 shadow-2xl max-h-[80vh] overflow-y-auto">
+            
+            <div class="mobile-section-label">Navigation</div>
             <a href="#player" class="mobile-link text-fuchsia-400">Player</a>
             <a href="#beats" class="mobile-link">Beats</a>
-            <a href="#drumkits" class="mobile-link">Kits</a>
+            <a href="#drumkits" class="mobile-link">Drum Kits</a>
+            <a href="#latest-releases" class="mobile-link">Latest Releases</a>
+            
+            <div class="mobile-section-label">Channels</div>
+            <a href={ytBeats} target="_blank" class="mobile-link">YouTube Beats</a>
+            <a href={ytArtist} target="_blank" class="mobile-link">YouTube Artist</a>
+            
+            <div class="mobile-section-label">Social & More</div>
             <a href={spotifyLink} target="_blank" class="mobile-link">Spotify</a>
+            <a href={tikTokLink} target="_blank" class="mobile-link">TikTok</a>
+            <a href={pond5Link} target="_blank" class="mobile-link">Pond5</a>
             <a href={discordInvite} target="_blank" class="mobile-link">Discord</a>
+            
+            <div class="h-px bg-white/5 my-2 mx-4"></div>
+            
+            <a href="#about" class="mobile-link opacity-70">About</a>
+            <a href="#contact" class="mobile-link opacity-70">Contact</a>
           </div>
         </div>
       </div>
@@ -188,7 +217,6 @@ const spotifyLink = socialLinks.spotify || "http://googleusercontent.com/spotify
     </main>
 
     <script is:inline>
-      // Διορθωμένο Script για το Burger
       const bBtn = document.getElementById('burger-btn');
       const mMenu = document.getElementById('mobile-menu');
       
@@ -198,14 +226,12 @@ const spotifyLink = socialLinks.spotify || "http://googleusercontent.com/spotify
           mMenu.classList.toggle('hidden');
         });
 
-        // Κλείσιμο αν πατήσεις οπουδήποτε αλλού
         document.addEventListener('click', (e) => {
           if (!mMenu.contains(e.target) && !bBtn.contains(e.target)) {
             mMenu.classList.add('hidden');
           }
         });
 
-        // Κλείσιμο όταν πατάς ένα link του μενού
         mMenu.querySelectorAll('a').forEach(link => {
           link.addEventListener('click', () => mMenu.classList.add('hidden'));
         });
