@@ -54,47 +54,31 @@ const spotifyLink = socialLinks.spotify || "http://googleusercontent.com/spotify
         background-color: black;
       }
       .nav-divider {
-        width: 1px;
-        height: 14px;
+        width: 1px; height: 14px;
         background-color: rgba(217, 70, 239, 0.3);
-        margin: 0 6px;
-        flex-shrink: 0;
+        margin: 0 6px; flex-shrink: 0;
       }
       .nav-dropdown {
-        position: relative;
-        display: inline-block;
-        padding-bottom: 20px;
-        margin-bottom: -20px;
+        position: relative; display: inline-block;
+        padding-bottom: 20px; margin-bottom: -20px;
       }
       .nav-dropdown-content {
-        display: none;
-        position: absolute;
+        display: none; position: absolute;
         background-color: rgba(0, 0, 0, 0.95);
-        min-width: 160px;
-        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
-        z-index: 1000;
-        border: 1px solid rgba(217, 70, 239, 0.2);
-        border-radius: 14px;
-        margin-top: 5px;
-        backdrop-filter: blur(12px);
+        min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
+        z-index: 1000; border: 1px solid rgba(217, 70, 239, 0.2);
+        border-radius: 14px; margin-top: 5px; backdrop-filter: blur(12px);
       }
       .nav-dropdown-content a {
-        color: white;
-        padding: 12px 16px;
-        text-decoration: none;
-        display: block;
-        font-size: 11px;
-        font-weight: bold;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
+        color: white; padding: 12px 16px; text-decoration: none;
+        display: block; font-size: 11px; font-weight: bold;
+        text-transform: uppercase; letter-spacing: 0.05em;
       }
       .nav-dropdown-content a:hover {
-        background-color: rgba(217, 70, 239, 0.1);
-        color: #f5d0fe;
+        background-color: rgba(217, 70, 239, 0.1); color: #f5d0fe;
       }
       .nav-dropdown:hover .nav-dropdown-content {
-        display: block;
-        animation: dropdownFade 0.2s ease-out;
+        display: block; animation: dropdownFade 0.2s ease-out;
       }
       @keyframes dropdownFade {
         from { opacity: 0; transform: translateY(5px); }
@@ -102,31 +86,16 @@ const spotifyLink = socialLinks.spotify || "http://googleusercontent.com/spotify
       }
 
       /* Mobile Menu Styles */
-      #mobile-menu.hidden {
-        display: none;
-      }
+      #mobile-menu.hidden { display: none; }
       .mobile-link {
-        display: block;
-        padding: 0.85rem 1rem;
-        color: #e5e7eb;
-        font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        font-size: 11px;
-        transition: all 0.2s;
-      }
-      .mobile-link:active {
-        background-color: rgba(217, 70, 239, 0.1);
-        color: #f5d0fe;
+        display: block; padding: 0.85rem 1rem; color: #e5e7eb;
+        font-weight: 800; text-transform: uppercase;
+        letter-spacing: 0.1em; font-size: 11px;
       }
       .mobile-section-label {
-        font-size: 9px;
-        font-weight: 900;
-        text-transform: uppercase;
-        letter-spacing: 0.2em;
-        color: #d946ef;
-        padding: 1.5rem 1rem 0.5rem 1rem;
-        opacity: 0.8;
+        font-size: 9px; font-weight: 900; text-transform: uppercase;
+        letter-spacing: 0.2em; color: #d946ef;
+        padding: 1.5rem 1rem 0.5rem 1rem; opacity: 0.8;
       }
     </style>
   </head>
@@ -144,7 +113,6 @@ const spotifyLink = socialLinks.spotify || "http://googleusercontent.com/spotify
               <a href="#player" class="text-[11px] font-bold uppercase tracking-wider text-fuchsia-400 hover:text-fuchsia-300 transition">Player</a>
               <a href="#beats" class="text-[11px] font-bold uppercase tracking-wider text-fuchsia-100/70 hover:text-fuchsia-400 transition">Beats</a>
               <a href="#drumkits" class="text-[11px] font-bold uppercase tracking-wider text-fuchsia-100/70 hover:text-fuchsia-400 transition">Kits</a>
-              <a href="#latest-releases" class="text-[11px] font-bold uppercase tracking-wider text-fuchsia-100/70 hover:text-fuchsia-400 transition">Releases</a>
               
               <div class="nav-divider"></div>
 
@@ -160,23 +128,24 @@ const spotifyLink = socialLinks.spotify || "http://googleusercontent.com/spotify
 
               <a href={spotifyLink} target="_blank" class="text-[11px] font-bold uppercase tracking-wider text-fuchsia-100/70 hover:text-fuchsia-400 transition">Spotify</a>
               <a href={tikTokLink} target="_blank" class="text-[11px] font-bold uppercase tracking-wider text-fuchsia-100/70 hover:text-fuchsia-400 transition">TikTok</a>
-              <a href={pond5Link} target="_blank" class="text-[11px] font-bold uppercase tracking-wider text-fuchsia-100/70 hover:text-fuchsia-400 transition">Pond5</a>
               <a href={discordInvite} target="_blank" class="text-[11px] font-bold uppercase tracking-wider text-fuchsia-100/70 hover:text-fuchsia-400 transition">Discord</a>
               
               <div class="nav-divider"></div>
 
-              <a href="#about" class="text-[11px] font-bold uppercase tracking-wider text-fuchsia-100/70 hover:text-fuchsia-400 transition">About</a>
               <a href="#contact" class="text-[11px] font-bold uppercase tracking-wider text-fuchsia-100/70 hover:text-fuchsia-400 transition">Contact</a>
             </nav>
 
             <div class="flex items-center gap-2">
-               <div class="flex items-center gap-1 font-bold text-[10px] border-r border-fuchsia-500/20 pr-3">
-                  <button type="button" data-lang-switch="en" class="text-fuchsia-200/40 data-[active=true]:text-fuchsia-400 px-1">EN</button>
-                  <button type="button" data-lang-switch="el" class="text-fuchsia-200/40 data-[active=true]:text-fuchsia-400 px-1">EL</button>
-               </div>
-               <a href={beatstarsLinks.profile} target="_blank" class="rounded-full bg-fuchsia-600 px-4 py-1.5 text-[10px] font-black uppercase text-white hover:bg-fuchsia-500 transition">Store</a>
+               <button id="share-btn" class="p-2 text-fuchsia-400 hover:text-fuchsia-300 transition-all active:scale-90" aria-label="Share">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 sm:w-6 sm:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                </svg>
+               </button>
+
+               <a href={beatstarsLinks.profile} target="_blank" class="hidden sm:block rounded-full bg-fuchsia-600 px-4 py-1.5 text-[10px] font-black uppercase text-white hover:bg-fuchsia-500 transition">Store</a>
+               
                <button id="burger-btn" class="lg:hidden p-1 text-fuchsia-400">
-                 <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                 <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                    <path d="M4 6h16M4 12h16m-7 6h7"/>
                  </svg>
                </button>
@@ -186,27 +155,17 @@ const spotifyLink = socialLinks.spotify || "http://googleusercontent.com/spotify
 
         <div id="mobile-menu" class="hidden lg:hidden mt-2">
           <div class="rounded-3xl border border-fuchsia-500/20 bg-black/95 backdrop-blur-xl p-2 shadow-2xl max-h-[80vh] overflow-y-auto">
-            
             <div class="mobile-section-label">Navigation</div>
             <a href="#player" class="mobile-link text-fuchsia-400">Player</a>
             <a href="#beats" class="mobile-link">Beats</a>
-            <a href="#drumkits" class="mobile-link">Drum Kits</a>
-            <a href="#latest-releases" class="mobile-link">Latest Releases</a>
+            <a href="#drumkits" class="mobile-link">Kits</a>
+            <a href={beatstarsLinks.profile} target="_blank" class="mobile-link text-fuchsia-600 font-black">Open Store</a>
             
-            <div class="mobile-section-label">Channels</div>
-            <a href={ytBeats} target="_blank" class="mobile-link">YouTube Beats</a>
-            <a href={ytArtist} target="_blank" class="mobile-link">YouTube Artist</a>
-            
-            <div class="mobile-section-label">Social & More</div>
+            <div class="mobile-section-label">Social</div>
+            <a href={ytBeats} target="_blank" class="mobile-link">YouTube</a>
             <a href={spotifyLink} target="_blank" class="mobile-link">Spotify</a>
             <a href={tikTokLink} target="_blank" class="mobile-link">TikTok</a>
-            <a href={pond5Link} target="_blank" class="mobile-link">Pond5</a>
             <a href={discordInvite} target="_blank" class="mobile-link">Discord</a>
-            
-            <div class="h-px bg-white/5 my-2 mx-4"></div>
-            
-            <a href="#about" class="mobile-link opacity-70">About</a>
-            <a href="#contact" class="mobile-link opacity-70">Contact</a>
           </div>
         </div>
       </div>
@@ -217,23 +176,31 @@ const spotifyLink = socialLinks.spotify || "http://googleusercontent.com/spotify
     </main>
 
     <script is:inline>
+      // BURGER LOGIC
       const bBtn = document.getElementById('burger-btn');
       const mMenu = document.getElementById('mobile-menu');
-      
       if (bBtn && mMenu) {
-        bBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          mMenu.classList.toggle('hidden');
-        });
+        bBtn.addEventListener('click', (e) => { e.stopPropagation(); mMenu.classList.toggle('hidden'); });
+        document.addEventListener('click', (e) => { if (!mMenu.contains(e.target) && !bBtn.contains(e.target)) mMenu.classList.add('hidden'); });
+      }
 
-        document.addEventListener('click', (e) => {
-          if (!mMenu.contains(e.target) && !bBtn.contains(e.target)) {
-            mMenu.classList.add('hidden');
+      // SHARE LOGIC
+      const shareBtn = document.getElementById('share-btn');
+      if (shareBtn) {
+        shareBtn.addEventListener('click', async () => {
+          if (navigator.share) {
+            try {
+              await navigator.share({
+                title: 'Mr. Bonzo Official',
+                text: 'Check out high-quality trap beats and drum kits by Mr. Bonzo!',
+                url: window.location.href
+              });
+            } catch (err) { console.log('Share failed'); }
+          } else {
+            // Fallback: Copy to clipboard if navigator.share is not supported (Desktops)
+            navigator.clipboard.writeText(window.location.href);
+            alert('Link copied to clipboard!');
           }
-        });
-
-        mMenu.querySelectorAll('a').forEach(link => {
-          link.addEventListener('click', () => mMenu.classList.add('hidden'));
         });
       }
     </script>
