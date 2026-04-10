@@ -10,7 +10,7 @@ interface Release {
 
 interface Props {
   releases?: Release[];
-  status?: "live" | "fallback" | "error";
+  status?: "live" | "rss" | "scrape" | "fallback" | "error";
 }
 
 // Ενημερωμένα Fallbacks με σωστά links (αντικατάστησε τα IDs αν θες)
@@ -35,21 +35,33 @@ const spotifyUrl = socialLinks.spotify?.includes("YOUR_ID_HERE")
   : socialLinks.spotify;
 
 const statusLabel =
-  status === "live" ? "Spotify API: Live Data" : status === "error" ? "Spotify API: Error (Fallback Data)" : "Spotify API: Fallback Data";
+  status === "live"
+    ? "Spotify API: Live Data"
+    : status === "rss"
+      ? "RSS Feed: Live Data"
+      : status === "scrape"
+        ? "Live Data"
+      : status === "error"
+        ? "Spotify API: Error (Fallback Data)"
+        : "Spotify API: Fallback Data";
 ---
 
 <section id="releases" class="mt-24">
   <div class="mb-10 flex flex-wrap items-end justify-between gap-6 border-b border-fuchsia-500/10 pb-6">
     <div>
       <h3 class="text-4xl font-black uppercase tracking-tighter text-white sm:text-5xl" data-i18n="releases.title">
-        Official Releases
+        Latest Releases
       </h3>
-      <div class="mt-3 flex items-center gap-2">
-        <span class={`h-2 w-2 rounded-full ${status === 'live' ? 'bg-green-500 animate-pulse' : 'bg-fuchsia-500'}`}></span>
-        <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-fuchsia-300/60" data-i18n-status={status}>
-          {statusLabel}
-        </p>
-      </div>
+      {
+        status !== "scrape" && (
+          <div class="mt-3 flex items-center gap-2">
+            <span class={`h-2 w-2 rounded-full ${status === 'live' || status === 'rss' || status === 'scrape' ? 'bg-green-500 animate-pulse' : 'bg-fuchsia-500'}`}></span>
+            <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-fuchsia-300/60" data-i18n-status={status}>
+              {statusLabel}
+            </p>
+          </div>
+        )
+      }
     </div>
     
     <a
@@ -92,7 +104,7 @@ const statusLabel =
             </h4>
             <div class="mt-2 flex items-center justify-between">
               <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-fuchsia-300/40">{release.year}</p>
-              <span class="text-[9px] font-black uppercase tracking-widest text-fuchsia-500 opacity-0 transition-all group-hover:opacity-100">Listen Now →</span>
+              <span class="text-[9px] font-black uppercase tracking-widest text-fuchsia-500 opacity-0 transition-all group-hover:opacity-100" data-i18n="releases.listenNow">Listen Now →</span>
             </div>
           </div>
         </a>

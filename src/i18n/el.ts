@@ -49,17 +49,23 @@ const el = {
   contact: {
     label: "Contact",
     title: "Ας Δημιουργήσουμε <span class='text-fuchsia-500'>Ιστορία</span>",
-    subtitle: "Για custom beats, μίξη & mastering ή επιχειρηματικές προτάσεις, επικοινωνήστε μαζί μου μέσω της πλατφόρμας που προτιμάτε."
+    subtitle: "Για custom beats, μίξη & mastering ή επιχειρηματικές προτάσεις, επικοινωνήστε μαζί μου μέσω της πλατφόρμας που προτιμάτε.",
+    email: "Email",
+    instagram: "Instagram",
+    discord: "Discord",
+    joinStudio: "Μπες στο Studio"
   },
   collaborations: {
     title: "Συνεργασίες",
     subtitle: "Καλλιτέχνες και projects που αναπτύχθηκαν μέσω του Purple Sound Studio.",
+    comingSoon: "Έρχεται σύντομα...",
     items: [] 
   },
   releases: {
-    title: "Επίσημες Κυκλοφορίες",
+    title: "Τελευταίες Κυκλοφορίες",
     follow: "Follow on Spotify",
     listen: "Ακρόαση στο Spotify",
+    listenNow: "Άκου τώρα",
     statusLive: "Spotify API: Live Data",
     statusFallback: "Spotify API: Fallback Data",
     statusError: "Spotify API: Error (Fallback Data)"

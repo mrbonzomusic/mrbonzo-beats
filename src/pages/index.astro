@@ -10,15 +10,33 @@ import AboutSection from "../components/AboutSection.astro";
 import ServicesSection from "../components/ServicesSection.astro";
 import ContactSection from "../components/ContactSection.astro";
 import SiteFooter from "../components/SiteFooter.astro";
-import { getArtistAlbums, extractSpotifyArtistId } from "../lib/spotify";
+import { getArtistAlbums, extractSpotifyArtistId, getReleasesFromRss, getReleasesFromSpotifyPage } from "../lib/spotify";
 import { socialLinks } from "../config/links";
 
-const spotifyData = await getArtistAlbums({
-  clientId: import.meta.env.SPOTIFY_CLIENT_ID,
-  clientSecret: import.meta.env.SPOTIFY_CLIENT_SECRET,
-  artistId: import.meta.env.SPOTIFY_ARTIST_ID || extractSpotifyArtistId(socialLinks.spotify),
-  fallbackCover: "/images/logo-main.webp",
+const fallbackCover = "/images/logo-main.webp";
+const scrapedData = await getReleasesFromSpotifyPage({
+  artistUrl: socialLinks.spotify,
+  fallbackCover,
 });
+
+let spotifyData = scrapedData;
+
+if (!(spotifyData.status === "scrape" && spotifyData.releases.length > 0)) {
+  const rssData = await getReleasesFromRss({
+    feedUrl: import.meta.env.RELEASES_RSS_URL,
+    fallbackCover,
+  });
+
+  spotifyData =
+    rssData.status === "rss" && rssData.releases.length > 0
+      ? rssData
+      : await getArtistAlbums({
+          clientId: import.meta.env.SPOTIFY_CLIENT_ID,
+          clientSecret: import.meta.env.SPOTIFY_CLIENT_SECRET,
+          artistId: import.meta.env.SPOTIFY_ARTIST_ID || extractSpotifyArtistId(socialLinks.spotify),
+          fallbackCover,
+        });
+}
 ---
 
 <BaseLayout title="Mr. Bonzo | Beatmaker Portfolio">

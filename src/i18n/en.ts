@@ -49,17 +49,23 @@ const en = {
   contact: {
     label: "Contact",
     title: "Let's Create <span class='text-fuchsia-500'>History</span>",
-    subtitle: "For custom beats, mixing & mastering, or business inquiries, reach out through your preferred platform."
+    subtitle: "For custom beats, mixing & mastering, or business inquiries, reach out through your preferred platform.",
+    email: "Email",
+    instagram: "Instagram",
+    discord: "Discord",
+    joinStudio: "Join the Studio"
   },
   collaborations: {
     title: "Collaborations",
     subtitle: "Artists and projects developed through Purple Sound Studio.",
+    comingSoon: "Coming Soon...",
     items: [] 
   },
   releases: {
-    title: "Official Releases",
+    title: "Latest Releases",
     follow: "Follow on Spotify",
     listen: "Listen on Spotify",
+    listenNow: "Listen Now",
     statusLive: "Spotify API: Live Data",
     statusFallback: "Spotify API: Fallback Data",
     statusError: "Spotify API: Error (Fallback Data)"
