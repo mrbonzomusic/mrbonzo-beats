@@ -14,12 +14,12 @@ const logoPath = "/images/logo-main.webp";
 const siteDescription = "Official website of Mr. Bonzo. High-quality trap beats and exclusive drum kits.";
 const siteURL = "https://mrbonzo-beats.pages.dev/";
 
-const discordInvite = socialLinks.discord || "https://discord.gg/hmpCHd4J"; 
+const discordInvite = socialLinks.discord || "https://discord.gg/hmpCHd4J";
 const pond5Link = "https://www.pond5.com/artist/mrbonzobeats";
-const tikTokLink = "https://www.tiktok.com/@mrbonzomusic"; 
+const tikTokLink = "https://www.tiktok.com/@mrbonzomusic";
 const ytBeats = "https://www.youtube.com/@mrbonzobeatz";
 const ytArtist = "https://www.youtube.com/@mrbonzomusic";
-const spotifyLink = socialLinks.spotify || "http://googleusercontent.com/spotify.com/6";
+const spotifyLink = socialLinks.spotify;
 ---
 
 <!doctype html>
@@ -28,6 +28,10 @@ const spotifyLink = socialLinks.spotify || "http://googleusercontent.com/spotify
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
+    <meta name="description" content={siteDescription} />
+    <meta property="og:url" content={siteURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={siteDescription} />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-QFJSZGBGZE"></script>

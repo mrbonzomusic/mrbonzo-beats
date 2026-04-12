@@ -1,2 +1,0 @@
-# Social automator (GitHub Actions / local)
-requests>=2.31.0,<3
