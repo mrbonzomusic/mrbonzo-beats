@@ -81,7 +81,8 @@ const el = {
     rights: "Με επιφύλαξη παντός δικαιώματος.",
     instagram: "Instagram (@mrbonzobeats)",
     totalHitsLabel: "Συνολικές επισκέψεις",
-    activeNowLabel: "Τώρα online"
+    activeNowLabel: "Τώρα online",
+    liveWord: "Live"
   }
 };
 

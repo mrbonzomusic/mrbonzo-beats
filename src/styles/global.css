@@ -34,6 +34,11 @@
   }
 }
 
+/* Same fuchsia tint as section labels (uses --label-eyebrow-color) */
+.text-label-eyebrow {
+  color: var(--label-eyebrow-color);
+}
+
 html {
   scroll-behavior: smooth;
 }

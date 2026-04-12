@@ -81,7 +81,8 @@ const en = {
     rights: "All rights reserved.",
     instagram: "Instagram (@mrbonzobeats)",
     totalHitsLabel: "Total hits",
-    activeNowLabel: "Active now"
+    activeNowLabel: "Active now",
+    liveWord: "Live"
   }
 };
 

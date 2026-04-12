@@ -25,7 +25,12 @@ const counterJsonUrl = `${GOATCOUNTER_ORIGIN.replace(/\/$/, "")}/counter/TOTAL.j
     </span>
     <span class="text-[10px] font-black uppercase tracking-widest text-white/35" data-i18n="footer.activeNowLabel"
       >Active now</span>
-    <span id="footer-live-count" class="text-sm font-black tabular-nums text-emerald-300/90 sm:text-base">—</span>
+    <span class="inline-flex items-baseline gap-1.5">
+      <span id="footer-live-count" class="text-sm font-black tabular-nums text-emerald-300/90 sm:text-base">—</span>
+      <span
+        class="text-sm font-black uppercase tracking-wide text-label-eyebrow sm:text-base"
+        data-i18n="footer.liveWord">Live</span>
+    </span>
   </div>
 </div>
 
