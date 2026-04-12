@@ -4,10 +4,11 @@
   color-scheme: dark;
 
   /* Sync with hero eyebrow (“Beatmaker Portfolio”); change here to update all sections */
-  --label-eyebrow-size-sm: 0.875rem;
-  --label-eyebrow-size-md: 1rem;
-  --label-eyebrow-size-lg: 1.125rem;
-  --label-eyebrow-weight: 700;
+  /* ~17.5% larger than previous (0.875 / 1 / 1.125 rem) for more presence */
+  --label-eyebrow-size-sm: 1.03rem;
+  --label-eyebrow-size-md: 1.18rem;
+  --label-eyebrow-size-lg: 1.32rem;
+  --label-eyebrow-weight: 800;
   --label-eyebrow-tracking: 0.35em;
   --label-eyebrow-color: rgb(217 70 239 / 0.6);
 }
@@ -20,6 +21,8 @@
   letter-spacing: var(--label-eyebrow-tracking);
   color: var(--label-eyebrow-color);
   font-size: var(--label-eyebrow-size-sm);
+  line-height: 1.2;
+  text-wrap: balance;
 }
 
 @media (min-width: 640px) {
@@ -28,9 +31,27 @@
   }
 }
 
+/* Hero only: keep long label readable; centered block stays within viewport */
+.eyebrow-hero-label--hero {
+  max-width: min(100%, 21rem);
+  margin-left: auto;
+  margin-right: auto;
+}
+
 @media (min-width: 1024px) {
   .eyebrow-hero-label {
     font-size: var(--label-eyebrow-size-lg);
+  }
+  .eyebrow-hero-label--hero {
+    max-width: min(100%, 28rem);
+  }
+}
+
+/* Narrow screens: slightly tighter tracking so “Beatmaker Portfolio” stays one line when it fits */
+@media (max-width: 639px) {
+  .eyebrow-hero-label {
+    letter-spacing: 0.28em;
+    padding-inline: 0.25rem;
   }
 }
 
