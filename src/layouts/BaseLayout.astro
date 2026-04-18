@@ -144,6 +144,7 @@ const translations = { en, el };
         position: relative;
         z-index: 9999;
         pointer-events: auto;
+        border: 2px solid red !important;
       }
       .lang-switch-btn {
         pointer-events: auto;
@@ -242,9 +243,9 @@ const translations = { en, el };
       <slot />
     </main>
 
-    <script is:inline>
+    <script is:inline define:vars={{ translations }}>
       // --- LANGUAGE + HEADER INTERACTIONS ---
-      const translations = {JSON.stringify(translations)};
+      const i18nMap = translations;
       const storageKey = 'selected-lang';
       const fallbackLang = 'en';
 
@@ -272,7 +273,7 @@ const translations = { en, el };
         }
 
         function applyTranslations(activeLang) {
-          const dict = translations[activeLang] || translations[fallbackLang];
+          const dict = i18nMap[activeLang] || i18nMap[fallbackLang];
 
           translatableNodes.forEach((node) => {
             const key = node.getAttribute('data-i18n');
@@ -319,6 +320,7 @@ const translations = { en, el };
 
         langButtons.forEach((btn) => {
           btn.addEventListener('click', () => {
+            alert('Click detected!');
             const newLang = btn.getAttribute('data-lang-switch');
             console.log('[i18n] Language button clicked:', newLang);
             if (!newLang) return;
