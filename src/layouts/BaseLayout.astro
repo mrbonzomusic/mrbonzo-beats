@@ -140,6 +140,14 @@ const translations = { en, el };
         padding: 1.5rem 1rem 0.5rem 1rem;
         opacity: 0.8;
       }
+      #language-switcher {
+        position: relative;
+        z-index: 9999;
+        pointer-events: auto;
+      }
+      .lang-switch-btn {
+        pointer-events: auto;
+      }
     </style>
   </head>
 
@@ -188,9 +196,9 @@ const translations = { en, el };
                 </svg>
                </button>
 
-               <div class="flex items-center gap-1 font-bold text-[10px] border-r border-fuchsia-500/20 pr-3">
-                  <button type="button" data-lang-switch="en" class="text-fuchsia-200/40 data-[active=true]:text-fuchsia-400 px-1">EN</button>
-                  <button type="button" data-lang-switch="el" class="text-fuchsia-200/40 data-[active=true]:text-fuchsia-400 px-1">EL</button>
+               <div id="language-switcher" class="flex items-center gap-1 font-bold text-[10px] border-r border-fuchsia-500/20 pr-3">
+                  <button id="lang-en-btn" type="button" data-lang-switch="en" class="lang-switch-btn text-fuchsia-200/40 data-[active=true]:text-fuchsia-400 px-1">EN</button>
+                  <button id="lang-el-btn" type="button" data-lang-switch="el" class="lang-switch-btn text-fuchsia-200/40 data-[active=true]:text-fuchsia-400 px-1">EL</button>
                </div>
                <a href={beatstarsLinks.profile} target="_blank" class="rounded-full bg-fuchsia-600 px-4 py-1.5 text-[10px] font-black uppercase text-white hover:bg-fuchsia-500 transition">Store</a>
                <button id="burger-btn" class="lg:hidden p-1 text-fuchsia-400">
@@ -235,11 +243,8 @@ const translations = { en, el };
     </main>
 
     <script is:inline>
-      // --- LANGUAGE SWITCHER LOGIC ---
+      // --- LANGUAGE + HEADER INTERACTIONS ---
       const translations = {JSON.stringify(translations)};
-      const langButtons = document.querySelectorAll('[data-lang-switch]');
-      const translatableNodes = document.querySelectorAll('[data-i18n]');
-      const releaseStatusNodes = document.querySelectorAll('[data-i18n-status]');
       const storageKey = 'selected-lang';
       const fallbackLang = 'en';
 
@@ -254,113 +259,140 @@ const translations = { en, el };
         }, obj);
       }
 
-      function updateLangUI(activeLang) {
-        langButtons.forEach((btn) => {
-          btn.setAttribute('data-active', String(btn.getAttribute('data-lang-switch') === activeLang));
-        });
-        document.documentElement.lang = activeLang;
-      }
+      function initInteractiveHeader() {
+        const langButtons = document.querySelectorAll('#language-switcher .lang-switch-btn');
+        const translatableNodes = document.querySelectorAll('[data-i18n]');
+        const releaseStatusNodes = document.querySelectorAll('[data-i18n-status]');
 
-      function applyTranslations(activeLang) {
-        const dict = translations[activeLang] || translations[fallbackLang];
+        function updateLangUI(activeLang) {
+          langButtons.forEach((btn) => {
+            btn.setAttribute('data-active', String(btn.getAttribute('data-lang-switch') === activeLang));
+          });
+          document.documentElement.lang = activeLang;
+        }
 
-        translatableNodes.forEach((node) => {
-          const key = node.getAttribute('data-i18n');
-          if (!key) return;
+        function applyTranslations(activeLang) {
+          const dict = translations[activeLang] || translations[fallbackLang];
 
-          const translated = getNestedValue(dict, key);
-          if (typeof translated !== 'string') return;
-          node.innerHTML = translated;
-        });
+          translatableNodes.forEach((node) => {
+            const key = node.getAttribute('data-i18n');
+            if (!key) return;
 
-        const statusMap = {
-          scrape: 'releases.statusLive',
-          rss: 'releases.statusFallback',
-          fallback: 'releases.statusFallback',
-          error: 'releases.statusError'
-        };
+            const translated = getNestedValue(dict, key);
+            if (typeof translated !== 'string') return;
+            if (translated.includes('<')) {
+              node.innerHTML = translated;
+            } else {
+              node.textContent = translated;
+            }
+          });
 
-        releaseStatusNodes.forEach((node) => {
-          const status = node.getAttribute('data-i18n-status');
-          const key = statusMap[status || ''];
-          if (!key) return;
-
-          const translated = getNestedValue(dict, key);
-          if (typeof translated !== 'string') return;
-          node.textContent = translated;
-        });
-      }
-
-      function setLanguage(lang) {
-        const nextLang = isValidLang(lang) ? lang : fallbackLang;
-        localStorage.setItem(storageKey, nextLang);
-        updateLangUI(nextLang);
-        applyTranslations(nextLang);
-      }
-
-      const savedLang = localStorage.getItem(storageKey);
-      setLanguage(savedLang || fallbackLang);
-
-      langButtons.forEach((btn) => {
-        btn.addEventListener('click', () => {
-          const newLang = btn.getAttribute('data-lang-switch');
-          if (!newLang) return;
-          setLanguage(newLang);
-        });
-      });
-
-      window.addEventListener('storage', (event) => {
-        if (event.key !== storageKey) return;
-        setLanguage(event.newValue || fallbackLang);
-      });
-
-      // --- BURGER LOGIC ---
-      const bBtn = document.getElementById('burger-btn');
-      const mMenu = document.getElementById('mobile-menu');
-      
-      if (bBtn && mMenu) {
-        bBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          mMenu.classList.toggle('hidden');
-        });
-
-        document.addEventListener('click', (e) => {
-          if (!mMenu.contains(e.target) && !bBtn.contains(e.target)) {
-            mMenu.classList.add('hidden');
-          }
-        });
-
-        mMenu.querySelectorAll('a').forEach(link => {
-          link.addEventListener('click', () => mMenu.classList.add('hidden'));
-        });
-      }
-
-      // --- SHARE LOGIC ---
-      const shareBtn = document.getElementById('share-btn');
-      if (shareBtn) {
-        shareBtn.addEventListener('click', async () => {
-          const shareData = {
-            title: 'Mr. Bonzo Official',
-            text: 'Check out high-quality trap beats and exclusive drum kits by Mr. Bonzo.',
-            url: window.location.href
+          const statusMap = {
+            scrape: 'releases.statusLive',
+            rss: 'releases.statusFallback',
+            fallback: 'releases.statusFallback',
+            error: 'releases.statusError'
           };
 
-          if (navigator.share) {
-            try {
-              await navigator.share(shareData);
-            } catch (err) {
-              console.log('Share canceled or failed');
-            }
-          } else {
-            try {
-              await navigator.clipboard.writeText(window.location.href);
-              alert('Link copied to clipboard!');
-            } catch (err) {
-              console.error('Failed to copy: ', err);
-            }
-          }
+          releaseStatusNodes.forEach((node) => {
+            const status = node.getAttribute('data-i18n-status');
+            const key = statusMap[status || ''];
+            if (!key) return;
+
+            const translated = getNestedValue(dict, key);
+            if (typeof translated !== 'string') return;
+            node.textContent = translated;
+          });
+
+          console.log('[i18n] Applied translations for:', activeLang, 'nodes:', translatableNodes.length);
+        }
+
+        function setLanguage(lang) {
+          const nextLang = isValidLang(lang) ? lang : fallbackLang;
+          localStorage.setItem(storageKey, nextLang);
+          updateLangUI(nextLang);
+          applyTranslations(nextLang);
+        }
+
+        const savedLang = localStorage.getItem(storageKey);
+        setLanguage(savedLang || fallbackLang);
+
+        langButtons.forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const newLang = btn.getAttribute('data-lang-switch');
+            console.log('[i18n] Language button clicked:', newLang);
+            if (!newLang) return;
+            setLanguage(newLang);
+          });
         });
+
+        window.addEventListener('storage', (event) => {
+          if (event.key !== storageKey) return;
+          setLanguage(event.newValue || fallbackLang);
+        });
+
+        const bBtn = document.getElementById('burger-btn');
+        const mMenu = document.getElementById('mobile-menu');
+
+        if (bBtn && mMenu && !bBtn.dataset.bound) {
+          bBtn.dataset.bound = 'true';
+          bBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            mMenu.classList.toggle('hidden');
+          });
+
+          document.addEventListener('click', (e) => {
+            if (!mMenu.contains(e.target) && !bBtn.contains(e.target)) {
+              mMenu.classList.add('hidden');
+            }
+          });
+
+          mMenu.querySelectorAll('a').forEach((link) => {
+            link.addEventListener('click', () => mMenu.classList.add('hidden'));
+          });
+        }
+
+        const shareBtn = document.getElementById('share-btn');
+        if (shareBtn && !shareBtn.dataset.bound) {
+          shareBtn.dataset.bound = 'true';
+          shareBtn.addEventListener('click', async () => {
+            const shareData = {
+              title: 'Mr. Bonzo Official',
+              text: 'Check out high-quality trap beats and exclusive drum kits by Mr. Bonzo.',
+              url: window.location.href
+            };
+
+            if (navigator.share) {
+              try {
+                await navigator.share(shareData);
+              } catch (err) {
+                console.log('Share canceled or failed');
+              }
+            } else {
+              try {
+                await navigator.clipboard.writeText(window.location.href);
+                alert('Link copied to clipboard!');
+              } catch (err) {
+                console.error('Failed to copy: ', err);
+              }
+            }
+          });
+        }
       }
+
+      let headerInitialized = false;
+      function safeInitHeader() {
+        if (headerInitialized) return;
+        headerInitialized = true;
+        initInteractiveHeader();
+      }
+
+      document.addEventListener('astro:page-load', () => {
+        safeInitHeader();
+      });
+      document.addEventListener('DOMContentLoaded', () => {
+        safeInitHeader();
+      });
     </script>
   </body>
 </html>
