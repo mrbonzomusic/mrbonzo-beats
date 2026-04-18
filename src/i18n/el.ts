@@ -100,7 +100,7 @@ const el = {
     title: "Τελευταίες Κυκλοφορίες",
     follow: "Follow on Spotify",
     listen: "Ακρόαση στο Spotify",
-    listenNow: "Άκου τώρα",
+    listenNow: "ΑΚΟΥ ΤΩΡΑ",
     statusLive: "Spotify API: Live Data",
     statusFallback: "Spotify API: Fallback Data",
     statusError: "Spotify API: Error (Fallback Data)"

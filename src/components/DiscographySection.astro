@@ -102,9 +102,12 @@ const statusLabel =
             <h4 class="text-lg sm:text-xl font-black uppercase tracking-tight text-white group-hover:text-fuchsia-400 transition-colors line-clamp-2">
               {release.title}
             </h4>
+            <span class="mt-3 inline-flex w-fit items-center rounded-full border border-fuchsia-400/50 bg-fuchsia-500/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.18em] text-fuchsia-100 backdrop-blur-md sm:hidden" data-i18n="releases.listenNow">
+              LISTEN NOW
+            </span>
             <div class="mt-1.5 flex items-center justify-between">
               <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-fuchsia-300/40">{release.year}</p>
-              <span class="text-[9px] font-black uppercase tracking-widest text-fuchsia-500 opacity-0 transition-all group-hover:opacity-100" data-i18n="releases.listenNow">Listen Now →</span>
+              <span class="hidden text-[9px] font-black uppercase tracking-widest text-fuchsia-500 opacity-0 transition-all group-hover:opacity-100 sm:inline" data-i18n="releases.listenNow">LISTEN NOW</span>
             </div>
           </div>
         </a>

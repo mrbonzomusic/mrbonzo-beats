@@ -100,7 +100,7 @@ const en = {
     title: "Latest Releases",
     follow: "Follow on Spotify",
     listen: "Listen on Spotify",
-    listenNow: "Listen Now",
+    listenNow: "LISTEN NOW",
     statusLive: "Spotify API: Live Data",
     statusFallback: "Spotify API: Fallback Data",
     statusError: "Spotify API: Error (Fallback Data)"
