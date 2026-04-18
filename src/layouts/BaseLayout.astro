@@ -157,51 +157,51 @@ const translations = { en, el };
         <div class="rounded-full border border-fuchsia-500/20 bg-black/90 backdrop-blur-md px-5 py-2.5 shadow-2xl">
           <div class="flex items-center justify-between">
             <a href="/" class="flex-shrink-0 transition hover:scale-105">
-              <img src={logoPath} alt="Logo" class="h-[22px] w-auto sm:h-[30px]" />
+              <img src={logoPath} alt="Logo" data-i18n-alt="ui.logoAlt" class="h-[22px] w-auto sm:h-[30px]" />
             </a>
 
             <nav class="hidden lg:flex items-center gap-x-3 xl:gap-x-4">
-              <a href="#player" class="text-[11px] font-bold uppercase tracking-wider text-fuchsia-400 hover:text-fuchsia-300 transition">Player</a>
-              <a href="#beats" class="text-[11px] font-bold uppercase tracking-wider text-fuchsia-100/70 hover:text-fuchsia-400 transition">Beats</a>
-              <a href="#drumkits" class="text-[11px] font-bold uppercase tracking-wider text-fuchsia-100/70 hover:text-fuchsia-400 transition">Kits</a>
-              <a href="#latest-releases" class="text-[11px] font-bold uppercase tracking-wider text-fuchsia-100/70 hover:text-fuchsia-400 transition">Releases</a>
+              <a href="#player" class="text-[11px] font-bold uppercase tracking-wider text-fuchsia-400 hover:text-fuchsia-300 transition" data-i18n="nav.player">Player</a>
+              <a href="#beats" class="text-[11px] font-bold uppercase tracking-wider text-fuchsia-100/70 hover:text-fuchsia-400 transition" data-i18n="nav.beats">Beats</a>
+              <a href="#drumkits" class="text-[11px] font-bold uppercase tracking-wider text-fuchsia-100/70 hover:text-fuchsia-400 transition" data-i18n="nav.kits">Kits</a>
+              <a href="#latest-releases" class="text-[11px] font-bold uppercase tracking-wider text-fuchsia-100/70 hover:text-fuchsia-400 transition" data-i18n="nav.releases">Releases</a>
               
               <div class="nav-divider"></div>
 
               <div class="nav-dropdown" tabindex="0">
                 <button class="text-[11px] font-bold uppercase tracking-wider text-fuchsia-100/70 hover:text-fuchsia-400 transition flex items-center gap-1.5 outline-none">
-                  YouTube <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"></path></svg>
+                  <span data-i18n="nav.youtube">YouTube</span> <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
                 <div class="nav-dropdown-content">
-                  <a href={ytBeats} target="_blank">Beats Channel</a>
-                  <a href={ytArtist} target="_blank">Artist Channel</a>
+                  <a href={ytBeats} target="_blank" data-i18n="nav.youtubeBeats">Beats Channel</a>
+                  <a href={ytArtist} target="_blank" data-i18n="nav.youtubeArtist">Artist Channel</a>
                 </div>
               </div>
 
-              <a href={spotifyLink} target="_blank" class="text-[11px] font-bold uppercase tracking-wider text-fuchsia-100/70 hover:text-fuchsia-400 transition">Spotify</a>
-              <a href={tikTokLink} target="_blank" class="text-[11px] font-bold uppercase tracking-wider text-fuchsia-100/70 hover:text-fuchsia-400 transition">TikTok</a>
-              <a href={pond5Link} target="_blank" class="text-[11px] font-bold uppercase tracking-wider text-fuchsia-100/70 hover:text-fuchsia-400 transition">Pond5</a>
-              <a href={discordInvite} target="_blank" class="text-[11px] font-bold uppercase tracking-wider text-fuchsia-100/70 hover:text-fuchsia-400 transition">Discord</a>
+              <a href={spotifyLink} target="_blank" class="text-[11px] font-bold uppercase tracking-wider text-fuchsia-100/70 hover:text-fuchsia-400 transition" data-i18n="nav.spotify">Spotify</a>
+              <a href={tikTokLink} target="_blank" class="text-[11px] font-bold uppercase tracking-wider text-fuchsia-100/70 hover:text-fuchsia-400 transition" data-i18n="nav.tiktok">TikTok</a>
+              <a href={pond5Link} target="_blank" class="text-[11px] font-bold uppercase tracking-wider text-fuchsia-100/70 hover:text-fuchsia-400 transition" data-i18n="nav.pond5">Pond5</a>
+              <a href={discordInvite} target="_blank" class="text-[11px] font-bold uppercase tracking-wider text-fuchsia-100/70 hover:text-fuchsia-400 transition" data-i18n="nav.discord">Discord</a>
               
               <div class="nav-divider"></div>
 
-              <a href="#about" class="text-[11px] font-bold uppercase tracking-wider text-fuchsia-100/70 hover:text-fuchsia-400 transition">About</a>
-              <a href="#contact" class="text-[11px] font-bold uppercase tracking-wider text-fuchsia-100/70 hover:text-fuchsia-400 transition">Contact</a>
+              <a href="#about" class="text-[11px] font-bold uppercase tracking-wider text-fuchsia-100/70 hover:text-fuchsia-400 transition" data-i18n="nav.about">About</a>
+              <a href="#contact" class="text-[11px] font-bold uppercase tracking-wider text-fuchsia-100/70 hover:text-fuchsia-400 transition" data-i18n="nav.contact">Contact</a>
             </nav>
 
             <div class="flex items-center gap-2">
-               <button id="share-btn" class="p-1.5 text-fuchsia-400 hover:text-fuchsia-300 transition-all active:scale-90" title="Share Website">
+               <button id="share-btn" class="p-1.5 text-fuchsia-400 hover:text-fuchsia-300 transition-all active:scale-90" title="Share Website" data-i18n-title="ui.shareTitle" aria-label="Share Website" data-i18n-aria-label="ui.shareAriaLabel">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
                 </svg>
                </button>
 
                <div id="language-switcher" class="flex items-center gap-1 font-bold text-[10px] border-r border-fuchsia-500/20 pr-3">
-                  <button id="lang-en-btn" type="button" data-lang-switch="en" class="lang-switch-btn text-fuchsia-200/40 data-[active=true]:text-fuchsia-400 px-1">EN</button>
-                  <button id="lang-el-btn" type="button" data-lang-switch="el" class="lang-switch-btn text-fuchsia-200/40 data-[active=true]:text-fuchsia-400 px-1">EL</button>
+                  <button id="lang-en-btn" type="button" data-lang-switch="en" class="lang-switch-btn text-fuchsia-200/40 data-[active=true]:text-fuchsia-400 px-1" aria-label="Switch language to English" data-i18n-aria-label="ui.langEnAriaLabel">EN</button>
+                  <button id="lang-el-btn" type="button" data-lang-switch="el" class="lang-switch-btn text-fuchsia-200/40 data-[active=true]:text-fuchsia-400 px-1" aria-label="Switch language to Greek" data-i18n-aria-label="ui.langElAriaLabel">EL</button>
                </div>
-               <a href={beatstarsLinks.profile} target="_blank" class="rounded-full bg-fuchsia-600 px-4 py-1.5 text-[10px] font-black uppercase text-white hover:bg-fuchsia-500 transition">Store</a>
-               <button id="burger-btn" class="lg:hidden p-1 text-fuchsia-400">
+               <a href={beatstarsLinks.profile} target="_blank" class="rounded-full bg-fuchsia-600 px-4 py-1.5 text-[10px] font-black uppercase text-white hover:bg-fuchsia-500 transition" data-i18n="nav.store">Store</a>
+               <button id="burger-btn" class="lg:hidden p-1 text-fuchsia-400" aria-label="Toggle navigation menu" data-i18n-aria-label="ui.menuToggleAriaLabel">
                  <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                    <path d="M4 6h16M4 12h16m-7 6h7"/>
                  </svg>
@@ -213,26 +213,26 @@ const translations = { en, el };
         <div id="mobile-menu" class="hidden lg:hidden mt-2">
           <div class="rounded-3xl border border-fuchsia-500/20 bg-black/95 backdrop-blur-xl p-2 shadow-2xl max-h-[80vh] overflow-y-auto">
             
-            <div class="mobile-section-label">Navigation</div>
-            <a href="#player" class="mobile-link text-fuchsia-400">Player</a>
-            <a href="#beats" class="mobile-link">Beats</a>
-            <a href="#drumkits" class="mobile-link">Drum Kits</a>
-            <a href="#latest-releases" class="mobile-link">Latest Releases</a>
+            <div class="mobile-section-label" data-i18n="nav.mobileNavigation">Navigation</div>
+            <a href="#player" class="mobile-link text-fuchsia-400" data-i18n="nav.player">Player</a>
+            <a href="#beats" class="mobile-link" data-i18n="nav.beats">Beats</a>
+            <a href="#drumkits" class="mobile-link" data-i18n="nav.drumKits">Drum Kits</a>
+            <a href="#latest-releases" class="mobile-link" data-i18n="nav.latestReleases">Latest Releases</a>
             
-            <div class="mobile-section-label">Channels</div>
-            <a href={ytBeats} target="_blank" class="mobile-link">YouTube Beats</a>
-            <a href={ytArtist} target="_blank" class="mobile-link">YouTube Artist</a>
+            <div class="mobile-section-label" data-i18n="nav.mobileChannels">Channels</div>
+            <a href={ytBeats} target="_blank" class="mobile-link" data-i18n="nav.youtubeBeats">YouTube Beats</a>
+            <a href={ytArtist} target="_blank" class="mobile-link" data-i18n="nav.youtubeArtist">YouTube Artist</a>
             
-            <div class="mobile-section-label">Social & More</div>
-            <a href={spotifyLink} target="_blank" class="mobile-link">Spotify</a>
-            <a href={tikTokLink} target="_blank" class="mobile-link">TikTok</a>
-            <a href={pond5Link} target="_blank" class="mobile-link">Pond5</a>
-            <a href={discordInvite} target="_blank" class="mobile-link">Discord</a>
+            <div class="mobile-section-label" data-i18n="nav.mobileSocialMore">Social & More</div>
+            <a href={spotifyLink} target="_blank" class="mobile-link" data-i18n="nav.spotify">Spotify</a>
+            <a href={tikTokLink} target="_blank" class="mobile-link" data-i18n="nav.tiktok">TikTok</a>
+            <a href={pond5Link} target="_blank" class="mobile-link" data-i18n="nav.pond5">Pond5</a>
+            <a href={discordInvite} target="_blank" class="mobile-link" data-i18n="nav.discord">Discord</a>
             
             <div class="h-px bg-white/5 my-2 mx-4"></div>
             
-            <a href="#about" class="mobile-link opacity-70">About</a>
-            <a href="#contact" class="mobile-link opacity-70">Contact</a>
+            <a href="#about" class="mobile-link opacity-70" data-i18n="nav.about">About</a>
+            <a href="#contact" class="mobile-link opacity-70" data-i18n="nav.contact">Contact</a>
           </div>
         </div>
       </div>
@@ -262,6 +262,9 @@ const translations = { en, el };
       function initInteractiveHeader() {
         const langButtons = document.querySelectorAll('#language-switcher .lang-switch-btn');
         const translatableNodes = document.querySelectorAll('[data-i18n]');
+        const translatableAltNodes = document.querySelectorAll('[data-i18n-alt]');
+        const translatableTitleNodes = document.querySelectorAll('[data-i18n-title]');
+        const translatableAriaNodes = document.querySelectorAll('[data-i18n-aria-label]');
         const releaseStatusNodes = document.querySelectorAll('[data-i18n-status]');
 
         function updateLangUI(activeLang) {
@@ -285,6 +288,30 @@ const translations = { en, el };
             } else {
               node.textContent = translated;
             }
+          });
+
+          translatableAltNodes.forEach((node) => {
+            const key = node.getAttribute('data-i18n-alt');
+            if (!key) return;
+            const translated = getNestedValue(dict, key);
+            if (typeof translated !== 'string') return;
+            node.setAttribute('alt', translated);
+          });
+
+          translatableTitleNodes.forEach((node) => {
+            const key = node.getAttribute('data-i18n-title');
+            if (!key) return;
+            const translated = getNestedValue(dict, key);
+            if (typeof translated !== 'string') return;
+            node.setAttribute('title', translated);
+          });
+
+          translatableAriaNodes.forEach((node) => {
+            const key = node.getAttribute('data-i18n-aria-label');
+            if (!key) return;
+            const translated = getNestedValue(dict, key);
+            if (typeof translated !== 'string') return;
+            node.setAttribute('aria-label', translated);
           });
 
           const statusMap = {

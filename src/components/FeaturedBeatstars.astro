@@ -15,6 +15,7 @@ const playerUrl = "https://www.beatstars.com/player/?storeId=133234";
         src={playerUrl}
         width="100%"
         title="Mr. Bonzo Beatstars Player"
+        data-i18n-title="player.iframeTitle"
         /* height: Υπολογίζει το ύψος της οθόνης μείον 220px για να χωράει άνετα.
            min-height: Εξασφαλίζει ότι σε πολύ μικρές οθόνες δεν θα "εξαφανιστεί".
         */
@@ -23,12 +24,12 @@ const playerUrl = "https://www.beatstars.com/player/?storeId=133234";
         class="bg-black w-full"
         allow="autoplay"
       >
-        -- Your browser does not support iframes --
+        <span data-i18n="player.noIframeSupport">-- Your browser does not support iframes --</span>
       </iframe>
     </div>
   </div>
 
-  <p class="mt-4 text-center text-[8px] tracking-[0.2em] text-white/10 uppercase font-medium">
+  <p class="mt-4 text-center text-[8px] tracking-[0.2em] text-white/10 uppercase font-medium" data-i18n="player.secureCheckout">
     Secure Checkout • Licensing & Contracts powered by Beatstars
   </p>
 </section>

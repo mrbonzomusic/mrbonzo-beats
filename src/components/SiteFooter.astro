@@ -11,16 +11,16 @@ import FooterStats from "./FooterStats.astro";
       
       <div class="text-center lg:text-left">
         <p class="text-[10px] font-bold uppercase tracking-[0.3em] text-white/30">
-          © 2026 <span class="text-fuchsia-500">Mr. Bonzo.</span> All rights reserved.
+          © 2026 <span class="text-fuchsia-500">Mr. Bonzo.</span> <span data-i18n="footer.rights">All rights reserved.</span>
         </p>
       </div>
 
       <div class="flex flex-wrap justify-center gap-6">
-        <a href={socialLinks.instagram} target="_blank" class="text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-fuchsia-400 transition">Instagram</a>
-        <a href="https://www.youtube.com/@mrbonzobeatz" target="_blank" class="text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-fuchsia-400 transition">YouTube</a>
-        <a href="mailto:mrbonzomusic@gmail.com" class="text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-fuchsia-400 transition">Email</a>
-        <a href={socialLinks.tiktok} target="_blank" class="text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-fuchsia-400 transition">TikTok</a>
-        <a href={socialLinks.spotify} target="_blank" class="text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-fuchsia-400 transition">Spotify</a>
+        <a href={socialLinks.instagram} target="_blank" class="text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-fuchsia-400 transition" data-i18n="contact.instagram">Instagram</a>
+        <a href="https://www.youtube.com/@mrbonzobeatz" target="_blank" class="text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-fuchsia-400 transition" data-i18n="footer.youtube">YouTube</a>
+        <a href="mailto:mrbonzomusic@gmail.com" class="text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-fuchsia-400 transition" data-i18n="footer.email">Email</a>
+        <a href={socialLinks.tiktok} target="_blank" class="text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-fuchsia-400 transition" data-i18n="footer.tiktok">TikTok</a>
+        <a href={socialLinks.spotify} target="_blank" class="text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-fuchsia-400 transition" data-i18n="footer.spotify">Spotify</a>
       </div>
 
     </div>

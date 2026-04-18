@@ -1,14 +1,37 @@
 const en = {
+  ui: {
+    logoAlt: "Mr. Bonzo logo",
+    shareTitle: "Share Website",
+    heroLogoAlt: "Mr. Bonzo",
+    aboutPortraitAlt: "Mr. Bonzo Portrait",
+    shareAriaLabel: "Share this website",
+    menuToggleAriaLabel: "Toggle navigation menu",
+    langEnAriaLabel: "Switch language to English",
+    langElAriaLabel: "Switch language to Greek",
+    aboutPrevSlideAriaLabel: "Previous about slide",
+    aboutNextSlideAriaLabel: "Next about slide"
+  },
   nav: {
     home: "Home",
     beats: "Beats",
-    kits: "Kits", // Προστέθηκε
+    kits: "Kits",
+    releases: "Releases",
     player: "Player",
     spotify: "Spotify",
     youtube: "YouTube",
+    youtubeBeats: "YouTube Beats",
+    youtubeArtist: "YouTube Artist",
     tiktok: "TikTok",
+    pond5: "Pond5",
     store: "Store",
-    discord: "Discord"
+    discord: "Discord",
+    about: "About",
+    contact: "Contact",
+    mobileNavigation: "Navigation",
+    mobileChannels: "Channels",
+    mobileSocialMore: "Social & More",
+    latestReleases: "Latest Releases",
+    drumKits: "Drum Kits"
   },
   hero: {
     label: "Beatmaker Portfolio",
@@ -33,12 +56,22 @@ const en = {
     label: "About",
     artistEyebrow: "The Artist",
     title: "The Architect of Energy",
+    titleHtml: "The Architect <br class='hidden sm:block'/><span class='text-fuchsia-500'>of Energy</span>",
     bio: "Alexandros Pilatos is a music producer/audio engineer in Athens, active since 2003. Founder of Purple Sound Studio (2007). His signature sound blends Boom Bap, Lofi, Trap, Dnb, Reggae, Breakbeat, Electronica, and Progressive House.",
     beatmaker: "Beatmaker",
     engineer: "Studio Engineer",
     producer: "Audio Producer",
+    tagBeatmaker: "Beatmaker",
+    tagEngineer: "Engineer",
+    tagProducer: "Producer",
     termsLabel: "Terms & Usage",
     licensingTitle: "Licensing Guide",
+    basicLeaseName: "Basic Lease",
+    basicLeaseFeatures: "MP3 File • 5,000 Copies • 200k Streams • Non-Exclusive",
+    premiumLeaseName: "Premium Lease",
+    premiumLeaseFeatures: "WAV + MP3 • 10k Copies • 500k Streams • Non-Exclusive",
+    exclusiveLeaseName: "Exclusive License",
+    exclusiveLeaseFeatures: "Full Ownership • Trackouts + WAV • Unlimited • Exclusive",
     policyLabel: "Claims & Whitelisting",
     policyTitle: "Usage Policy",
     freeSectionTitle: "100% Free Beats",
@@ -75,14 +108,28 @@ const en = {
   services: {
     title: "Professional Services",
     subtitle: "Built for artists, labels, and audiovisual projects.",
-    items: [] 
+    musicProduction: "Music Production",
+    recording: "Recording",
+    mixingMastering: "Mixing & Mastering",
+    soundDesign: "Sound Design",
+    scoringMedia: "Scoring for Media",
+    moreOnRequest: "& more upon request"
   },
   footer: {
     rights: "All rights reserved.",
     instagram: "Instagram (@mrbonzobeats)",
+    youtube: "YouTube",
+    email: "Email",
+    tiktok: "TikTok",
+    spotify: "Spotify",
     totalHitsLabel: "Total hits",
     activeNowLabel: "Active now",
     liveWord: "Live"
+  },
+  player: {
+    noIframeSupport: "-- Your browser does not support iframes --",
+    secureCheckout: "Secure Checkout • Licensing & Contracts powered by Beatstars",
+    iframeTitle: "Mr. Bonzo Beatstars Player"
   }
 };
 
