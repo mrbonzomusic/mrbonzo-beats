@@ -10,9 +10,9 @@ const drumKits = [
 ];
 ---
 
-<section id="drumkits" class="mt-32 scroll-mt-36 px-6">
+<section id="drumkits" class="mt-32 scroll-mt-36 px-4 sm:px-6">
   <div class="flex flex-col items-center mb-20 text-center">
-    <h2 class="display-heading text-5xl md:text-7xl font-black tracking-tighter uppercase italic text-white" data-i18n="drumkits.title">
+    <h2 class="display-heading text-4xl md:text-7xl font-black tracking-tighter uppercase italic text-white px-2 sm:px-0" data-i18n="drumkits.title">
       SOUND <span class="text-fuchsia-500">KITS</span>
     </h2>
     <div class="h-2 w-32 bg-fuchsia-600 mt-6 rounded-full shadow-[0_0_25px_rgba(192,38,211,1)]"></div>
@@ -36,7 +36,7 @@ const drumKits = [
           </div>
           
           <div class="flex-grow">
-            <h3 class="display-heading text-4xl font-black text-white mb-6 tracking-tight uppercase italic sm:text-5xl">
+            <h3 class="display-heading text-3xl sm:text-4xl font-black text-white mb-6 tracking-tight uppercase italic break-words" style="overflow-wrap:anywhere;">
               {kit.title}
             </h3>
             <p class="text-gray-300 text-lg leading-relaxed mb-10 max-w-xl sm:text-xl" data-i18n="drumkits.description">
@@ -44,7 +44,7 @@ const drumKits = [
             </p>
             
             <div class="flex flex-wrap items-center justify-center lg:justify-start gap-10 px-2 sm:px-3">
-              <span class="display-heading-wide text-5xl font-black text-fuchsia-500 drop-shadow-[0_0_15px_rgba(192,38,211,0.6)] tracking-[0.12em] italic uppercase" data-i18n="drumkits.freeLabel">
+              <span class="display-heading-wide text-3xl sm:text-5xl font-black text-fuchsia-500 drop-shadow-[0_0_15px_rgba(192,38,211,0.6)] tracking-[0.12em] md:tracking-[0.12em] italic uppercase break-words" style="overflow-wrap:anywhere;" data-i18n="drumkits.freeLabel">
                 {kit.price}
               </span>
               
