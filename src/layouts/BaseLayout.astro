@@ -10,6 +10,7 @@ interface Props {
 
 const { title = "Mr. Bonzo | Official" } = Astro.props;
 const logoPath = "/images/logo-main.webp";
+const socialPreviewImage = "https://mrbonzo-beats.pages.dev/og-image.jpg";
 
 const siteDescription = "Official website of Mr. Bonzo. High-quality trap beats and exclusive drum kits.";
 // ΑΝ ΕΙΣΑΙ ΣΤΟ OFFICIAL SITE, ΑΛΛΑΞΕ ΤΟ URL ΣΕ: https://mrbonzo-beats.pages.dev/
@@ -34,7 +35,13 @@ const translations = { en, el };
     <meta property="og:url" content={siteURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={siteDescription} />
+    <meta property="og:image" content={socialPreviewImage} />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={socialPreviewImage} />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="manifest" href="/manifest.json" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

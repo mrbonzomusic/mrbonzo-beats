@@ -60,6 +60,19 @@
   color: var(--label-eyebrow-color);
 }
 
+/* Large display headings: modern spacing without cramped glyphs */
+.display-heading {
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+  text-wrap: balance;
+}
+
+/* Slightly airier option for emphasized all-caps labels */
+.display-heading-wide {
+  letter-spacing: 0.01em;
+  line-height: 1.12;
+}
+
 html {
   scroll-behavior: smooth;
 }
