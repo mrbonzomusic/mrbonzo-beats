@@ -1,6 +1,8 @@
 ---
 import "../styles/global.css";
 import { beatstarsLinks, socialLinks } from "../config/links";
+import en from "../i18n/en";
+import el from "../i18n/el";
 
 interface Props {
   title?: string;
@@ -19,6 +21,7 @@ const tikTokLink = "https://www.tiktok.com/@mrbonzomusic";
 const ytBeats = "https://www.youtube.com/@mrbonzobeatz";
 const ytArtist = "https://www.youtube.com/@mrbonzomusic";
 const spotifyLink = socialLinks.spotify;
+const translations = { en, el };
 ---
 
 <!doctype html>
@@ -233,30 +236,82 @@ const spotifyLink = socialLinks.spotify;
 
     <script is:inline>
       // --- LANGUAGE SWITCHER LOGIC ---
+      const translations = {JSON.stringify(translations)};
       const langButtons = document.querySelectorAll('[data-lang-switch]');
-      
+      const translatableNodes = document.querySelectorAll('[data-i18n]');
+      const releaseStatusNodes = document.querySelectorAll('[data-i18n-status]');
+      const storageKey = 'selected-lang';
+      const fallbackLang = 'en';
+
+      function isValidLang(lang) {
+        return lang === 'en' || lang === 'el';
+      }
+
+      function getNestedValue(obj, path) {
+        return path.split('.').reduce((acc, key) => {
+          if (acc && typeof acc === 'object' && key in acc) return acc[key];
+          return undefined;
+        }, obj);
+      }
+
       function updateLangUI(activeLang) {
-        langButtons.forEach(btn => {
-          btn.setAttribute('data-active', btn.getAttribute('data-lang-switch') === activeLang);
+        langButtons.forEach((btn) => {
+          btn.setAttribute('data-active', String(btn.getAttribute('data-lang-switch') === activeLang));
         });
         document.documentElement.lang = activeLang;
       }
 
-      // 1. Δες τι έχουμε αποθηκευμένο
-      const savedLang = localStorage.getItem('selected-lang') || 'en';
-      updateLangUI(savedLang);
+      function applyTranslations(activeLang) {
+        const dict = translations[activeLang] || translations[fallbackLang];
 
-      langButtons.forEach(btn => {
+        translatableNodes.forEach((node) => {
+          const key = node.getAttribute('data-i18n');
+          if (!key) return;
+
+          const translated = getNestedValue(dict, key);
+          if (typeof translated !== 'string') return;
+          node.innerHTML = translated;
+        });
+
+        const statusMap = {
+          scrape: 'releases.statusLive',
+          rss: 'releases.statusFallback',
+          fallback: 'releases.statusFallback',
+          error: 'releases.statusError'
+        };
+
+        releaseStatusNodes.forEach((node) => {
+          const status = node.getAttribute('data-i18n-status');
+          const key = statusMap[status || ''];
+          if (!key) return;
+
+          const translated = getNestedValue(dict, key);
+          if (typeof translated !== 'string') return;
+          node.textContent = translated;
+        });
+      }
+
+      function setLanguage(lang) {
+        const nextLang = isValidLang(lang) ? lang : fallbackLang;
+        localStorage.setItem(storageKey, nextLang);
+        updateLangUI(nextLang);
+        applyTranslations(nextLang);
+      }
+
+      const savedLang = localStorage.getItem(storageKey);
+      setLanguage(savedLang || fallbackLang);
+
+      langButtons.forEach((btn) => {
         btn.addEventListener('click', () => {
           const newLang = btn.getAttribute('data-lang-switch');
-          localStorage.setItem('selected-lang', newLang);
-          updateLangUI(newLang);
-          
-          // 2. ΕΔΩ ΕΙΝΑΙ ΤΟ ΚΟΛΠΟ: 
-          // Αν το site σου δουλεύει με /el/ στο URL, πρέπει να σε στείλει εκεί.
-          // Αν δουλεύει με i18next, το reload αρκεί.
-          window.location.reload(); 
+          if (!newLang) return;
+          setLanguage(newLang);
         });
+      });
+
+      window.addEventListener('storage', (event) => {
+        if (event.key !== storageKey) return;
+        setLanguage(event.newValue || fallbackLang);
       });
 
       // --- BURGER LOGIC ---
