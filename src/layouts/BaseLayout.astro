@@ -8,7 +8,6 @@ interface Props {
   title?: string;
 }
 
-// Default Title & SEO
 const { title = "Mr. Bonzo | Official Website" } = Astro.props;
 const logoPath = "/images/logo-main.webp";
 const socialPreviewImage = "https://mrbonzo-beats.pages.dev/og-image.jpg?v=1";
@@ -31,7 +30,6 @@ const translations = { en, el };
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     
-    <!-- Open Graph / SEO -->
     <meta name="description" content={siteDescription} />
     <meta property="og:url" content={siteURL} />
     <meta property="og:title" content={title} />
@@ -49,7 +47,6 @@ const translations = { en, el };
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
-    <!-- Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-QFJSZGBGZE"></script>
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
@@ -60,7 +57,6 @@ const translations = { en, el };
     <script data-goatcounter="https://mrbonzo.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 
     <style is:global>
-      /* --- BaseBox Banner Styles --- */
       .basebox-banner {
         background: linear-gradient(90deg, #000, #1a001a, #000);
         color: #fff;
@@ -97,7 +93,6 @@ const translations = { en, el };
         100% { opacity: 0.8; }
       }
 
-      /* --- Layout Adjustments --- */
       header#main-header {
         position: fixed !important;
         top: 38px !important;
@@ -125,7 +120,6 @@ const translations = { en, el };
 
   <body class="min-h-screen antialiased bg-black text-white">
     
-    <!-- BaseBox Promo Banner -->
     <div class="basebox-banner">
       <a href="https://forms.gle/AC86bRqwhfNmbCUh9" target="_blank" rel="noopener noreferrer">
         🚀 <strong data-i18n="basebox.bannerTitle">BaseBox</strong>: 
@@ -179,8 +173,8 @@ const translations = { en, el };
                </button>
 
                <div id="language-switcher" class="flex items-center gap-1 font-bold text-[10px] border-r border-fuchsia-500/20 pr-3">
-                  <button id="lang-en-btn" type="button" data-lang-switch="en" class="lang-switch-btn text-fuchsia-200/40 data-[active=true]:text-fuchsia-400 px-1">EN</button>
-                  <button id="lang-el-btn" type="button" data-lang-switch="el" class="lang-switch-btn text-fuchsia-200/40 data-[active=true]:text-fuchsia-400 px-1">EL</button>
+                  <button type="button" data-lang-switch="en" class="lang-switch-btn text-fuchsia-200/40 data-[active=true]:text-fuchsia-400 px-1">EN</button>
+                  <button type="button" data-lang-switch="el" class="lang-switch-btn text-fuchsia-200/40 data-[active=true]:text-fuchsia-400 px-1">EL</button>
                </div>
 
                <a href={beatstarsLinks.profile} target="_blank" class="rounded-full bg-fuchsia-600 px-4 py-1.5 text-[10px] font-black uppercase text-white hover:bg-fuchsia-500 transition" data-i18n="nav.store">Store</a>
@@ -193,7 +187,6 @@ const translations = { en, el };
           </div>
         </div>
 
-        <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden lg:hidden mt-2">
           <div class="rounded-3xl border border-fuchsia-500/20 bg-black/95 backdrop-blur-xl p-2 shadow-2xl max-h-[80vh] overflow-y-auto">
             <div class="mobile-section-label" data-i18n="nav.mobileNavigation">Navigation</div>
@@ -221,88 +214,78 @@ const translations = { en, el };
       <slot />
     </main>
 
-    <!-- Interactive Script -->
     <script is:inline define:vars={{ translations }}>
       const i18nMap = translations;
       const storageKey = 'selected-lang';
       const fallbackLang = 'en';
 
-      function isValidLang(lang) { return lang === 'en' || lang === 'el'; }
       function getNestedValue(obj, path) {
-        return path.split('.').reduce((acc, key) => {
-          if (acc && typeof acc === 'object' && key in acc) return acc[key];
-          return undefined;
-        }, obj);
+        return path.split('.').reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : undefined), obj);
+      }
+
+      function applyTranslations() {
+        const activeLang = localStorage.getItem(storageKey) || fallbackLang;
+        const dict = i18nMap[activeLang] || i18nMap[fallbackLang];
+        
+        // 1. Ενημέρωση κειμένων (data-i18n)
+        document.querySelectorAll('[data-i18n]').forEach((node) => {
+          const key = node.getAttribute('data-i18n');
+          const translated = getNestedValue(dict, key);
+          if (typeof translated === 'string') node.innerHTML = translated;
+        });
+
+        // 2. Ενημέρωση Alt (data-i18n-alt)
+        document.querySelectorAll('[data-i18n-alt]').forEach((node) => {
+          const key = node.getAttribute('data-i18n-alt');
+          const translated = getNestedValue(dict, key);
+          if (typeof translated === 'string') node.setAttribute('alt', translated);
+        });
+
+        // 3. Ενημέρωση UI Buttons & HTML Lang
+        document.querySelectorAll('.lang-switch-btn').forEach((btn) => {
+          btn.setAttribute('data-active', String(btn.getAttribute('data-lang-switch') === activeLang));
+        });
+        document.documentElement.lang = activeLang;
       }
 
       function initInteractiveHeader() {
-        const langButtons = document.querySelectorAll('#language-switcher .lang-switch-btn');
-        const translatableNodes = document.querySelectorAll('[data-i18n]');
-        const translatableAlts = document.querySelectorAll('[data-i18n-alt]');
-        
-        function updateLangUI(activeLang) {
-          langButtons.forEach((btn) => {
-            btn.setAttribute('data-active', String(btn.getAttribute('data-lang-switch') === activeLang));
+        // Αρχική εφαρμογή
+        applyTranslations();
+
+        // Listeners για αλλαγή γλώσσας
+        document.querySelectorAll('.lang-switch-btn').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const lang = btn.getAttribute('data-lang-switch');
+            localStorage.setItem(storageKey, lang);
+            applyTranslations();
           });
-          document.documentElement.lang = activeLang;
-        }
-
-        function applyTranslations(activeLang) {
-          const dict = i18nMap[activeLang] || i18nMap[fallbackLang];
-          
-          // Translate Text Content
-          translatableNodes.forEach((node) => {
-            const key = node.getAttribute('data-i18n');
-            const translated = getNestedValue(dict, key);
-            if (typeof translated === 'string') node.innerHTML = translated;
-          });
-
-          // Translate Alt Texts
-          translatableAlts.forEach((node) => {
-            const key = node.getAttribute('data-i18n-alt');
-            const translated = getNestedValue(dict, key);
-            if (typeof translated === 'string') node.setAttribute('alt', translated);
-          });
-        }
-
-        function setLanguage(lang) {
-          const nextLang = isValidLang(lang) ? lang : fallbackLang;
-          localStorage.setItem(storageKey, nextLang);
-          updateLangUI(nextLang);
-          applyTranslations(nextLang);
-        }
-
-        const savedLang = localStorage.getItem(storageKey);
-        setLanguage(savedLang || fallbackLang);
-
-        langButtons.forEach((btn) => {
-          btn.addEventListener('click', () => setLanguage(btn.getAttribute('data-lang-switch')));
         });
 
         // Burger Menu logic
         const bBtn = document.getElementById('burger-btn');
         const mMenu = document.getElementById('mobile-menu');
         if (bBtn && mMenu) {
-          bBtn.addEventListener('click', (e) => { e.stopPropagation(); mMenu.classList.toggle('hidden'); });
-          document.addEventListener('click', (e) => { if (!mMenu.contains(e.target) && !bBtn.contains(e.target)) mMenu.classList.add('hidden'); });
+          bBtn.onclick = (e) => { e.stopPropagation(); mMenu.classList.toggle('hidden'); };
+          document.onclick = (e) => { if (!mMenu.contains(e.target) && !bBtn.contains(e.target)) mMenu.classList.add('hidden'); };
         }
 
         // Share logic
         const shareBtn = document.getElementById('share-btn');
         if (shareBtn) {
-          shareBtn.addEventListener('click', async () => {
+          shareBtn.onclick = async () => {
             const shareData = { title: 'Mr. Bonzo Official', url: window.location.href };
             if (navigator.share) await navigator.share(shareData);
-            else {
-              await navigator.clipboard.writeText(window.location.href);
-              alert('Link copied!');
-            }
-          });
+            else { await navigator.clipboard.writeText(window.location.href); alert('Link copied!'); }
+          };
         }
       }
 
+      // Σημαντικό: Τρέξε το αμέσως και σε κάθε Page Load (Astro)
+      initInteractiveHeader();
       document.addEventListener('astro:page-load', initInteractiveHeader);
-      document.addEventListener('DOMContentLoaded', initInteractiveHeader);
+      
+      // Extra check για καθυστερημένα components (όπως το Hero)
+      window.addEventListener('load', applyTranslations);
     </script>
   </body>
 </html>
