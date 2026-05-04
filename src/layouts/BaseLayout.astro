@@ -102,10 +102,10 @@ const translations = { en, el };
         100% { opacity: 0.8; }
       }
 
-      /* --- Existing Header Adjustments --- */
+      /* --- Layout Adjustments --- */
       header#main-header {
         position: fixed !important;
-        top: 38px !important; 
+        top: 38px !important; /* Offset for the banner */
         left: 0 !important;
         right: 0 !important;
         z-index: 9999999 !important;
@@ -115,93 +115,31 @@ const translations = { en, el };
         padding-top: 140px !important;
         background-color: black;
       }
-      .nav-divider {
-        width: 1px;
-        height: 14px;
-        background-color: rgba(217, 70, 239, 0.3);
-        margin: 0 6px;
-        flex-shrink: 0;
-      }
-      .nav-dropdown {
-        position: relative;
-        display: inline-block;
-        padding-bottom: 20px;
-        margin-bottom: -20px;
-      }
+      /* (Remaining Global Styles...) */
+      .nav-divider { width: 1px; height: 14px; background-color: rgba(217, 70, 239, 0.3); margin: 0 6px; flex-shrink: 0; }
+      .nav-dropdown { position: relative; display: inline-block; padding-bottom: 20px; margin-bottom: -20px; }
       .nav-dropdown-content {
-        display: none;
-        position: absolute;
-        background-color: rgba(0, 0, 0, 0.95);
-        min-width: 160px;
-        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
-        z-index: 1000;
-        border: 1px solid rgba(217, 70, 239, 0.2);
-        border-radius: 14px;
-        margin-top: 5px;
-        backdrop-filter: blur(12px);
+        display: none; position: absolute; background-color: rgba(0, 0, 0, 0.95);
+        min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
+        z-index: 1000; border: 1px solid rgba(217, 70, 239, 0.2);
+        border-radius: 14px; margin-top: 5px; backdrop-filter: blur(12px);
       }
-      .nav-dropdown-content a {
-        color: white;
-        padding: 12px 16px;
-        text-decoration: none;
-        display: block;
-        font-size: 11px;
-        font-weight: bold;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-      }
-      .nav-dropdown-content a:hover {
-        background-color: rgba(217, 70, 239, 0.1);
-        color: #f5d0fe;
-      }
-      .nav-dropdown:hover .nav-dropdown-content {
-        display: block;
-        animation: dropdownFade 0.2s ease-out;
-      }
-      @keyframes dropdownFade {
-        from { opacity: 0; transform: translateY(5px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-
+      .nav-dropdown:hover .nav-dropdown-content { display: block; animation: dropdownFade 0.2s ease-out; }
+      @keyframes dropdownFade { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
       #mobile-menu.hidden { display: none; }
-      .mobile-link {
-        display: block;
-        padding: 0.85rem 1rem;
-        color: #e5e7eb;
-        font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        font-size: 11px;
-        transition: all 0.2s;
-      }
-      .mobile-link:active {
-        background-color: rgba(217, 70, 239, 0.1);
-        color: #f5d0fe;
-      }
-      .mobile-section-label {
-        font-size: 9px;
-        font-weight: 900;
-        text-transform: uppercase;
-        letter-spacing: 0.2em;
-        color: #d946ef;
-        padding: 1.5rem 1rem 0.5rem 1rem;
-        opacity: 0.8;
-      }
-      #language-switcher {
-        position: relative;
-        z-index: 9999;
-        pointer-events: auto;
-      }
-      .lang-switch-btn { pointer-events: auto; }
+      .mobile-link { display: block; padding: 0.85rem 1rem; color: #e5e7eb; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; font-size: 11px; }
+      .mobile-section-label { font-size: 9px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.2em; color: #d946ef; padding: 1.5rem 1rem 0.5rem 1rem; opacity: 0.8; }
     </style>
   </head>
 
   <body class="min-h-screen antialiased bg-black text-white">
+    
     <!-- BaseBox Promo Banner -->
     <div class="basebox-banner">
       <a href="https://forms.gle/AC86bRqwhfNmbCUh9" target="_blank" rel="noopener noreferrer">
-        🚀 <strong>BaseBox</strong>: The Automated Artist & Catalog Manager. Send to PROs & Labels in seconds. 
-        <span class="basebox-badge">GET EARLY ACCESS</span>
+        🚀 <strong data-i18n="basebox.bannerTitle">BaseBox</strong>: 
+        <span data-i18n="basebox.bannerSubtitle">The Automated Artist & Catalog Manager. Send to PROs & Labels in seconds.</span> 
+        <span class="basebox-badge" data-i18n="basebox.waitlistBtn">GET EARLY ACCESS</span>
       </a>
     </div>
 
@@ -270,19 +208,15 @@ const translations = { en, el };
             <a href="#beats" class="mobile-link" data-i18n="nav.beats">Beats</a>
             <a href="#drumkits" class="mobile-link" data-i18n="nav.drumKits">Drum Kits</a>
             <a href="#latest-releases" class="mobile-link" data-i18n="nav.latestReleases">Latest Releases</a>
-            
             <div class="mobile-section-label" data-i18n="nav.mobileChannels">Channels</div>
             <a href={ytBeats} target="_blank" class="mobile-link" data-i18n="nav.youtubeBeats">YouTube Beats</a>
             <a href={ytArtist} target="_blank" class="mobile-link" data-i18n="nav.youtubeArtist">YouTube Artist</a>
-            
             <div class="mobile-section-label" data-i18n="nav.mobileSocialMore">Social & More</div>
             <a href={spotifyLink} target="_blank" class="mobile-link" data-i18n="nav.spotify">Spotify</a>
             <a href={tikTokLink} target="_blank" class="mobile-link" data-i18n="nav.tiktok">TikTok</a>
             <a href={pond5Link} target="_blank" class="mobile-link" data-i18n="nav.pond5">Pond5</a>
             <a href={discordInvite} target="_blank" class="mobile-link" data-i18n="nav.discord">Discord</a>
-            
             <div class="h-px bg-white/5 my-2 mx-4"></div>
-            
             <a href="#about" class="mobile-link opacity-70" data-i18n="nav.about">About</a>
             <a href="#contact" class="mobile-link opacity-70" data-i18n="nav.contact">Contact</a>
           </div>
