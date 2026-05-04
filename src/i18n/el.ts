@@ -39,7 +39,7 @@ const el = {
     browse: "Άκου Beats",
     featured: "Featured Player"
   },
-  drumkits: { // Νέο section για το Drum Kits component
+  drumkits: {
     title: "SOUND <span class='text-fuchsia-500'>KITS</span>",
     description: "Επαγγελματικοί ήχοι για να απογειώσεις την παραγωγή σου.",
     freeLabel: "ΔΩΡΕΑΝ DOWNLOAD",
@@ -130,6 +130,12 @@ const el = {
     noIframeSupport: "-- Ο browser σου δεν υποστηρίζει iframes --",
     secureCheckout: "Ασφαλές Checkout • Licensing & Contracts μέσω Beatstars",
     iframeTitle: "Mr. Bonzo Beatstars Player"
+  },
+  // --- Νέο Section για το BaseBox ---
+  basebox: {
+    bannerTitle: "BaseBox",
+    bannerSubtitle: "Αυτοματοποιημένη Διαχείριση Καταλόγου & Καλλιτεχνών. Στείλε σε PROs & Labels σε δευτερόλεπτα.",
+    waitlistBtn: "ΕΙΣΟΔΟΣ ΣΤΗ BETA LIST"
   }
 };
 
