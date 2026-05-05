@@ -10,7 +10,6 @@ interface Props {
 
 const { title = "Mr. Bonzo | Official Website" } = Astro.props;
 const logoPath = "/images/logo-main.webp";
-// Ενημερωμένο Path με το v2 όνομα που έφτιαξες
 const socialPreviewImage = "https://mrbonzo-beats.pages.dev/og-image-v2.jpg";
 const siteDescription = "The official website of Mr. Bonzo. Music production, high-quality trap beats, and exclusive drum kits.";
 const siteURL = "https://mrbonzo-beats.pages.dev/";
@@ -63,34 +62,39 @@ const translations = { en, el };
     <script data-goatcounter="https://mrbonzo.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 
     <style is:global>
+      /* --- BaseBox Banner Fixes --- */
       .basebox-banner {
         background: linear-gradient(90deg, #000, #1a001a, #000);
         color: #fff;
         text-align: center;
-        padding: 10px 0;
-        font-size: 11px;
+        padding: 8px 12px;
+        font-size: 10px;
         font-weight: 600;
-        letter-spacing: 0.05em;
+        letter-spacing: 0.02em;
         text-transform: uppercase;
         border-bottom: 1px solid rgba(217, 70, 239, 0.2);
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
+        position: relative; /* Αλλαγή σε relative για να μην καλυπτει το header */
         z-index: 10000001;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 40px;
       }
-      .basebox-banner a { color: inherit; text-decoration: none; display: block; transition: transform 0.2s; }
-      .basebox-banner a:hover { transform: scale(1.01); }
+      
+      .basebox-banner a { color: inherit; text-decoration: none; transition: transform 0.2s; line-height: 1.4; }
       .basebox-banner strong { color: #d946ef; font-weight: 900; }
+      
       .basebox-badge {
         background: rgba(217, 70, 239, 0.15);
         color: #d946ef;
-        padding: 3px 10px;
+        padding: 2px 8px;
         border-radius: 99px;
-        font-size: 10px;
-        margin-left: 10px;
+        font-size: 9px;
+        margin-left: 8px;
         border: 1px solid rgba(217, 70, 239, 0.4);
         animation: pulse 2s infinite;
+        display: inline-block;
+        white-space: nowrap;
       }
 
       @keyframes pulse {
@@ -99,15 +103,27 @@ const translations = { en, el };
         100% { opacity: 0.8; }
       }
 
+      /* --- Header & Layout --- */
       header#main-header {
         position: fixed !important;
-        top: 38px !important;
+        /* Το 'top' θα υπολογίζεται από το script παρακάτω */
         left: 0 !important;
         right: 0 !important;
         z-index: 9999999 !important;
-        padding-top: 0.75rem;
+        padding-top: 0.5rem;
       }
-      body { padding-top: 140px !important; background-color: black; }
+
+      body { 
+        padding-top: 0 !important; /* Θα υπολογίζεται από το script */
+        background-color: black; 
+      }
+
+      /* Mobile Specific Font sizing */
+      @media (max-width: 640px) {
+        .basebox-banner { font-size: 8px; }
+        .basebox-badge { font-size: 7.5px; margin-left: 4px; }
+      }
+
       .nav-divider { width: 1px; height: 14px; background-color: rgba(217, 70, 239, 0.3); margin: 0 6px; flex-shrink: 0; }
       .nav-dropdown { position: relative; display: inline-block; padding-bottom: 20px; margin-bottom: -20px; }
       .nav-dropdown-content {
@@ -126,6 +142,7 @@ const translations = { en, el };
 
   <body class="min-h-screen antialiased bg-black text-white">
     
+    <!-- Banner: Relative position so it pushes content down -->
     <div class="basebox-banner">
       <a href="https://forms.gle/AC86bRqwhfNmbCUh9" target="_blank" rel="noopener noreferrer">
         🚀 <strong data-i18n="basebox.bannerTitle">BaseBox</strong>: 
@@ -251,8 +268,21 @@ const translations = { en, el };
         document.documentElement.lang = activeLang;
       }
 
+      // Δυναμικός υπολογισμός ύψους για το header και το body
+      function adjustLayout() {
+        const banner = document.querySelector('.basebox-banner');
+        const header = document.getElementById('main-header');
+        if (banner && header) {
+          const bannerHeight = banner.offsetHeight;
+          header.style.top = bannerHeight + 'px';
+          // Προσθέτουμε 100px extra για να μην κολλάει το περιεχόμενο στο menu
+          document.body.style.paddingTop = (bannerHeight + 100) + 'px';
+        }
+      }
+
       function initInteractiveHeader() {
         applyTranslations();
+        adjustLayout();
 
         document.querySelectorAll('.lang-switch-btn').forEach((btn) => {
           btn.addEventListener('click', () => {
@@ -280,6 +310,7 @@ const translations = { en, el };
       }
 
       initInteractiveHeader();
+      window.addEventListener('resize', adjustLayout);
       document.addEventListener('astro:page-load', initInteractiveHeader);
       window.addEventListener('load', applyTranslations);
     </script>
