@@ -62,39 +62,47 @@ const translations = { en, el };
     <script data-goatcounter="https://mrbonzo.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 
     <style is:global>
-      /* --- BaseBox Banner Fixes --- */
+      /* --- BaseBox Banner --- */
       .basebox-banner {
         background: linear-gradient(90deg, #000, #1a001a, #000);
         color: #fff;
         text-align: center;
-        padding: 8px 12px;
-        font-size: 10px;
-        font-weight: 600;
-        letter-spacing: 0.02em;
+        padding: 12px 16px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.05em;
         text-transform: uppercase;
         border-bottom: 1px solid rgba(217, 70, 239, 0.2);
-        position: relative; /* Αλλαγή σε relative για να μην καλυπτει το header */
+        position: fixed; /* Επιστροφή σε fixed για να μένει πάντα πάνω */
+        top: 0;
+        left: 0;
+        right: 0;
         z-index: 10000001;
         display: flex;
         justify-content: center;
         align-items: center;
-        min-height: 40px;
+        min-height: 44px;
       }
       
-      .basebox-banner a { color: inherit; text-decoration: none; transition: transform 0.2s; line-height: 1.4; }
+      .basebox-banner a { 
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        color: inherit; 
+        text-decoration: none; 
+        transition: transform 0.2s; 
+      }
       .basebox-banner strong { color: #d946ef; font-weight: 900; }
       
       .basebox-badge {
         background: rgba(217, 70, 239, 0.15);
         color: #d946ef;
-        padding: 2px 8px;
+        padding: 2px 10px;
         border-radius: 99px;
         font-size: 9px;
-        margin-left: 8px;
         border: 1px solid rgba(217, 70, 239, 0.4);
         animation: pulse 2s infinite;
-        display: inline-block;
-        white-space: nowrap;
       }
 
       @keyframes pulse {
@@ -103,25 +111,24 @@ const translations = { en, el };
         100% { opacity: 0.8; }
       }
 
-      /* --- Header & Layout --- */
+      /* --- Header --- */
       header#main-header {
         position: fixed !important;
-        /* Το 'top' θα υπολογίζεται από το script παρακάτω */
         left: 0 !important;
         right: 0 !important;
         z-index: 9999999 !important;
-        padding-top: 0.5rem;
+        padding-top: 0.75rem;
+        transition: top 0.2s ease;
       }
 
       body { 
-        padding-top: 0 !important; /* Θα υπολογίζεται από το script */
         background-color: black; 
+        /* Το padding-top θα μπει δυναμικά από το JS */
       }
 
-      /* Mobile Specific Font sizing */
       @media (max-width: 640px) {
-        .basebox-banner { font-size: 8px; }
-        .basebox-badge { font-size: 7.5px; margin-left: 4px; }
+        .basebox-banner { font-size: 9px; padding: 10px; }
+        .basebox-banner a { flex-direction: row; flex-wrap: wrap; }
       }
 
       .nav-divider { width: 1px; height: 14px; background-color: rgba(217, 70, 239, 0.3); margin: 0 6px; flex-shrink: 0; }
@@ -142,10 +149,9 @@ const translations = { en, el };
 
   <body class="min-h-screen antialiased bg-black text-white">
     
-    <!-- Banner: Relative position so it pushes content down -->
     <div class="basebox-banner">
       <a href="https://forms.gle/AC86bRqwhfNmbCUh9" target="_blank" rel="noopener noreferrer">
-        🚀 <strong data-i18n="basebox.bannerTitle">BaseBox</strong>: 
+        <span>🚀 <strong data-i18n="basebox.bannerTitle">BaseBox</strong>:</span>
         <span data-i18n="basebox.bannerSubtitle">The Automated Artist & Catalog Manager. Send to PROs & Labels in seconds.</span> 
         <span class="basebox-badge" data-i18n="basebox.waitlistBtn">GET EARLY ACCESS</span>
       </a>
@@ -268,15 +274,18 @@ const translations = { en, el };
         document.documentElement.lang = activeLang;
       }
 
-      // Δυναμικός υπολογισμός ύψους για το header και το body
+      // ΣΩΣΤΟΣ ΥΠΟΛΟΓΙΣΜΟΣ HEIGHTS
       function adjustLayout() {
         const banner = document.querySelector('.basebox-banner');
         const header = document.getElementById('main-header');
         if (banner && header) {
           const bannerHeight = banner.offsetHeight;
           header.style.top = bannerHeight + 'px';
-          // Προσθέτουμε 100px extra για να μην κολλάει το περιεχόμενο στο menu
-          document.body.style.paddingTop = (bannerHeight + 100) + 'px';
+          
+          // Υπολογίζουμε το συνολικό ύψος που καταλαμβάνουν τα fixed στοιχεία
+          // Προσθέτουμε 40px περιθώριο για να φαίνεται το "Beatmaker Portfolio"
+          const totalFixedOffset = bannerHeight + header.offsetHeight + 40;
+          document.body.style.paddingTop = totalFixedOffset + 'px';
         }
       }
 
@@ -289,6 +298,7 @@ const translations = { en, el };
             const lang = btn.getAttribute('data-lang-switch');
             localStorage.setItem(storageKey, lang);
             applyTranslations();
+            setTimeout(adjustLayout, 50); // Επαναϋπολογισμός αν αλλάξει το μήκος του κειμένου
           });
         });
 
@@ -312,7 +322,10 @@ const translations = { en, el };
       initInteractiveHeader();
       window.addEventListener('resize', adjustLayout);
       document.addEventListener('astro:page-load', initInteractiveHeader);
-      window.addEventListener('load', applyTranslations);
+      // Extra trigger για σιγουριά μετά το πλήρες φόρτωμα
+      window.addEventListener('load', () => {
+        setTimeout(adjustLayout, 100);
+      });
     </script>
   </body>
 </html>
