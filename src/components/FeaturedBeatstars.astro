@@ -3,7 +3,7 @@
 const playerUrl = "https://www.beatstars.com/player/?storeId=133234";
 ---
 
-<section id="player" class="px-2 sm:px-4 mt-8" style="scroll-margin-top: 100px;">
+<section class="px-2 sm:px-4 mt-8" style="scroll-margin-top: 100px;">
   <div class="relative mx-auto max-w-[98%] lg:max-w-7xl group">
     
     <div class="absolute -inset-1 bg-gradient-to-r from-fuchsia-600/10 to-purple-600/10 rounded-[2rem] blur opacity-50 group-hover:opacity-100 transition duration-1000"></div>
@@ -19,7 +19,7 @@ const playerUrl = "https://www.beatstars.com/player/?storeId=133234";
         loading="lazy"
         fetchpriority="low"
         referrerpolicy="strict-origin-when-cross-origin"
-        class="bg-black w-full"
+        class="beatstars-embed-iframe bg-black w-full"
         allow="autoplay"
       >
         <span data-i18n="player.noIframeSupport">-- Your browser does not support iframes --</span>

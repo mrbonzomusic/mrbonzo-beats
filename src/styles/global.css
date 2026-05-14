@@ -99,9 +99,10 @@ body {
   pointer-events: none;
   position: fixed;
   inset: 0;
-  z-index: 6;
+  z-index: 80;
   overflow: hidden;
   opacity: 1;
+  mix-blend-mode: soft-light;
 }
 
 .grain-overlay::before {
@@ -111,7 +112,7 @@ body {
   top: -50%;
   width: 200%;
   height: 200%;
-  opacity: 0.045;
+  opacity: 0.08;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   animation: grain-shift 0.55s steps(2) infinite;
 }
@@ -120,7 +121,7 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  opacity: 0.03;
+  opacity: 0.055;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128'%3E%3Cfilter id='n2'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n2)'/%3E%3C/svg%3E");
   animation: grain-drift 8s linear infinite;
 }
@@ -218,5 +219,11 @@ body {
   body.has-cursor-fx [role="button"],
   body.has-cursor-fx input[type="submit"] {
     cursor: none;
+  }
+
+  /* Cross-origin embeds: parent page keeps hidden system cursor over iframe */
+  body.has-cursor-fx iframe,
+  body.has-cursor-fx .beatstars-embed-iframe {
+    cursor: none !important;
   }
 }

@@ -31,9 +31,9 @@ Static Astro site (`output: "static"`). One primary page (`src/pages/index.astro
 
 ## Visual effects (runtime, `BaseLayout` + `global.css`)
 
-- **Film grain:** A fixed `.grain-overlay` (first child of `<body>`, `pointer-events: none`, low z-index) uses layered **SVG `feTurbulence`** textures with subtle CSS animation. Respects **`prefers-reduced-motion`** (animations off).
-- **Desktop glow cursor:** `#cursor-glow` — fuchsia radial blur ring following the pointer with a **velocity-based spring** (`requestAnimationFrame`). Active only when **`(pointer: fine)` and `min-width: 1024px`**; `body.has-cursor-fx` sets `cursor: none`. Hovering **`a` / `button` / key controls** enlarges the ring (`elementFromPoint` + `.is-hover`). Initialized once per session (`window.__mrbonzoCursorFx`).
-- **Scroll reveal:** Sections with class **`section-reveal`** (Collaborations, Beats / TypeBeat grid, Drum Kits) start translated + faded; **`IntersectionObserver`** adds **`is-revealed`** when they enter the viewport (`rootMargin` bottom shrink, `threshold` ~0.08). Disabled when **`prefers-reduced-motion: reduce`**. On **`astro:page-load`**, only reveal logic re-runs for soft navigations.
+- **Film grain:** Fixed `.grain-overlay` (`z-index: 80`, **`mix-blend-mode: soft-light`**) so texture reads on dark section fills without a heavy veil over type; layered **SVG `feTurbulence`** (~**0.08** / **0.055** opacity). **`pointer-events: none`**. Respects **`prefers-reduced-motion`**.
+- **Desktop glow cursor:** `#cursor-glow` — snappier **velocity spring** (higher tension / lower friction + snap-to-pointer when within about 1.2px). **`cursor: none`** on **`iframe`** / **`.beatstars-embed-iframe`** when `body.has-cursor-fx`; hover ring uses **`elementFromPoint`** plus **bounding-box hit test** over the Beatstars embed so the glow stays consistent over the player. Initialized once (`window.__mrbonzoCursorFx`).
+- **Scroll reveal:** **`section-reveal`** on major page bands (Collaborations, Player, Beats, Kits, Releases, About, Contact) via **`index.astro`** wrappers + inner sections where applicable; **`IntersectionObserver`** → **`is-revealed`**. Reduced-motion bypass. **`astro:page-load`** re-binds reveal only.
 
 ## Client-side i18n script (`BaseLayout.astro`)
 

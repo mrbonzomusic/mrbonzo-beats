@@ -24,7 +24,7 @@ Rules for future changes so the site stays consistent and flicker-free.
 - **External URLs** (social, stores) may stay in config; **link labels** should use `data-i18n` where they are not proper nouns/brand names.
 - **`alt` text**: use `data-i18n-alt` when the phrase is translatable. Proper nouns (playlist titles, product names) may stay locale-neutral.
 - **`iframe` `title`**: use `data-i18n-title` (see Beatstars player).
-- **Scroll reveal:** New homepage sections that should animate in on scroll can add the **`section-reveal`** class (see `global.css` + `BaseLayout` inline script); keep **`prefers-reduced-motion`** in mind (class is a no-op when reduce is set).
+- **Scroll reveal:** New homepage sections that should animate in on scroll can add the **`section-reveal`** class on the outer `section` in `index.astro` (Player, Beats, Kits, Releases, About, Contact, plus inner sections that own the class e.g. Collaborations); keep **`prefers-reduced-motion`** in mind (class is a no-op when reduce is set).
 
 ## 5. Z-index stacking (fixed UI)
 

@@ -17,7 +17,7 @@ const siteURL = "https://mrbonzo-beats.pages.dev/";
 const discordInvite = socialLinks.discord || "https://discord.gg/hmpCHd4J";
 const pond5Link = "https://www.pond5.com/artist/mrbonzobeats";
 const tikTokLink = "https://www.tiktok.com/@mrbonzomusic";
-const ytBeats = "https://www.youtube.com/@mrbonzobeatz";
+const ytBeats = "https://www.youtube.com/@mrbonzobeats";
 const ytArtist = "https://www.youtube.com/@mrbonzomusic";
 const spotifyLink = socialLinks.spotify;
 const translations = { en, el };
@@ -433,27 +433,46 @@ const translations = { en, el };
           var vy = 0;
           var rafId = 0;
 
+          function pointOverBeatstarsIframe(px, py) {
+            var list = document.querySelectorAll('.beatstars-embed-iframe');
+            for (var i = 0; i < list.length; i++) {
+              var el = list[i];
+              var r = el.getBoundingClientRect();
+              if (px >= r.left && px <= r.right && py >= r.top && py <= r.bottom) return true;
+            }
+            return false;
+          }
+
           function tick() {
             rafId = 0;
             if (!glow.classList.contains('is-active')) return;
-            var tension = 0.26;
-            var friction = 0.74;
+            var tension = 0.48;
+            var friction = 0.58;
             vx = (vx + (tx - x) * tension) * friction;
             vy = (vy + (ty - y) * tension) * friction;
             x += vx;
             y += vy;
+            var dist = Math.hypot(tx - x, ty - y);
+            if (dist < 1.2) {
+              x = tx;
+              y = ty;
+              vx = 0;
+              vy = 0;
+            }
             var under = null;
             try {
               under = document.elementFromPoint(tx, ty);
             } catch (e) {}
-            var hover =
-              !!(
-                under &&
-                under.closest &&
-                under.closest(
-                  'a, button, [role="button"], input[type="submit"], input[type="button"], label, .lang-switch-btn, #burger-btn, #share-btn'
-                )
-              );
+            var overIframe = pointOverBeatstarsIframe(tx, ty);
+            var hover = !!(
+              overIframe ||
+              (under &&
+                (under.tagName === 'IFRAME' ||
+                  (under.closest &&
+                    under.closest(
+                      'a, button, [role="button"], input[type="submit"], input[type="button"], label, .lang-switch-btn, #burger-btn, #share-btn'
+                    ))))
+            );
             glow.classList.toggle('is-hover', hover);
             glow.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0) translate(-50%,-50%)';
             rafId = requestAnimationFrame(tick);

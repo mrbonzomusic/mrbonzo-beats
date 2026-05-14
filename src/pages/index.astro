@@ -47,28 +47,28 @@ if (!(spotifyData.status === "scrape" && spotifyData.releases.length > 0)) {
 
   <CollaborationsSection />
 
-  <section id="player" class="scroll-mt-24">
+  <section id="player" class="section-reveal scroll-mt-24">
     <FeaturedBeatstars />
   </section>
 
-  <section id="beats" class="scroll-mt-24">
+  <section id="beats" class="section-reveal scroll-mt-24">
     <TypeBeatGrid />
   </section>
 
-  <section id="drumkits" class="scroll-mt-24">
+  <section id="drumkits" class="section-reveal scroll-mt-24">
     <DrumKits />
   </section>
 
-  <section id="latest-releases" class="scroll-mt-24">
+  <section id="latest-releases" class="section-reveal scroll-mt-24">
     <DiscographySection releases={spotifyData.releases} status={spotifyData.status} />
   </section>
 
-  <section id="about" class="scroll-mt-24">
+  <section id="about" class="section-reveal scroll-mt-24">
     <AboutSection />
     <ServicesSection />
   </section>
   
-  <section id="contact" class="scroll-mt-24">
+  <section id="contact" class="section-reveal scroll-mt-24">
     <ContactSection /> 
   </section>
 
