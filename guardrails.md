@@ -29,9 +29,9 @@ Rules for future changes so the site stays consistent and flicker-free.
 
 Order from **top to bottom** (highest on top):
 
-1. **BaseBox banner** (`.basebox-banner`) — top promo strip; must stay above the header.
-2. **Header** (`#main-header`) — navigation; above page content, below the banner.
-3. **Main content** — sections, dropdowns use local stacking within the header where needed.
+1. **BaseBox banner** (`.basebox-banner`) — in-flow promo strip at the very top; scrolls away (not a fixed layer).
+2. **Header** (`#main-header`) — `position: sticky` below the banner so it pins after scroll without covering the banner initially.
+3. **Main content** — flows after the header; sections may use `scroll-margin-top` for in-page anchors.
 
 When adding modals or overlays, assign z-index **above** the header only if they must cover the whole viewport; document the value here if you introduce a new layer.
 

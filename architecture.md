@@ -9,7 +9,7 @@ Static Astro site (`output: "static"`). One primary page (`src/pages/index.astro
 | Area | Role |
 |------|------|
 | `src/pages/` | Routes; `index.astro` assembles the homepage. |
-| `src/layouts/BaseLayout.astro` | Global HTML shell: meta, fonts, analytics, fixed BaseBox banner, fixed header/nav, mobile menu, **client-side i18n**, dynamic top padding. |
+| `src/layouts/BaseLayout.astro` | Global HTML shell: meta, fonts, analytics, BaseBox promo strip (in-flow), sticky header/nav, mobile menu, **client-side i18n**, optional layout tweaks. |
 | `src/components/` | Page sections (Hero, player, playlists, releases, about, contact, footer, etc.). |
 | `src/i18n/en.ts`, `src/i18n/el.ts` | Translation dictionaries (plain objects, default export). |
 | `src/config/` | URLs, analytics constants, collaboration list. |
@@ -22,12 +22,12 @@ Static Astro site (`output: "static"`). One primary page (`src/pages/index.astro
 - Header, banner, and i18n script live only in `BaseLayout`; section components do not repeat layout chrome.
 - `BaseLayout` imports `en` and `el`, builds `const translations = { en, el }`, and passes it to an **inline** script via `define:vars={{ translations }}` so the browser receives a serialized JSON snapshot at build time.
 
-## Fixed banner + header and dynamic padding
+## BaseBox banner + sticky header
 
-- **BaseBox banner** (`.basebox-banner`): `position: fixed; top: 0; left: 0; right: 0;` with a high `z-index` so it stays above the page.
-- **Header** (`#main-header`): `position: fixed` with a separate high `z-index`, below the banner in stacking order.
-- After paint, `adjustLayout()` (in `BaseLayout` inline script) measures the banner height, sets `header.style.top` to that height so the header sits **under** the banner, and sets `document.body.style.paddingTop` to `bannerHeight + headerHeight + 30` so content is not hidden under the fixed chrome.
-- `resize` and delayed calls after language change re-run `adjustLayout()` so reflows from text length changes stay corrected.
+- **BaseBox banner** (`.basebox-banner`): normal document flow (`position: relative`), full width at the top of the page. It **scrolls away** with the page (not fixed).
+- **Header** (`#main-header`): `position: sticky; top: 0` so that after the banner scrolls off, the nav bar stays pinned to the viewport top without overlapping the banner on first paint.
+- **`adjustLayout()`** no longer stacks a fixed banner under a fixed header; it clears legacy `padding-top` / `top` inline styles when present so older sessions do not keep empty offset.
+- `resize` and delayed calls after language change still invoke `adjustLayout()` (keeps hook for future layout tweaks; currently resets legacy inline offsets).
 
 ## Client-side i18n script (`BaseLayout.astro`)
 

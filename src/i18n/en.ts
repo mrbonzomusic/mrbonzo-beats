@@ -32,6 +32,7 @@ const en = {
     mobileNavigation: "Navigation",
     mobileChannels: "Channels",
     mobileSocialMore: "Social & More",
+    mobileSocials: "Socials",
     latestReleases: "Releases",
     drumKits: "Drum Kits"
   },

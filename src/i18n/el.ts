@@ -32,6 +32,7 @@ const el = {
     mobileNavigation: "Πλοήγηση",
     mobileChannels: "Κανάλια",
     mobileSocialMore: "Social & More",
+    mobileSocials: "Κοινωνικά",
     latestReleases: "Releases",
     drumKits: "Drum Kits"
   },

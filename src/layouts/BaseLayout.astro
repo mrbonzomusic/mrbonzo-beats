@@ -76,7 +76,7 @@ const translations = { en, el };
     <script data-goatcounter="https://mrbonzo.goatcounter.com/count" async src="https://gc.zgo.at/count.js" crossorigin="anonymous"></script>
 
     <style is:global>
-      /* --- BaseBox Banner --- */
+      /* --- BaseBox Banner (in-flow; scrolls away) --- */
       .basebox-banner {
         background: linear-gradient(90deg, #000, #1a001a, #000);
         color: #fff;
@@ -87,11 +87,8 @@ const translations = { en, el };
         letter-spacing: 0.02em;
         text-transform: uppercase;
         border-bottom: 1px solid rgba(217, 70, 239, 0.2);
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 10000001;
+        position: relative;
+        z-index: 30;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -129,14 +126,16 @@ const translations = { en, el };
         .basebox-badge { font-size: 7.5px; padding: 0px 6px; }
       }
 
-      /* --- Header & Layout --- */
+      /* --- Header: sticky under banner --- */
       header#main-header {
-        position: fixed !important;
+        position: sticky !important;
+        top: 0 !important;
         left: 0 !important;
         right: 0 !important;
         z-index: 9999999 !important;
         padding-top: 0.75rem;
-        transition: top 0.2s ease;
+        padding-bottom: 0.25rem;
+        background: linear-gradient(to bottom, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.75) 70%, transparent 100%);
       }
 
       body { background-color: black; }
@@ -157,6 +156,10 @@ const translations = { en, el };
       #mobile-menu.hidden { display: none; }
       .mobile-link { display: block; padding: 0.85rem 1rem; color: #e5e7eb; font-weight: 800; text-transform: uppercase; font-size: 11px; }
       .mobile-section-label { font-size: 9px; font-weight: 900; text-transform: uppercase; color: #d946ef; padding: 1.5rem 1rem 0.5rem 1rem; opacity: 0.8; }
+      @media (max-width: 1023px) {
+        .mobile-link { font-size: 10px; padding: 0.65rem 0.85rem; letter-spacing: 0.04em; }
+        .mobile-section-label { font-size: 8px; padding: 1.1rem 0.85rem 0.35rem 0.85rem; }
+      }
     </style>
   </head>
 
@@ -227,19 +230,21 @@ const translations = { en, el };
         </div>
 
         <div id="mobile-menu" class="hidden lg:hidden mt-2">
-          <div class="rounded-3xl border border-fuchsia-500/20 bg-black/95 backdrop-blur-xl p-2 shadow-2xl max-h-[80vh] overflow-y-auto">
+          <div class="rounded-3xl border border-fuchsia-500/20 bg-black/95 backdrop-blur-xl p-2 shadow-2xl max-h-[75vh] overflow-y-auto">
             <div class="mobile-section-label" data-i18n="nav.mobileNavigation">Navigation</div>
             <a href="#player" class="mobile-link text-fuchsia-400" data-i18n="nav.player">Player</a>
             <a href="#beats" class="mobile-link" data-i18n="nav.beats">Beats</a>
-            <a href="#drumkits" class="mobile-link" data-i18n="nav.drumKits">Drum Kits</a>
-            <div class="mobile-section-label" data-i18n="nav.mobileSocialMore">Social</div>
-            <a href={ytBeats} target="_blank" class="mobile-link" data-i18n="nav.youtubeBeats">YouTube Beats</a>
-            <a href={spotifyLink} target="_blank" class="mobile-link" data-i18n="nav.spotify">Spotify</a>
-            <a href={tikTokLink} target="_blank" class="mobile-link" data-i18n="nav.tiktok">TikTok</a>
-            <a href={discordInvite} target="_blank" class="mobile-link" data-i18n="nav.discord">Discord</a>
-            <div class="h-px bg-white/5 my-2 mx-4"></div>
-            <a href="#about" class="mobile-link opacity-70" data-i18n="nav.about">About</a>
-            <a href="#contact" class="mobile-link opacity-70" data-i18n="nav.contact">Contact</a>
+            <a href="#drumkits" class="mobile-link" data-i18n="nav.kits">Kits</a>
+            <a href="#latest-releases" class="mobile-link" data-i18n="nav.releases">Releases</a>
+            <a href="#about" class="mobile-link opacity-80" data-i18n="nav.about">About</a>
+            <a href="#contact" class="mobile-link opacity-80" data-i18n="nav.contact">Contact</a>
+            <div class="mobile-section-label" data-i18n="nav.mobileSocials">Socials</div>
+            <a href={ytBeats} target="_blank" rel="noopener noreferrer" class="mobile-link" data-i18n="nav.youtubeBeats">YouTube Beats</a>
+            <a href={ytArtist} target="_blank" rel="noopener noreferrer" class="mobile-link" data-i18n="nav.youtubeArtist">YouTube Artist</a>
+            <a href={spotifyLink} target="_blank" rel="noopener noreferrer" class="mobile-link" data-i18n="nav.spotify">Spotify</a>
+            <a href={tikTokLink} target="_blank" rel="noopener noreferrer" class="mobile-link" data-i18n="nav.tiktok">TikTok</a>
+            <a href={pond5Link} target="_blank" rel="noopener noreferrer" class="mobile-link" data-i18n="nav.pond5">Pond5</a>
+            <a href={discordInvite} target="_blank" rel="noopener noreferrer" class="mobile-link" data-i18n="nav.discord">Discord</a>
           </div>
         </div>
       </div>
@@ -309,14 +314,11 @@ const translations = { en, el };
       }
 
       function adjustLayout() {
-        const banner = document.querySelector('.basebox-banner');
-        const header = document.getElementById('main-header');
-        if (banner && header) {
-          const bannerH = banner.offsetHeight;
-          const headerH = header.offsetHeight || 60; // Fallback αν δεν έχει φορτώσει ακόμα το ύψος
-          header.style.top = bannerH + 'px';
-          document.body.style.paddingTop = (bannerH + headerH + 30) + 'px';
+        var header = document.getElementById('main-header');
+        if (header) {
+          header.style.top = '';
         }
+        document.body.style.paddingTop = '';
       }
 
       // ΑΜΕΣΗ ΕΚΤΕΛΕΣΗ πριν το load για αποφυγή του "τρεμουλιάσματος"
