@@ -87,7 +87,8 @@ const translations = { en, el };
         letter-spacing: 0.02em;
         text-transform: uppercase;
         border-bottom: 1px solid rgba(217, 70, 239, 0.2);
-        position: relative;
+        position: static;
+        width: 100%;
         z-index: 30;
         display: flex;
         justify-content: center;
@@ -164,7 +165,9 @@ const translations = { en, el };
   </head>
 
   <body class="min-h-screen antialiased bg-black text-white">
-    
+    <div class="grain-overlay" aria-hidden="true"></div>
+    <div id="cursor-glow" class="cursor-glow" aria-hidden="true"></div>
+
     <div class="basebox-banner">
       <a href="https://forms.gle/AC86bRqwhfNmbCUh9" target="_blank" rel="noopener noreferrer">
         <span>🚀 <strong>BASEBOX</strong>:</span>
@@ -375,6 +378,131 @@ const translations = { en, el };
         adjustLayout();
         initEventListeners();
       });
+    </script>
+    <script is:inline>
+      (function () {
+        function initSectionReveal() {
+          if (window.__sectionRevealIo) {
+            try {
+              window.__sectionRevealIo.disconnect();
+            } catch (e) {}
+            window.__sectionRevealIo = null;
+          }
+          if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            document.querySelectorAll('.section-reveal').forEach(function (el) {
+              el.classList.add('is-revealed');
+            });
+            return;
+          }
+          var nodes = document.querySelectorAll('.section-reveal:not(.is-revealed)');
+          if (!nodes.length) return;
+          if (!('IntersectionObserver' in window)) {
+            nodes.forEach(function (el) {
+              el.classList.add('is-revealed');
+            });
+            return;
+          }
+          var io = new IntersectionObserver(
+            function (entries) {
+              entries.forEach(function (en) {
+                if (en.isIntersecting) {
+                  en.target.classList.add('is-revealed');
+                  io.unobserve(en.target);
+                }
+              });
+            },
+            { root: null, rootMargin: '0px 0px -6% 0px', threshold: 0.08 }
+          );
+          window.__sectionRevealIo = io;
+          nodes.forEach(function (el) {
+            io.observe(el);
+          });
+        }
+
+        function initCursorGlow() {
+          if (window.__mrbonzoCursorFx) return;
+          var glow = document.getElementById('cursor-glow');
+          if (!glow) return;
+          window.__mrbonzoCursorFx = true;
+          var mq = window.matchMedia('(pointer: fine) and (min-width: 1024px)');
+          var tx = -100;
+          var ty = -100;
+          var x = -100;
+          var y = -100;
+          var vx = 0;
+          var vy = 0;
+          var rafId = 0;
+
+          function tick() {
+            rafId = 0;
+            if (!glow.classList.contains('is-active')) return;
+            var tension = 0.26;
+            var friction = 0.74;
+            vx = (vx + (tx - x) * tension) * friction;
+            vy = (vy + (ty - y) * tension) * friction;
+            x += vx;
+            y += vy;
+            var under = null;
+            try {
+              under = document.elementFromPoint(tx, ty);
+            } catch (e) {}
+            var hover =
+              !!(
+                under &&
+                under.closest &&
+                under.closest(
+                  'a, button, [role="button"], input[type="submit"], input[type="button"], label, .lang-switch-btn, #burger-btn, #share-btn'
+                )
+              );
+            glow.classList.toggle('is-hover', hover);
+            glow.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0) translate(-50%,-50%)';
+            rafId = requestAnimationFrame(tick);
+          }
+
+          function onMove(e) {
+            tx = e.clientX;
+            ty = e.clientY;
+            if (!glow.classList.contains('is-active')) {
+              glow.classList.add('is-active');
+              x = tx;
+              y = ty;
+              vx = 0;
+              vy = 0;
+            }
+            if (!rafId) rafId = requestAnimationFrame(tick);
+          }
+
+          function onLeave() {
+            glow.classList.remove('is-active', 'is-hover');
+            if (rafId) {
+              cancelAnimationFrame(rafId);
+              rafId = 0;
+            }
+          }
+
+          function applyMq() {
+            onLeave();
+            document.body.classList.remove('has-cursor-fx');
+            document.removeEventListener('mousemove', onMove);
+            document.removeEventListener('mouseleave', onLeave);
+            if (!mq.matches) return;
+            document.body.classList.add('has-cursor-fx');
+            document.addEventListener('mousemove', onMove, { passive: true });
+            document.addEventListener('mouseleave', onLeave);
+          }
+
+          if (typeof mq.addEventListener === 'function') {
+            mq.addEventListener('change', applyMq);
+          } else if (mq.addListener) {
+            mq.addListener(applyMq);
+          }
+          applyMq();
+        }
+
+        initSectionReveal();
+        initCursorGlow();
+        document.addEventListener('astro:page-load', initSectionReveal);
+      })();
     </script>
   </body>
 </html>

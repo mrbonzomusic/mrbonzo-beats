@@ -24,10 +24,16 @@ Static Astro site (`output: "static"`). One primary page (`src/pages/index.astro
 
 ## BaseBox banner + sticky header
 
-- **BaseBox banner** (`.basebox-banner`): normal document flow (`position: relative`), full width at the top of the page. It **scrolls away** with the page (not fixed).
+- **BaseBox banner** (`.basebox-banner`): **static** in-flow strip at the top (`position: static`; full width). It **scrolls away** with the page (never `position: fixed`).
 - **Header** (`#main-header`): `position: sticky; top: 0` so that after the banner scrolls off, the nav bar stays pinned to the viewport top without overlapping the banner on first paint.
 - **`adjustLayout()`** no longer stacks a fixed banner under a fixed header; it clears legacy `padding-top` / `top` inline styles when present so older sessions do not keep empty offset.
 - `resize` and delayed calls after language change still invoke `adjustLayout()` (keeps hook for future layout tweaks; currently resets legacy inline offsets).
+
+## Visual effects (runtime, `BaseLayout` + `global.css`)
+
+- **Film grain:** A fixed `.grain-overlay` (first child of `<body>`, `pointer-events: none`, low z-index) uses layered **SVG `feTurbulence`** textures with subtle CSS animation. Respects **`prefers-reduced-motion`** (animations off).
+- **Desktop glow cursor:** `#cursor-glow` — fuchsia radial blur ring following the pointer with a **velocity-based spring** (`requestAnimationFrame`). Active only when **`(pointer: fine)` and `min-width: 1024px`**; `body.has-cursor-fx` sets `cursor: none`. Hovering **`a` / `button` / key controls** enlarges the ring (`elementFromPoint` + `.is-hover`). Initialized once per session (`window.__mrbonzoCursorFx`).
+- **Scroll reveal:** Sections with class **`section-reveal`** (Collaborations, Beats / TypeBeat grid, Drum Kits) start translated + faded; **`IntersectionObserver`** adds **`is-revealed`** when they enter the viewport (`rootMargin` bottom shrink, `threshold` ~0.08). Disabled when **`prefers-reduced-motion: reduce`**. On **`astro:page-load`**, only reveal logic re-runs for soft navigations.
 
 ## Client-side i18n script (`BaseLayout.astro`)
 
