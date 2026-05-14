@@ -58,10 +58,10 @@ const translations = { en, el };
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
-    <!-- CSP via meta: relaxed for required inline i18n + gtag; prefer stricter headers on CDN (see public/_headers) -->
+    <!-- CSP via meta: Beatstars player + analytics; prefer stricter headers on CDN (see public/_headers) -->
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; base-uri 'self'; form-action 'self' https://forms.gle https://docs.google.com; object-src 'none'; upgrade-insecure-requests; img-src 'self' data: https: blob:; font-src 'self' https://fonts.gstatic.com data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://ssl.google-analytics.com https://gc.zgo.at; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://region1.google-analytics.com https://analytics.google.com https://*.analytics.google.com https://www.googletagmanager.com https://gc.zgo.at https://*.zgo.at https://mrbonzo.goatcounter.com https://*.doubleclick.net; frame-src https://www.beatstars.com;"
+      content="default-src 'self'; base-uri 'self'; form-action 'self' https://forms.gle https://docs.google.com; object-src 'none'; upgrade-insecure-requests; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://ssl.google-analytics.com https://gc.zgo.at https://www.beatstars.com https://*.beatstars.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https://*.beatstars.com https://*.beatstars.net https://*.ytimg.com https://mrbonzo-beats.pages.dev; font-src 'self' https://fonts.gstatic.com data:; frame-src 'self' https://www.beatstars.com https://*.beatstars.net https://www.youtube.com; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://region1.google-analytics.com https://analytics.google.com https://www.googletagmanager.com https://gc.zgo.at https://*.zgo.at https://mrbonzo.goatcounter.com https://*.doubleclick.net https://*.beatstars.com https://*.beatstars.net;"
     />
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
