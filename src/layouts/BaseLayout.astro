@@ -163,12 +163,6 @@ const translations = { en, el };
   </head>
 
   <body class="min-h-screen antialiased bg-black text-white">
-    <div class="grain-overlay" aria-hidden="true"></div>
-    <div id="cursor-pro-root" class="cursor-pro-root" aria-hidden="true">
-      <div id="cursor-pro-ring" class="cursor-pro-ring"></div>
-      <div id="cursor-pro-dot" class="cursor-pro-dot"></div>
-    </div>
-
     <div class="basebox-banner">
       <a href="https://forms.gle/AC86bRqwhfNmbCUh9" target="_blank" rel="noopener noreferrer">
         <span>🚀 <strong>BASEBOX</strong>:</span>
@@ -252,6 +246,7 @@ const translations = { en, el };
           </div>
         </div>
       </div>
+      <div id="nav-hover-ring" class="nav-hover-ring" aria-hidden="true"></div>
     </header>
 
     <main class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -420,127 +415,122 @@ const translations = { en, el };
           });
         }
 
-        function initCursorPro() {
-          if (window.__mrbonzoCursorFx) return;
-          var root = document.getElementById('cursor-pro-root');
-          var ring = document.getElementById('cursor-pro-ring');
-          var dot = document.getElementById('cursor-pro-dot');
-          if (!root || !ring || !dot) return;
-          window.__mrbonzoCursorFx = true;
+        function initNavbarHoverRing() {
+          if (window.__mrbonzoNavHoverRing) return;
+          var header = document.getElementById('main-header');
+          var ring = document.getElementById('nav-hover-ring');
+          if (!header || !ring) return;
+          window.__mrbonzoNavHoverRing = true;
           var mq = window.matchMedia('(pointer: fine) and (min-width: 1024px)');
-          var tx = -100;
-          var ty = -100;
-          var x = -100;
-          var y = -100;
+          var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+          var x = 0;
+          var y = 0;
           var vx = 0;
           var vy = 0;
           var rafId = 0;
-          var hoverSel =
-            'a, button, [role="button"], input[type="submit"], input[type="button"], label, .lang-switch-btn, #burger-btn, #share-btn';
+          var activeTarget = null;
 
-          function pointOverBeatstarsIframe(px, py) {
-            var list = document.querySelectorAll('.beatstars-embed-iframe');
-            for (var i = 0; i < list.length; i++) {
-              var el = list[i];
-              var r = el.getBoundingClientRect();
-              if (px >= r.left && px <= r.right && py >= r.top && py <= r.bottom) return true;
-            }
-            return false;
+          function pickNavTarget(el) {
+            if (!el || !header.contains(el)) return null;
+            var t = el.closest('a, button');
+            if (!t || !header.contains(t)) return null;
+            if (t.closest('nav')) return t;
+            if (t.closest('#mobile-menu')) return t;
+            if (t.closest('#language-switcher')) return t;
+            if (t.id === 'share-btn' || t.id === 'burger-btn') return t;
+            if (t.tagName === 'A' && t.closest('.flex.items-center.gap-2')) return t;
+            return null;
           }
 
-          function tick() {
-            rafId = 0;
-            if (!root.classList.contains('is-active') || root.classList.contains('is-off')) return;
-            var tension = 0.48;
-            var friction = 0.58;
-            var ringTx = tx;
-            var ringTy = ty;
-            var ringW = 36;
-            var ringH = 36;
-            var under = null;
-            try {
-              under = document.elementFromPoint(tx, ty);
-            } catch (e) {}
-            var hover = !!(
-              under &&
-              under.closest &&
-              under.closest(hoverSel)
-            );
-            root.classList.toggle('is-hover', hover);
-            if (hover && under) {
-              var t = under.closest(hoverSel);
-              if (t) {
-                var rr = t.getBoundingClientRect();
-                ringTx = (rr.left + rr.right) / 2;
-                ringTy = (rr.top + rr.bottom) / 2;
-                ringW = Math.max(48, rr.width + 18);
-                ringH = Math.max(48, rr.height + 18);
-              }
-            }
-            vx = (vx + (ringTx - x) * tension) * friction;
-            vy = (vy + (ringTy - y) * tension) * friction;
-            x += vx;
-            y += vy;
-            var dist = Math.hypot(ringTx - x, ringTy - y);
-            if (dist < 1.2) {
-              x = ringTx;
-              y = ringTy;
-              vx = 0;
-              vy = 0;
-            }
-            ring.style.width = ringW + 'px';
-            ring.style.height = ringH + 'px';
-            var br = Math.min(ringW, ringH) / 2;
-            ring.style.borderRadius = br + 'px';
-            ring.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0) translate(-50%,-50%)';
-            rafId = requestAnimationFrame(tick);
-          }
-
-          function onMove(e) {
-            tx = e.clientX;
-            ty = e.clientY;
-            dot.style.transform =
-              'translate3d(' + tx + 'px,' + ty + 'px,0) translate(-50%,-50%)';
-            var onI = pointOverBeatstarsIframe(tx, ty);
-            if (onI) {
-              root.classList.add('is-off');
-              document.body.classList.add('cursor-pro--native-iframe');
-              if (rafId) {
-                cancelAnimationFrame(rafId);
-                rafId = 0;
-              }
-              return;
-            }
-            root.classList.remove('is-off');
-            document.body.classList.remove('cursor-pro--native-iframe');
-            if (!root.classList.contains('is-active')) {
-              root.classList.add('is-active');
-              x = tx;
-              y = ty;
-              vx = 0;
-              vy = 0;
-            }
-            if (!rafId) rafId = requestAnimationFrame(tick);
-          }
-
-          function onLeave() {
-            root.classList.remove('is-active', 'is-hover', 'is-off');
-            document.body.classList.remove('cursor-pro--native-iframe');
+          function stopTick() {
             if (rafId) {
               cancelAnimationFrame(rafId);
               rafId = 0;
             }
           }
 
+          function hideRing() {
+            activeTarget = null;
+            ring.classList.remove('is-on');
+            stopTick();
+          }
+
+          function tick() {
+            rafId = 0;
+            if (!activeTarget || !ring.classList.contains('is-on')) return;
+            var rr = activeTarget.getBoundingClientRect();
+            var ringTx = (rr.left + rr.right) / 2;
+            var ringTy = (rr.top + rr.bottom) / 2;
+            var rw = Math.max(40, rr.width + 14);
+            var rh = Math.max(40, rr.height + 14);
+            if (reduceMotion.matches) {
+              x = ringTx;
+              y = ringTy;
+            } else {
+              var tension = 0.48;
+              var friction = 0.58;
+              vx = (vx + (ringTx - x) * tension) * friction;
+              vy = (vy + (ringTy - y) * tension) * friction;
+              x += vx;
+              y += vy;
+              var dist = Math.hypot(ringTx - x, ringTy - y);
+              if (dist < 1.2) {
+                x = ringTx;
+                y = ringTy;
+                vx = 0;
+                vy = 0;
+              }
+            }
+            ring.style.width = rw + 'px';
+            ring.style.height = rh + 'px';
+            ring.style.borderRadius = Math.min(rw, rh) / 2 + 'px';
+            ring.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0) translate(-50%,-50%)';
+            rafId = requestAnimationFrame(tick);
+          }
+
+          function onMove(e) {
+            var under = null;
+            try {
+              under = document.elementFromPoint(e.clientX, e.clientY);
+            } catch (err) {}
+            var t = pickNavTarget(under);
+            if (!t) {
+              hideRing();
+              return;
+            }
+            if (t !== activeTarget) {
+              activeTarget = t;
+              if (!ring.classList.contains('is-on')) {
+                var r0 = t.getBoundingClientRect();
+                x = (r0.left + r0.right) / 2;
+                y = (r0.top + r0.bottom) / 2;
+                vx = 0;
+                vy = 0;
+              }
+            }
+            ring.classList.add('is-on');
+            if (!rafId) rafId = requestAnimationFrame(tick);
+          }
+
+          function onLeave() {
+            hideRing();
+          }
+
+          function unbind() {
+            header.removeEventListener('mousemove', onMove);
+            header.removeEventListener('mouseleave', onLeave);
+            hideRing();
+          }
+
+          function bind() {
+            header.addEventListener('mousemove', onMove, { passive: true });
+            header.addEventListener('mouseleave', onLeave);
+          }
+
           function applyMq() {
-            onLeave();
-            document.body.classList.remove('has-cursor-fx');
-            document.removeEventListener('mousemove', onMove);
-            document.removeEventListener('mouseleave', onLeave);
+            unbind();
             if (!mq.matches) return;
-            document.body.classList.add('has-cursor-fx');
-            document.addEventListener('mousemove', onMove, { passive: true });
-            document.addEventListener('mouseleave', onLeave);
+            bind();
           }
 
           if (typeof mq.addEventListener === 'function') {
@@ -548,11 +538,16 @@ const translations = { en, el };
           } else if (mq.addListener) {
             mq.addListener(applyMq);
           }
+          if (typeof reduceMotion.addEventListener === 'function') {
+            reduceMotion.addEventListener('change', applyMq);
+          } else if (reduceMotion.addListener) {
+            reduceMotion.addListener(applyMq);
+          }
           applyMq();
         }
 
         initSectionReveal();
-        initCursorPro();
+        initNavbarHoverRing();
         document.addEventListener('astro:page-load', initSectionReveal);
       })();
     </script>

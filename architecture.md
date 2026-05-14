@@ -31,8 +31,7 @@ Static Astro site (`output: "static"`). One primary page (`src/pages/index.astro
 
 ## Visual effects (runtime, `BaseLayout` + `global.css`)
 
-- **Film grain:** Fixed `.grain-overlay` (`z-index: 80`, **`mix-blend-mode: soft-light`**) with layered **SVG `feTurbulence`** at **~0.12** opacity per layer; **`grain-bg-twitch`** / **`grain-bg-twitch-reverse`** on **`background-position`** (~**0.1s** `steps(1)`) plus slower **`transform`** drift. **`pointer-events: none`**. Respects **`prefers-reduced-motion`**.
-- **Desktop “pro” cursor:** `#cursor-pro-root` — **instant 5px dot** at pointer; **outline ring** (~36px default) follows with the same **velocity spring** (tension / friction + snap within ~1.2px). On **link/button** hover, dot hides and the ring **sizes to the target** (`elementFromPoint` + `closest`). Over **`.beatstars-embed-iframe`**, the custom layer is **fully hidden** and **`body.cursor-pro--native-iframe`** restores **native cursor** (including on the iframe). Initialized once (`window.__mrbonzoCursorFx`).
+- **Navbar hover ring:** `#nav-hover-ring` lives inside **`#main-header`**. On **`(pointer: fine)`** and **`min-width: 1024px`**, `mousemove` / `mouseleave` on the header drive a single **outline ring** that only appears while the pointer hovers **nav links**, **dropdown controls**, **`#share-btn`**, **`#burger-btn`**, **language switcher buttons**, **Store CTA**, or **mobile menu** links — not the logo, not blank chrome. **`elementFromPoint`** + **`closest`** gate targets; leaving the header **hides** the ring. Position and size follow the active control with the same **velocity spring** as before (tension / friction + snap), or **instant** updates when **`prefers-reduced-motion: reduce`**. Initialized once (`window.__mrbonzoNavHoverRing`).
 - **Scroll reveal:** **`section-reveal`** on major page bands (Collaborations, Player, Beats, Kits, Releases, About, Contact) via **`index.astro`** wrappers + inner sections where applicable; **`IntersectionObserver`** → **`is-revealed`**. Reduced-motion bypass. **`astro:page-load`** re-binds reveal only.
 
 ## Client-side i18n script (`BaseLayout.astro`)
@@ -66,7 +65,3 @@ Static Astro site (`output: "static"`). One primary page (`src/pages/index.astro
 - **Audit log:** append-only lines in **`.git/git-save-doc-audit.log`** (local to the clone, not committed) describing whether docs were touched, bypassed, or assumed up-to-date.
 - **Multi-branch:** optional `--sync-branches main,develop` merges current `HEAD` into each listed branch and pushes (manual conflict resolution if needed). Optional `--push-all` pushes every local branch that is **ahead** of its upstream.
 - **Why Node:** one entrypoint that works on **Windows and Unix**, matching how this Astro repo is already driven via `npm`.
-
----
-
-> **git-save (auto-stub):** Structural or i18n-related paths changed in this commit. Expand `architecture.md` / `guardrails.md` if behaviour, keys, or layout rules changed.
