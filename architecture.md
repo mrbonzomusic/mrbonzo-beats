@@ -66,3 +66,7 @@ Static Astro site (`output: "static"`). One primary page (`src/pages/index.astro
 - **Audit log:** append-only lines in **`.git/git-save-doc-audit.log`** (local to the clone, not committed) describing whether docs were touched, bypassed, or assumed up-to-date.
 - **Multi-branch:** optional `--sync-branches main,develop` merges current `HEAD` into each listed branch and pushes (manual conflict resolution if needed). Optional `--push-all` pushes every local branch that is **ahead** of its upstream.
 - **Why Node:** one entrypoint that works on **Windows and Unix**, matching how this Astro repo is already driven via `npm`.
+
+---
+
+> **git-save (auto-stub):** Structural or i18n-related paths changed in this commit. Expand `architecture.md` / `guardrails.md` if behaviour, keys, or layout rules changed.

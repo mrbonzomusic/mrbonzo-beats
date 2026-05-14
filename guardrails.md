@@ -60,3 +60,7 @@ When adding modals or overlays, assign z-index **above** the header only if they
 - **SRI (`integrity=`)** is not pinned on volatile vendor scripts (e.g. GTM); rely on **CSP allowlists** and HTTPS. For **self-hosted** scripts in `public/`, add SRI when the file is immutable.
 - **HTML in i18n:** New rich-text keys must be added to the **`htmlKeys`** object in `BaseLayout.astro` or kept as plain text — never inject untrusted HTML into `en.ts` / `el.ts`.
 - **Forms:** There is no server-side contact form today. If you add one, use a **honeypot** (hidden field), server validation, rate limits, and optionally CAPTCHA; see the HTML comment in `ContactSection.astro`.
+
+---
+
+> **git-save (auto-stub):** Structural or i18n-related paths changed in this commit. Expand `architecture.md` / `guardrails.md` if behaviour, keys, or layout rules changed.
