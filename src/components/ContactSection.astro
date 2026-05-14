@@ -3,6 +3,8 @@ import { socialLinks } from "../config/links";
 ---
 
 <section id="contact" class="relative mt-20 py-20 px-6 overflow-hidden rounded-[2.5rem] border border-fuchsia-500/20 bg-black/50 backdrop-blur-md">
+  <!-- No HTML form here (mailto + external links only). If you add a form later: include a honeypot field
+       (e.g. name="website" or "company_url") hidden with CSS, reject server-side when non-empty; rate-limit + CAPTCHA for bots. -->
   <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(217,70,239,0.15),transparent_70%)] pointer-events-none"></div>
 
   <div class="relative z-10 max-w-5xl mx-auto text-center">

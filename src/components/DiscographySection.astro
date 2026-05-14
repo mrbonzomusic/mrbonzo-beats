@@ -100,7 +100,8 @@ const statusDefault =
             <img 
               src={release.cover} 
               alt={`${release.title} cover`} 
-              loading="lazy" 
+              loading="lazy"
+              decoding="async"
               class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" 
             />
             <div class="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100">

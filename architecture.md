@@ -44,6 +44,15 @@ Static Astro site (`output: "static"`). One primary page (`src/pages/index.astro
 - Spotify / RSS release data is fetched **at build time** in `index.astro` and passed into `DiscographySection` as props.
 - UI strings for those dynamic titles (e.g. album names) remain proper nouns; translatable chrome uses `data-i18n` and the shared dictionaries.
 
+## Performance & security (browser)
+
+- **Images:** Hero logo uses `loading="eager"`, `fetchpriority="high"`, `decoding="async"`, and explicit `width`/`height` to reduce CLS. Header logo in `BaseLayout` is also eager + high priority. Below-the-fold images (About portrait, playlists, releases, drum kit art) use `loading="lazy"` and `decoding="async"` where applicable.
+- **Beatstars iframe** (`FeaturedBeatstars.astro`): `loading="lazy"`, `fetchpriority="low"`, `referrerpolicy="strict-origin-when-cross-origin"`. (`decoding` is not a valid iframe attribute; use image tags for `decoding="async"`.)
+- **Preconnect / DNS:** `BaseLayout` preconnects Beatstars, Google Tag Manager, Google Analytics, fonts (existing), plus `gc.zgo.at` for GoatCounter; GoatCounter script uses `https://` and `crossorigin="anonymous"`.
+- **Fonts:** Google Fonts URL includes `&display=swap` (non-blocking text).
+- **CSP & headers:** A **meta** `Content-Security-Policy` in `BaseLayout` allows `self`, required **`unsafe-inline`** scripts (gtag bootstrap + i18n), Google Analytics / GTM, `gc.zgo.at`, Beatstars `frame-src`, and broadened `connect-src` for analytics. **`public/_headers`** adds `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, and `Permissions-Policy` on hosts that honour it (e.g. Cloudflare Pages). Tighten CSP further at the edge if you move inline scripts to nonced bundles.
+- **i18n XSS:** `applyTranslations()` uses **`textContent`** for all keys except an explicit allowlist (`drumkits.title`, `about.titleHtml`, `contact.title`) that ship trusted HTML from the repo. Alt/title/aria values are passed through **`safeAttr()`** (strips control chars and angle brackets).
+
 ## Automation: `git-save`
 
 - **Command:** `npm run git-save -- "type: short description"` (implementation: `scripts/git-save.mjs`).

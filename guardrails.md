@@ -6,7 +6,7 @@ Rules for future changes so the site stays consistent and flicker-free.
 
 - Every **new user-visible string** must have a matching entry in **`src/i18n/en.ts` and `src/i18n/el.ts`** (same key path, e.g. `section.blockLabel`).
 - Prefer **flat dotted keys** in markup: `data-i18n="hero.label"` maps to `hero.label` on the dictionary root (not `hero.title` unless you add that key).
-- When a string supports HTML (e.g. line breaks, spans), keep the same structure in both languages and escape carefully; `applyTranslations` sets **`innerHTML`** for `[data-i18n]`.
+- When a string supports HTML (e.g. line breaks, spans), keep the same structure in both languages. At runtime, **`applyTranslations()`** uses **`textContent`** for most keys; only an explicit **HTML allowlist** in `BaseLayout.astro` (`htmlKeys`) uses **`innerHTML`** (currently `drumkits.title`, `about.titleHtml`, `contact.title`).
 
 ## 2. English defaults in `.astro` files (flicker / CLS)
 
@@ -52,3 +52,10 @@ When adding modals or overlays, assign z-index **above** the header only if they
 - Prefer **`npm run git-save -- "your message"`** before sharing work; it ties commits to the documentation guard.
 - See **`architecture.md` → Automation: `git-save`** for flags (`--push-all`, `--sync-branches`, `--allow-stale-docs`, `--no-tag-docs`) and the local audit log under `.git/`.
 - **Agent / human rule:** if you change layouts, i18n, new components under `src/components/`, or build config, update `architecture.md` / `guardrails.md` in the same change when the behaviour or rules change; otherwise let `git-save` append its one-line **auto-stub** and refine the prose in a follow-up commit.
+
+## 9. Security (CSP, third-party scripts, forms)
+
+- **Never add a third-party `<script src>`** without updating the **CSP meta** in `BaseLayout.astro` (`script-src` / `connect-src` / `frame-src` as needed) and noting it in `architecture.md`.
+- **SRI (`integrity=`)** is not pinned on volatile vendor scripts (e.g. GTM); rely on **CSP allowlists** and HTTPS. For **self-hosted** scripts in `public/`, add SRI when the file is immutable.
+- **HTML in i18n:** New rich-text keys must be added to the **`htmlKeys`** object in `BaseLayout.astro` or kept as plain text — never inject untrusted HTML into `en.ts` / `el.ts`.
+- **Forms:** There is no server-side contact form today. If you add one, use a **honeypot** (hidden field), server validation, rate limits, and optionally CAPTCHA; see the HTML comment in `ContactSection.astro`.

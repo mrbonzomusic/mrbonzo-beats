@@ -50,7 +50,21 @@ const translations = { en, el };
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://www.beatstars.com" crossorigin />
+    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+    <link rel="preconnect" href="https://www.google-analytics.com" crossorigin />
+    <link rel="dns-prefetch" href="https://gc.zgo.at" />
+    <link rel="preconnect" href="https://gc.zgo.at" crossorigin />
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+    <!-- CSP via meta: relaxed for required inline i18n + gtag; prefer stricter headers on CDN (see public/_headers) -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; base-uri 'self'; form-action 'self' https://forms.gle https://docs.google.com; object-src 'none'; upgrade-insecure-requests; img-src 'self' data: https: blob:; font-src 'self' https://fonts.gstatic.com data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://ssl.google-analytics.com https://gc.zgo.at; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://region1.google-analytics.com https://analytics.google.com https://*.analytics.google.com https://www.googletagmanager.com https://gc.zgo.at https://*.zgo.at https://mrbonzo.goatcounter.com https://*.doubleclick.net; frame-src https://www.beatstars.com;"
+    />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-QFJSZGBGZE"></script>
     <script is:inline>
@@ -59,7 +73,7 @@ const translations = { en, el };
       gtag('js', new Date());
       gtag('config', 'G-QFJSZGBGZE');
     </script>
-    <script data-goatcounter="https://mrbonzo.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+    <script data-goatcounter="https://mrbonzo.goatcounter.com/count" async src="https://gc.zgo.at/count.js" crossorigin="anonymous"></script>
 
     <style is:global>
       /* --- BaseBox Banner --- */
@@ -161,7 +175,7 @@ const translations = { en, el };
         <div class="rounded-full border border-fuchsia-500/20 bg-black/90 backdrop-blur-md px-5 py-2.5 shadow-2xl">
           <div class="flex items-center justify-between">
             <a href="/" class="flex-shrink-0 transition hover:scale-105">
-              <img src={logoPath} alt="Logo" data-i18n-alt="ui.logoAlt" class="h-[22px] w-auto sm:h-[30px]" />
+              <img src={logoPath} alt="Logo" data-i18n-alt="ui.logoAlt" width="120" height="30" loading="eager" fetchpriority="high" decoding="async" class="h-[22px] w-auto sm:h-[30px]" />
             </a>
 
             <nav class="hidden lg:flex items-center gap-x-3 xl:gap-x-4">
@@ -261,25 +275,33 @@ const translations = { en, el };
         var dict = translations[lang] || translations.en;
         document.documentElement.lang = lang;
 
+        var htmlKeys = { 'drumkits.title': true, 'about.titleHtml': true, 'contact.title': true };
+
+        function safeAttr(val) {
+          return String(val).replace(/[\u0000-\u001F<>]/g, '');
+        }
+
         document.querySelectorAll('[data-i18n]').forEach(function (node) {
           var key = node.getAttribute('data-i18n');
           var val = resolveString(dict, key) || resolveString(translations.en, key);
-          if (val) node.innerHTML = val;
+          if (!val) return;
+          if (htmlKeys[key]) node.innerHTML = val;
+          else node.textContent = val;
         });
         document.querySelectorAll('[data-i18n-alt]').forEach(function (node) {
           var key = node.getAttribute('data-i18n-alt');
           var val = resolveString(dict, key) || resolveString(translations.en, key);
-          if (val) node.setAttribute('alt', val);
+          if (val) node.setAttribute('alt', safeAttr(val));
         });
         document.querySelectorAll('[data-i18n-title]').forEach(function (node) {
           var key = node.getAttribute('data-i18n-title');
           var val = resolveString(dict, key) || resolveString(translations.en, key);
-          if (val) node.setAttribute('title', val);
+          if (val) node.setAttribute('title', safeAttr(val));
         });
         document.querySelectorAll('[data-i18n-aria-label]').forEach(function (node) {
           var key = node.getAttribute('data-i18n-aria-label');
           var val = resolveString(dict, key) || resolveString(translations.en, key);
-          if (val) node.setAttribute('aria-label', val);
+          if (val) node.setAttribute('aria-label', safeAttr(val));
         });
         document.querySelectorAll('.lang-switch-btn').forEach(function (btn) {
           btn.setAttribute('data-active', btn.getAttribute('data-lang-switch') === lang ? 'true' : 'false');
