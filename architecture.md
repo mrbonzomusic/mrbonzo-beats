@@ -31,8 +31,8 @@ Static Astro site (`output: "static"`). One primary page (`src/pages/index.astro
 
 ## Visual effects (runtime, `BaseLayout` + `global.css`)
 
-- **Film grain:** Fixed `.grain-overlay` (`z-index: 80`, **`mix-blend-mode: soft-light`**) so texture reads on dark section fills without a heavy veil over type; layered **SVG `feTurbulence`** (~**0.08** / **0.055** opacity). **`pointer-events: none`**. Respects **`prefers-reduced-motion`**.
-- **Desktop glow cursor:** `#cursor-glow` — snappier **velocity spring** (higher tension / lower friction + snap-to-pointer when within about 1.2px). **`cursor: none`** on **`iframe`** / **`.beatstars-embed-iframe`** when `body.has-cursor-fx`; hover ring uses **`elementFromPoint`** plus **bounding-box hit test** over the Beatstars embed so the glow stays consistent over the player. Initialized once (`window.__mrbonzoCursorFx`).
+- **Film grain:** Fixed `.grain-overlay` (`z-index: 80`, **`mix-blend-mode: soft-light`**) with layered **SVG `feTurbulence`** at **~0.12** opacity per layer; **`grain-bg-twitch`** / **`grain-bg-twitch-reverse`** on **`background-position`** (~**0.1s** `steps(1)`) plus slower **`transform`** drift. **`pointer-events: none`**. Respects **`prefers-reduced-motion`**.
+- **Desktop “pro” cursor:** `#cursor-pro-root` — **instant 5px dot** at pointer; **outline ring** (~36px default) follows with the same **velocity spring** (tension / friction + snap within ~1.2px). On **link/button** hover, dot hides and the ring **sizes to the target** (`elementFromPoint` + `closest`). Over **`.beatstars-embed-iframe`**, the custom layer is **fully hidden** and **`body.cursor-pro--native-iframe`** restores **native cursor** (including on the iframe). Initialized once (`window.__mrbonzoCursorFx`).
 - **Scroll reveal:** **`section-reveal`** on major page bands (Collaborations, Player, Beats, Kits, Releases, About, Contact) via **`index.astro`** wrappers + inner sections where applicable; **`IntersectionObserver`** → **`is-revealed`**. Reduced-motion bypass. **`astro:page-load`** re-binds reveal only.
 
 ## Client-side i18n script (`BaseLayout.astro`)

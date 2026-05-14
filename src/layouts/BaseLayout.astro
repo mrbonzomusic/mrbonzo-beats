@@ -14,7 +14,7 @@ const socialPreviewImage = "https://mrbonzo-beats.pages.dev/og-image-v2.jpg";
 const siteDescription = "The official website of Mr. Bonzo. Music production, high-quality trap beats, and exclusive drum kits.";
 const siteURL = "https://mrbonzo-beats.pages.dev/";
 
-const discordInvite = socialLinks.discord || "https://discord.gg/hmpCHd4J";
+const discordInvite = socialLinks.discord || "https://discord.gg/NjSeXpQHT6";
 const pond5Link = "https://www.pond5.com/artist/mrbonzobeats";
 const tikTokLink = "https://www.tiktok.com/@mrbonzomusic";
 const ytBeats = "https://www.youtube.com/@mrbonzobeats";
@@ -166,7 +166,10 @@ const translations = { en, el };
 
   <body class="min-h-screen antialiased bg-black text-white">
     <div class="grain-overlay" aria-hidden="true"></div>
-    <div id="cursor-glow" class="cursor-glow" aria-hidden="true"></div>
+    <div id="cursor-pro-root" class="cursor-pro-root" aria-hidden="true">
+      <div id="cursor-pro-ring" class="cursor-pro-ring"></div>
+      <div id="cursor-pro-dot" class="cursor-pro-dot"></div>
+    </div>
 
     <div class="basebox-banner">
       <a href="https://forms.gle/AC86bRqwhfNmbCUh9" target="_blank" rel="noopener noreferrer">
@@ -419,10 +422,12 @@ const translations = { en, el };
           });
         }
 
-        function initCursorGlow() {
+        function initCursorPro() {
           if (window.__mrbonzoCursorFx) return;
-          var glow = document.getElementById('cursor-glow');
-          if (!glow) return;
+          var root = document.getElementById('cursor-pro-root');
+          var ring = document.getElementById('cursor-pro-ring');
+          var dot = document.getElementById('cursor-pro-dot');
+          if (!root || !ring || !dot) return;
           window.__mrbonzoCursorFx = true;
           var mq = window.matchMedia('(pointer: fine) and (min-width: 1024px)');
           var tx = -100;
@@ -432,6 +437,8 @@ const translations = { en, el };
           var vx = 0;
           var vy = 0;
           var rafId = 0;
+          var hoverSel =
+            'a, button, [role="button"], input[type="submit"], input[type="button"], label, .lang-switch-btn, #burger-btn, #share-btn';
 
           function pointOverBeatstarsIframe(px, py) {
             var list = document.querySelectorAll('.beatstars-embed-iframe');
@@ -445,44 +452,71 @@ const translations = { en, el };
 
           function tick() {
             rafId = 0;
-            if (!glow.classList.contains('is-active')) return;
+            if (!root.classList.contains('is-active') || root.classList.contains('is-off')) return;
             var tension = 0.48;
             var friction = 0.58;
-            vx = (vx + (tx - x) * tension) * friction;
-            vy = (vy + (ty - y) * tension) * friction;
-            x += vx;
-            y += vy;
-            var dist = Math.hypot(tx - x, ty - y);
-            if (dist < 1.2) {
-              x = tx;
-              y = ty;
-              vx = 0;
-              vy = 0;
-            }
+            var ringTx = tx;
+            var ringTy = ty;
+            var ringW = 36;
+            var ringH = 36;
             var under = null;
             try {
               under = document.elementFromPoint(tx, ty);
             } catch (e) {}
-            var overIframe = pointOverBeatstarsIframe(tx, ty);
             var hover = !!(
-              overIframe ||
-              (under &&
-                (under.tagName === 'IFRAME' ||
-                  (under.closest &&
-                    under.closest(
-                      'a, button, [role="button"], input[type="submit"], input[type="button"], label, .lang-switch-btn, #burger-btn, #share-btn'
-                    ))))
+              under &&
+              under.closest &&
+              under.closest(hoverSel)
             );
-            glow.classList.toggle('is-hover', hover);
-            glow.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0) translate(-50%,-50%)';
+            root.classList.toggle('is-hover', hover);
+            if (hover && under) {
+              var t = under.closest(hoverSel);
+              if (t) {
+                var rr = t.getBoundingClientRect();
+                ringTx = (rr.left + rr.right) / 2;
+                ringTy = (rr.top + rr.bottom) / 2;
+                ringW = Math.max(48, rr.width + 18);
+                ringH = Math.max(48, rr.height + 18);
+              }
+            }
+            vx = (vx + (ringTx - x) * tension) * friction;
+            vy = (vy + (ringTy - y) * tension) * friction;
+            x += vx;
+            y += vy;
+            var dist = Math.hypot(ringTx - x, ringTy - y);
+            if (dist < 1.2) {
+              x = ringTx;
+              y = ringTy;
+              vx = 0;
+              vy = 0;
+            }
+            ring.style.width = ringW + 'px';
+            ring.style.height = ringH + 'px';
+            var br = Math.min(ringW, ringH) / 2;
+            ring.style.borderRadius = br + 'px';
+            ring.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0) translate(-50%,-50%)';
             rafId = requestAnimationFrame(tick);
           }
 
           function onMove(e) {
             tx = e.clientX;
             ty = e.clientY;
-            if (!glow.classList.contains('is-active')) {
-              glow.classList.add('is-active');
+            dot.style.transform =
+              'translate3d(' + tx + 'px,' + ty + 'px,0) translate(-50%,-50%)';
+            var onI = pointOverBeatstarsIframe(tx, ty);
+            if (onI) {
+              root.classList.add('is-off');
+              document.body.classList.add('cursor-pro--native-iframe');
+              if (rafId) {
+                cancelAnimationFrame(rafId);
+                rafId = 0;
+              }
+              return;
+            }
+            root.classList.remove('is-off');
+            document.body.classList.remove('cursor-pro--native-iframe');
+            if (!root.classList.contains('is-active')) {
+              root.classList.add('is-active');
               x = tx;
               y = ty;
               vx = 0;
@@ -492,7 +526,8 @@ const translations = { en, el };
           }
 
           function onLeave() {
-            glow.classList.remove('is-active', 'is-hover');
+            root.classList.remove('is-active', 'is-hover', 'is-off');
+            document.body.classList.remove('cursor-pro--native-iframe');
             if (rafId) {
               cancelAnimationFrame(rafId);
               rafId = 0;
@@ -519,7 +554,7 @@ const translations = { en, el };
         }
 
         initSectionReveal();
-        initCursorGlow();
+        initCursorPro();
         document.addEventListener('astro:page-load', initSectionReveal);
       })();
     </script>
