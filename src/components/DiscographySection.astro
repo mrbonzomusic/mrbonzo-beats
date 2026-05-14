@@ -1,5 +1,6 @@
 ---
 import { socialLinks } from "../config/links";
+import en from "../i18n/en";
 
 interface Release {
   title: string;
@@ -34,30 +35,41 @@ const spotifyUrl = socialLinks.spotify?.includes("YOUR_ID_HERE")
   ? "https://open.spotify.com/"
   : socialLinks.spotify;
 
-const statusLabel =
+const statusI18nKey =
   status === "live"
-    ? "Spotify API: Live Data"
+    ? "releases.statusLive"
     : status === "rss"
-      ? "RSS Feed: Live Data"
+      ? "releases.statusRss"
       : status === "scrape"
-        ? "Live Data"
-      : status === "error"
-        ? "Spotify API: Error (Fallback Data)"
-        : "Spotify API: Fallback Data";
+        ? "releases.statusScrape"
+        : status === "error"
+          ? "releases.statusError"
+          : "releases.statusFallback";
+
+const statusDefault =
+  status === "live"
+    ? en.releases.statusLive
+    : status === "rss"
+      ? en.releases.statusRss
+      : status === "scrape"
+        ? en.releases.statusScrape
+        : status === "error"
+          ? en.releases.statusError
+          : en.releases.statusFallback;
 ---
 
 <section id="releases" class="mt-24">
   <div class="mb-10 flex flex-wrap items-end justify-between gap-6 border-b border-fuchsia-500/10 pb-6">
     <div>
       <h3 class="display-heading text-4xl font-black uppercase tracking-tighter text-white sm:text-5xl" data-i18n="releases.title">
-        Latest Releases
+        {en.releases.title}
       </h3>
       {
         status !== "scrape" && (
           <div class="mt-3 flex items-center gap-2">
             <span class={`h-2 w-2 rounded-full ${status === 'live' || status === 'rss' || status === 'scrape' ? 'bg-green-500 animate-pulse' : 'bg-fuchsia-500'}`}></span>
-            <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-fuchsia-300/60" data-i18n-status={status}>
-              {statusLabel}
+            <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-fuchsia-300/60" data-i18n={statusI18nKey}>
+              {statusDefault}
             </p>
           </div>
         )
@@ -71,7 +83,7 @@ const statusLabel =
       class="group relative overflow-hidden rounded-full bg-fuchsia-600 px-8 py-3 text-[11px] font-black uppercase tracking-[0.2em] text-white transition-all hover:bg-fuchsia-500 hover:shadow-[0_0_25px_rgba(217,70,239,0.5)]"
       data-i18n="releases.follow"
     >
-      Follow on Spotify
+      {en.releases.follow}
     </a>
   </div>
 

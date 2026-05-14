@@ -3,7 +3,7 @@
 :root {
   color-scheme: dark;
 
-  /* Sync with hero eyebrow (“Beatmaker Portfolio”); change here to update all sections */
+  /* Shared eyebrow label sizing (Hero, About, Contact) */
   /* ~17.5% larger than previous (0.875 / 1 / 1.125 rem) for more presence */
   --label-eyebrow-size-sm: 1.03rem;
   --label-eyebrow-size-md: 1.18rem;
@@ -47,7 +47,7 @@
   }
 }
 
-/* Narrow screens: slightly tighter tracking so “Beatmaker Portfolio” stays one line when it fits */
+/* Narrow screens: slightly tighter tracking for long uppercase eyebrow lines */
 @media (max-width: 639px) {
   .eyebrow-hero-label {
     letter-spacing: 0.28em;

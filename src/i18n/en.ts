@@ -2,6 +2,8 @@ const en = {
   ui: {
     logoAlt: "Mr. Bonzo logo",
     shareTitle: "Share Website",
+    linkCopied: "Link copied!",
+    shareNativeTitle: "Mr. Bonzo Official",
     heroLogoAlt: "Mr. Bonzo",
     aboutPortraitAlt: "Mr. Bonzo Portrait",
     shareAriaLabel: "Share this website",
@@ -30,11 +32,12 @@ const en = {
     mobileNavigation: "Navigation",
     mobileChannels: "Channels",
     mobileSocialMore: "Social & More",
-    latestReleases: "Latest Releases",
+    latestReleases: "Releases",
     drumKits: "Drum Kits"
   },
   hero: {
-    label: "Beatmaker Portfolio",
+    // Updated to match the new branding
+    label: "OFFICIAL WEBSITE",
     subtitle: "Dark, modern, and aggressive type beats built for artists who want energy and edge.",
     browse: "Browse Beats",
     featured: "Featured Player"
@@ -102,6 +105,8 @@ const en = {
     listen: "Listen on Spotify",
     listenNow: "LISTEN NOW",
     statusLive: "Spotify API: Live Data",
+    statusRss: "RSS Feed: Live Data",
+    statusScrape: "Live Data",
     statusFallback: "Spotify API: Fallback Data",
     statusError: "Spotify API: Error (Fallback Data)"
   },
@@ -117,7 +122,7 @@ const en = {
   },
   footer: {
     rights: "All rights reserved.",
-    instagram: "Instagram (@mrbonzobeats)",
+    instagram: "Instagram (@mrbonzo)",
     youtube: "YouTube",
     email: "Email",
     tiktok: "TikTok",
@@ -131,7 +136,6 @@ const en = {
     secureCheckout: "Secure Checkout • Licensing & Contracts powered by Beatstars",
     iframeTitle: "Mr. Bonzo Beatstars Player"
   },
-  // --- New BaseBox Section ---
   basebox: {
     bannerTitle: "BaseBox",
     bannerSubtitle: "The Automated Artist & Catalog Manager. Send to PROs & Labels in seconds.",

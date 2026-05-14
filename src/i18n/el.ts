@@ -2,6 +2,8 @@ const el = {
   ui: {
     logoAlt: "Λογότυπο Mr. Bonzo",
     shareTitle: "Κοινοποίηση ιστοσελίδας",
+    linkCopied: "Ο σύνδεσμος αντιγράφηκε!",
+    shareNativeTitle: "Mr. Bonzo Official",
     heroLogoAlt: "Mr. Bonzo",
     aboutPortraitAlt: "Πορτραίτο Mr. Bonzo",
     shareAriaLabel: "Κοινοποίηση αυτής της ιστοσελίδας",
@@ -30,11 +32,12 @@ const el = {
     mobileNavigation: "Πλοήγηση",
     mobileChannels: "Κανάλια",
     mobileSocialMore: "Social & More",
-    latestReleases: "Τελευταίες Κυκλοφορίες",
+    latestReleases: "Releases",
     drumKits: "Drum Kits"
   },
   hero: {
-    label: "Πορτφόλιο Beatmaker",
+    // Ενημερώθηκε για να ταιριάζει με το Official Website branding
+    label: "OFFICIAL WEBSITE", 
     subtitle: "Σκοτεινά, μοντέρνα και επιθετικά type beats για artists που θέλουν ένταση και χαρακτήρα.",
     browse: "Άκου Beats",
     featured: "Featured Player"
@@ -97,11 +100,13 @@ const el = {
     items: [] 
   },
   releases: {
-    title: "Τελευταίες Κυκλοφορίες",
-    follow: "Follow on Spotify",
+    title: "Πρόσφατες κυκλοφορίες",
+    follow: "Ακολούθησε στο Spotify",
     listen: "Ακρόαση στο Spotify",
     listenNow: "ΑΚΟΥ ΤΩΡΑ",
     statusLive: "Spotify API: Live Data",
+    statusRss: "Ροή RSS: ζωντανά δεδομένα",
+    statusScrape: "Ζωντανά δεδομένα (scrape)",
     statusFallback: "Spotify API: Fallback Data",
     statusError: "Spotify API: Error (Fallback Data)"
   },
@@ -117,7 +122,7 @@ const el = {
   },
   footer: {
     rights: "Με επιφύλαξη παντός δικαιώματος.",
-    instagram: "Instagram (@mrbonzobeats)",
+    instagram: "Instagram (@mrbonzo)",
     youtube: "YouTube",
     email: "Email",
     tiktok: "TikTok",
@@ -131,7 +136,6 @@ const el = {
     secureCheckout: "Ασφαλές Checkout • Licensing & Contracts μέσω Beatstars",
     iframeTitle: "Mr. Bonzo Beatstars Player"
   },
-  // --- Νέο Section για το BaseBox ---
   basebox: {
     bannerTitle: "BaseBox",
     bannerSubtitle: "Αυτοματοποιημένη Διαχείριση Καταλόγου & Καλλιτεχνών. Στείλε σε PROs & Labels σε δευτερόλεπτα.",

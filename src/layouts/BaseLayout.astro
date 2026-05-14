@@ -151,8 +151,8 @@ const translations = { en, el };
     <div class="basebox-banner">
       <a href="https://forms.gle/AC86bRqwhfNmbCUh9" target="_blank" rel="noopener noreferrer">
         <span>🚀 <strong>BASEBOX</strong>:</span>
-        <span data-i18n="basebox.bannerSubtitle">The Automated Artist & Catalog Manager. Send to PROs in seconds.</span> 
-        <span class="basebox-badge" data-i18n="basebox.waitlistBtn">GET ACCESS</span>
+        <span data-i18n="basebox.bannerSubtitle">The Automated Artist & Catalog Manager. Send to PROs & Labels in seconds.</span>
+        <span class="basebox-badge" data-i18n="basebox.waitlistBtn">GET EARLY ACCESS</span>
       </a>
     </div>
 
@@ -194,7 +194,7 @@ const translations = { en, el };
             </nav>
 
             <div class="flex items-center gap-2">
-                <button id="share-btn" class="p-1.5 text-fuchsia-400 hover:text-fuchsia-300 transition-all active:scale-90" title="Share Website">
+                <button id="share-btn" type="button" class="p-1.5 text-fuchsia-400 hover:text-fuchsia-300 transition-all active:scale-90" data-i18n-title="ui.shareTitle">
                   <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
                   </svg>
@@ -205,7 +205,7 @@ const translations = { en, el };
                   <button type="button" data-lang-switch="el" class="lang-switch-btn text-fuchsia-200/40 data-[active=true]:text-fuchsia-400 px-1">EL</button>
                 </div>
                 <a href={beatstarsLinks.profile} target="_blank" class="rounded-full bg-fuchsia-600 px-4 py-1.5 text-[10px] font-black uppercase text-white hover:bg-fuchsia-500 transition" data-i18n="nav.store">Store</a>
-                <button id="burger-btn" class="lg:hidden p-1 text-fuchsia-400">
+                <button id="burger-btn" type="button" class="lg:hidden p-1 text-fuchsia-400" data-i18n-aria-label="ui.menuToggleAriaLabel">
                   <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M4 6h16M4 12h16m-7 6h7"/></svg>
                 </button>
             </div>
@@ -219,10 +219,10 @@ const translations = { en, el };
             <a href="#beats" class="mobile-link" data-i18n="nav.beats">Beats</a>
             <a href="#drumkits" class="mobile-link" data-i18n="nav.drumKits">Drum Kits</a>
             <div class="mobile-section-label" data-i18n="nav.mobileSocialMore">Social</div>
-            <a href={ytBeats} target="_blank" class="mobile-link">YouTube Beats</a>
-            <a href={spotifyLink} target="_blank" class="mobile-link">Spotify</a>
-            <a href={tikTokLink} target="_blank" class="mobile-link">TikTok</a>
-            <a href={discordInvite} target="_blank" class="mobile-link">Discord</a>
+            <a href={ytBeats} target="_blank" class="mobile-link" data-i18n="nav.youtubeBeats">YouTube Beats</a>
+            <a href={spotifyLink} target="_blank" class="mobile-link" data-i18n="nav.spotify">Spotify</a>
+            <a href={tikTokLink} target="_blank" class="mobile-link" data-i18n="nav.tiktok">TikTok</a>
+            <a href={discordInvite} target="_blank" class="mobile-link" data-i18n="nav.discord">Discord</a>
             <div class="h-px bg-white/5 my-2 mx-4"></div>
             <a href="#about" class="mobile-link opacity-70" data-i18n="nav.about">About</a>
             <a href="#contact" class="mobile-link opacity-70" data-i18n="nav.contact">Contact</a>
@@ -236,16 +236,53 @@ const translations = { en, el };
     </main>
 
     <script is:inline define:vars={{ translations }}>
+      function resolveString(dict, path) {
+        if (!dict || !path || typeof path !== 'string') return null;
+        var parts = path.split('.');
+        var cur = dict;
+        for (var i = 0; i < parts.length; i++) {
+          if (cur == null || typeof cur !== 'object' || !(parts[i] in cur)) return null;
+          cur = cur[parts[i]];
+        }
+        return typeof cur === 'string' ? cur : null;
+      }
+
+      function normalizeLang() {
+        try {
+          var stored = localStorage.getItem('selected-lang');
+          if (stored === 'en' || stored === 'el') return stored;
+          if (stored) localStorage.removeItem('selected-lang');
+        } catch (e) {}
+        return 'en';
+      }
+
       function applyTranslations() {
-        const lang = localStorage.getItem('selected-lang') || 'en';
-        const dict = translations[lang];
-        document.querySelectorAll('[data-i18n]').forEach(node => {
-          const key = node.getAttribute('data-i18n');
-          const val = key.split('.').reduce((o, i) => o[i], dict);
+        var lang = normalizeLang();
+        var dict = translations[lang] || translations.en;
+        document.documentElement.lang = lang;
+
+        document.querySelectorAll('[data-i18n]').forEach(function (node) {
+          var key = node.getAttribute('data-i18n');
+          var val = resolveString(dict, key) || resolveString(translations.en, key);
           if (val) node.innerHTML = val;
         });
-        document.querySelectorAll('.lang-switch-btn').forEach(btn => {
-          btn.setAttribute('data-active', btn.getAttribute('data-lang-switch') === lang);
+        document.querySelectorAll('[data-i18n-alt]').forEach(function (node) {
+          var key = node.getAttribute('data-i18n-alt');
+          var val = resolveString(dict, key) || resolveString(translations.en, key);
+          if (val) node.setAttribute('alt', val);
+        });
+        document.querySelectorAll('[data-i18n-title]').forEach(function (node) {
+          var key = node.getAttribute('data-i18n-title');
+          var val = resolveString(dict, key) || resolveString(translations.en, key);
+          if (val) node.setAttribute('title', val);
+        });
+        document.querySelectorAll('[data-i18n-aria-label]').forEach(function (node) {
+          var key = node.getAttribute('data-i18n-aria-label');
+          var val = resolveString(dict, key) || resolveString(translations.en, key);
+          if (val) node.setAttribute('aria-label', val);
+        });
+        document.querySelectorAll('.lang-switch-btn').forEach(function (btn) {
+          btn.setAttribute('data-active', btn.getAttribute('data-lang-switch') === lang ? 'true' : 'false');
         });
       }
 
@@ -265,11 +302,11 @@ const translations = { en, el };
       adjustLayout();
 
       function initEventListeners() {
-        document.querySelectorAll('.lang-switch-btn').forEach(btn => {
-          btn.onclick = () => {
-            localStorage.setItem('selected-lang', btn.getAttribute('data-lang-switch'));
+        document.querySelectorAll('.lang-switch-btn').forEach(function (btn) {
+          btn.onclick = function () {
+            var code = btn.getAttribute('data-lang-switch');
+            if (code === 'en' || code === 'el') localStorage.setItem('selected-lang', code);
             applyTranslations();
-            // Μικρό delay για να προλάβει το κείμενο να αλλάξει το ύψος του banner
             setTimeout(adjustLayout, 30);
           };
         });
@@ -285,10 +322,17 @@ const translations = { en, el };
 
         const shareBtn = document.getElementById('share-btn');
         if (shareBtn) {
-          shareBtn.onclick = async () => {
+          shareBtn.onclick = async function () {
             try {
-              if (navigator.share) await navigator.share({ title: 'Mr. Bonzo Official', url: window.location.href });
-              else { await navigator.clipboard.writeText(window.location.href); alert('Link copied!'); }
+              var lang = normalizeLang();
+              var dict = translations[lang] || translations.en;
+              var shareTitle = resolveString(dict, 'ui.shareNativeTitle') || 'Mr. Bonzo Official';
+              if (navigator.share) await navigator.share({ title: shareTitle, url: window.location.href });
+              else {
+                await navigator.clipboard.writeText(window.location.href);
+                var msg = resolveString(dict, 'ui.linkCopied') || 'Link copied!';
+                alert(msg);
+              }
             } catch (err) {}
           };
         }
