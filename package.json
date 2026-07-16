@@ -10,7 +10,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "deploy": "npm run build",
-    "git-save": "node scripts/git-save.mjs"
+    "save": "node scripts/save.mjs",
+    "git-save": "node scripts/save.mjs"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.4",

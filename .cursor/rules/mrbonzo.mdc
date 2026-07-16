@@ -1,0 +1,15 @@
+---
+description: Mr. Bonzo Beats site — architecture, guardrails, and npm run save
+alwaysApply: true
+---
+
+# Mr. Bonzo Beats — project rules
+
+- Before structural or UI work, read `architecture.md` and `guardrails.md`. Follow `AGENTS.md`.
+- **i18n:** every new string in both `src/i18n/en.ts` and `src/i18n/el.ts`; `.astro` defaults must match English.
+- **Links:** use `src/config/links.ts` for social/store URLs (Discord, TikTok, Spotify, Beatstars, etc.).
+- **Visual FX:** do not reintroduce full-page custom cursor or film grain unless the user explicitly asks. Navbar-only `#nav-hover-ring` is the only custom pointer FX.
+- **Releases:** keep newest-first sorting; pin new albums in `pinnedReleases` in `src/pages/index.astro` when API/scrape lag.
+- **Save:** prefer `npm run save -- "conventional message"` (alias `npm run git-save`). The script always updates docs stamps/Save log — still edit prose when behaviour changes.
+- **CSP:** any new third-party script needs CSP updates in `BaseLayout.astro` and a note in `architecture.md`.
+- Do not put `/* */` comments inside HTML tags in `.astro` files.
