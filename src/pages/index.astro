@@ -16,14 +16,16 @@ import { socialLinks } from "../config/links";
 // ΕΙΣΑΓΩΓΗ ΓΛΩΣΣΩΝ
 
 const fallbackCover = "/images/logo-main.webp";
-const scrapedData = await getReleasesFromSpotifyPage({
-  artistUrl: socialLinks.spotify,
+
+// Primary: Spotify Web API (date-sorted). Fallbacks: RSS → public page scrape.
+let spotifyData = await getArtistAlbums({
+  clientId: import.meta.env.SPOTIFY_CLIENT_ID,
+  clientSecret: import.meta.env.SPOTIFY_CLIENT_SECRET,
+  artistId: import.meta.env.SPOTIFY_ARTIST_ID || extractSpotifyArtistId(socialLinks.spotify),
   fallbackCover,
 });
 
-let spotifyData = scrapedData;
-
-if (!(spotifyData.status === "scrape" && spotifyData.releases.length > 0)) {
+if (!(spotifyData.status === "live" && spotifyData.releases.length > 0)) {
   const rssData = await getReleasesFromRss({
     feedUrl: import.meta.env.RELEASES_RSS_URL,
     fallbackCover,
@@ -32,10 +34,8 @@ if (!(spotifyData.status === "scrape" && spotifyData.releases.length > 0)) {
   spotifyData =
     rssData.status === "rss" && rssData.releases.length > 0
       ? rssData
-      : await getArtistAlbums({
-          clientId: import.meta.env.SPOTIFY_CLIENT_ID,
-          clientSecret: import.meta.env.SPOTIFY_CLIENT_SECRET,
-          artistId: import.meta.env.SPOTIFY_ARTIST_ID || extractSpotifyArtistId(socialLinks.spotify),
+      : await getReleasesFromSpotifyPage({
+          artistUrl: socialLinks.spotify,
           fallbackCover,
         });
 }

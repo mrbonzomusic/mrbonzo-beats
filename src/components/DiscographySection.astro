@@ -30,7 +30,15 @@ const fallbackReleases: Release[] = [
   }
 ];
 
-const { releases = fallbackReleases, status = "fallback" } = Astro.props;
+const props = Astro.props;
+const releases =
+  Array.isArray(props.releases) && props.releases.length > 0
+    ? props.releases
+    : fallbackReleases;
+const status =
+  Array.isArray(props.releases) && props.releases.length > 0
+    ? (props.status ?? "fallback")
+    : "fallback";
 const spotifyUrl = socialLinks.spotify?.includes("YOUR_ID_HERE")
   ? "https://open.spotify.com/"
   : socialLinks.spotify;

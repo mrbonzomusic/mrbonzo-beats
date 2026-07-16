@@ -46,7 +46,9 @@ Static Astro site (`output: "static"`). One primary page (`src/pages/index.astro
 
 ## Build-time vs runtime data
 
-- Spotify / RSS release data is fetched **at build time** in `index.astro` and passed into `DiscographySection` as props.
+- **Latest Releases** are fetched **at build time** in `index.astro` and passed into `DiscographySection` as props (not at page view).
+- **Fetch order:** (1) **Spotify Web API** via `getArtistAlbums` when `SPOTIFY_CLIENT_ID` + `SPOTIFY_CLIENT_SECRET` are set (optional `SPOTIFY_ARTIST_ID`, else parsed from `socialLinks.spotify`); albums are sorted by `release_date` and capped at 6. (2) Else **RSS** if `RELEASES_RSS_URL` is set. (3) Else **scrape** of the public Spotify artist page. If all sources return empty, `DiscographySection` uses hardcoded **fallback** cards.
+- Env template: see `.env.example`. On Cloudflare Pages, set the same variables under **Settings → Environment variables**, then **rebuild** after new Spotify releases so the static HTML updates.
 - UI strings for those dynamic titles (e.g. album names) remain proper nouns; translatable chrome uses `data-i18n` and the shared dictionaries.
 
 ## Performance & security (browser)
