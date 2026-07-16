@@ -1,6 +1,6 @@
 # Architecture — Mr. Bonzo Beats (Astro)
 
-> **Last save:** 2026-07-16 13:53
+> **Last save:** 2026-07-16 13:54
 
 ## Overview
 
@@ -90,5 +90,7 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 - **Audit log:** `.git/git-save-doc-audit.log` (local, not committed).
 
 ## Save log
+
+- 2026-07-16 13:54 — fix: Save log prepend handles CRLF and records entries — 1 files (scripts/save.mjs)
 
 (Entries prepended automatically by `npm run save`.)

@@ -162,9 +162,10 @@ function prependSaveLogEntry(content, entryLine) {
   if (!content.includes(header)) {
     return `${content.replace(/\s*$/, "")}\n\n${header}\n\n${entryLine}\n`;
   }
+  // Match ## Save log followed by one or more blank lines (LF or CRLF).
   return content.replace(
-    /(## Save log\n\n)/,
-    `$1${entryLine}\n`
+    /(## Save log)(\r?\n)+/,
+    `$1\n\n${entryLine}\n\n`
   );
 }
 
