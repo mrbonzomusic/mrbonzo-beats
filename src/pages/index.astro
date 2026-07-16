@@ -10,7 +10,7 @@ import AboutSection from "../components/AboutSection.astro";
 import ServicesSection from "../components/ServicesSection.astro";
 import ContactSection from "../components/ContactSection.astro";
 import SiteFooter from "../components/SiteFooter.astro";
-import { getArtistAlbums, extractSpotifyArtistId, getReleasesFromRss, getReleasesFromSpotifyPage } from "../lib/spotify";
+import { getArtistAlbums, extractSpotifyArtistId, getReleasesFromRss, getReleasesFromSpotifyPage, sortReleasesNewestFirst } from "../lib/spotify";
 import { socialLinks } from "../config/links";
 
 // ΕΙΣΑΓΩΓΗ ΓΛΩΣΣΩΝ
@@ -24,6 +24,7 @@ const pinnedReleases = [
     year: "2026",
     cover: "https://i.scdn.co/image/ab67616d0000b273b7b262b891485d0c7e9a4f0f",
     spotify: "https://open.spotify.com/album/7GiFC2kGwZDjZ9Nnwoqxn6",
+    releaseDate: "2026-07-01",
   },
 ];
 
@@ -37,7 +38,7 @@ function withPinnedReleases(data) {
     seen.add(key);
     merged.push(release);
   }
-  return { ...data, releases: merged.slice(0, 6) };
+  return { ...data, releases: sortReleasesNewestFirst(merged).slice(0, 6) };
 }
 
 // Primary: Spotify Web API (date-sorted). Fallbacks: RSS → public page scrape.

@@ -1,12 +1,14 @@
 ---
 import { socialLinks } from "../config/links";
 import en from "../i18n/en";
+import { sortReleasesNewestFirst } from "../lib/spotify";
 
 interface Release {
   title: string;
   year: string;
   cover: string;
   spotify: string;
+  releaseDate?: string;
 }
 
 interface Props {
@@ -14,33 +16,36 @@ interface Props {
   status?: "live" | "rss" | "scrape" | "fallback" | "error";
 }
 
-// Ενημερωμένα Fallbacks με σωστά links (αντικατάστησε τα IDs αν θες)
 const fallbackReleases: Release[] = [
   {
     title: "Catalyst (Beat Tape)",
     year: "2026",
     cover: "https://i.scdn.co/image/ab67616d0000b273b7b262b891485d0c7e9a4f0f",
     spotify: "https://open.spotify.com/album/7GiFC2kGwZDjZ9Nnwoqxn6",
+    releaseDate: "2026-07-01",
   },
   {
     title: "Phantasm (Beat Tape)",
     year: "2026",
     cover: "https://i.scdn.co/image/ab67616d0000b273c8defbd5de9e9643428177c3",
     spotify: "https://open.spotify.com/album/5xsGDFGkc06mFbShLIksEa",
+    releaseDate: "2026-01-01",
   },
   {
     title: "Deciduous",
     year: "2024",
     cover: "https://i.scdn.co/image/ab67616d0000b2737442cb005715f7023334f9a6",
     spotify: "https://open.spotify.com/album/6C31QMrs60B6DM7b48q6Qh",
+    releaseDate: "2024-01-01",
   },
 ];
 
 const props = Astro.props;
-const releases =
+const releases = sortReleasesNewestFirst(
   Array.isArray(props.releases) && props.releases.length > 0
     ? props.releases
-    : fallbackReleases;
+    : fallbackReleases
+);
 const status =
   Array.isArray(props.releases) && props.releases.length > 0
     ? (props.status ?? "fallback")

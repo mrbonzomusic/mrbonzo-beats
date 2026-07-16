@@ -10,11 +10,34 @@ interface SpotifyRelease {
   year: string;
   cover: string;
   spotify: string;
+  /** ISO-ish date for newest-first sort (YYYY / YYYY-MM / YYYY-MM-DD). */
+  releaseDate?: string;
 }
 
 interface SpotifyResult {
   status: "live" | "rss" | "scrape" | "error";
   releases: SpotifyRelease[];
+}
+
+function releaseSortKey(release: { year?: string; releaseDate?: string }) {
+  const raw = String(release.releaseDate || "").trim();
+  if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) return raw;
+  if (/^\d{4}-\d{2}$/.test(raw)) return `${raw}-28`;
+  if (/^\d{4}$/.test(raw)) return `${raw}-01-01`;
+  const year = String(release.year || "").trim();
+  if (/^\d{4}$/.test(year)) return `${year}-01-01`;
+  return "0000-01-01";
+}
+
+/** Newest first. Stable for equal dates (preserves relative order). */
+export function sortReleasesNewestFirst<T extends { year?: string; releaseDate?: string }>(releases: T[]): T[] {
+  return releases
+    .map((release, index) => ({ release, index, key: releaseSortKey(release) }))
+    .sort((a, b) => {
+      const cmp = b.key.localeCompare(a.key);
+      return cmp !== 0 ? cmp : a.index - b.index;
+    })
+    .map(({ release }) => release);
 }
 
 export async function getArtistAlbums({
@@ -81,7 +104,7 @@ export async function getArtistAlbums({
 
     return {
       status: "live",
-      releases: releases.slice(0, 6).map(({ releaseDate, ...release }) => release),
+      releases: sortReleasesNewestFirst(releases).slice(0, 6),
     };
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
@@ -178,17 +201,19 @@ export async function getReleasesFromSpotifyPage({
         // Keep HTML-extracted fallback metadata.
       }
 
+      const year = yearMatch ? yearMatch[1] : "";
       releases.push({
         title: finalTitle || "Latest Release",
-        year: yearMatch ? yearMatch[1] : "",
+        year,
         cover: finalCover ? toHdSpotifyImage(finalCover) : fallbackCover,
         spotify,
+        releaseDate: year ? `${year}-01-01` : "",
       });
     }
 
     return {
       status: releases.length > 0 ? "scrape" : "error",
-      releases: releases.slice(0, 6),
+      releases: sortReleasesNewestFirst(releases).slice(0, 6),
     };
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
@@ -275,15 +300,20 @@ export async function getReleasesFromRss({
         year,
         cover,
         spotify: link,
+        releaseDate: Number.isNaN(parsedDate)
+          ? year
+            ? `${year}-01-01`
+            : ""
+          : new Date(parsedDate).toISOString().slice(0, 10),
         sortDate: Number.isNaN(parsedDate) ? 0 : parsedDate,
       });
     }
 
-    releases.sort((a, b) => b.sortDate - a.sortDate);
-
     return {
       status: "rss",
-      releases: releases.slice(0, 6).map(({ sortDate, ...release }) => release),
+      releases: sortReleasesNewestFirst(releases)
+        .slice(0, 6)
+        .map(({ sortDate, ...release }) => release),
     };
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
