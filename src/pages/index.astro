@@ -17,6 +17,29 @@ import { socialLinks } from "../config/links";
 
 const fallbackCover = "/images/logo-main.webp";
 
+/** Pinned so the newest release stays visible even if API/scrape lag. */
+const pinnedReleases = [
+  {
+    title: "Catalyst (Beat Tape)",
+    year: "2026",
+    cover: "https://i.scdn.co/image/ab67616d0000b273b7b262b891485d0c7e9a4f0f",
+    spotify: "https://open.spotify.com/album/7GiFC2kGwZDjZ9Nnwoqxn6",
+  },
+];
+
+function withPinnedReleases(data) {
+  const list = Array.isArray(data?.releases) ? data.releases : [];
+  const seen = new Set();
+  const merged = [];
+  for (const release of [...pinnedReleases, ...list]) {
+    const key = release?.spotify || release?.title;
+    if (!key || seen.has(key)) continue;
+    seen.add(key);
+    merged.push(release);
+  }
+  return { ...data, releases: merged.slice(0, 6) };
+}
+
 // Primary: Spotify Web API (date-sorted). Fallbacks: RSS → public page scrape.
 let spotifyData = await getArtistAlbums({
   clientId: import.meta.env.SPOTIFY_CLIENT_ID,
@@ -39,6 +62,8 @@ if (!(spotifyData.status === "live" && spotifyData.releases.length > 0)) {
           fallbackCover,
         });
 }
+
+spotifyData = withPinnedReleases(spotifyData);
 ---
 
 <BaseLayout title="Mr. Bonzo | Official Website">
