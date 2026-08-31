@@ -1,6 +1,6 @@
 # Architecture — Mr. Bonzo Beats (Astro)
 
-> **Last save:** 2026-08-31 19:18
+> **Last save:** 2026-08-31 19:25
 
 ## Overview
 
@@ -90,7 +90,7 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 ## Performance & security
 
 - Eager high-priority logos; lazy below-the-fold images; Beatstars iframe lazy + low fetch priority.
-- CSP meta in `BaseLayout` must allow Beatstars (`*.beatstars.com`), Google Analytics (`googletagmanager.com`, `google-analytics.com`), Spotify CDN images.
+- CSP meta in `BaseLayout` must allow Beatstars (`*.beatstars.com`), Google Analytics (`*.googletagmanager.com`, `*.google-analytics.com` in script/img/connect), Spotify CDN images.
 - `public/_headers` for transport headers on supporting hosts.
 
 ## Automation: `npm run save`
@@ -101,6 +101,8 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 - **Audit log:** `.git/git-save-doc-audit.log` (local, not committed).
 
 ## Save log
+
+- 2026-08-31 19:25 — fix: allow GA4 collect endpoints in CSP — 2 files (src/layouts/BaseLayout.astro)
 
 - 2026-08-31 19:18 — chore: remove GoatCounter after account deletion — 2 files (src/layouts/BaseLayout.astro)
 
