@@ -127,10 +127,7 @@ const en = {
     youtube: "YouTube",
     email: "Email",
     tiktok: "TikTok",
-    spotify: "Spotify",
-    totalHitsLabel: "Total hits",
-    activeNowLabel: "Active now",
-    liveWord: "Live"
+    spotify: "Spotify"
   },
   player: {
     noIframeSupport: "-- Your browser does not support iframes --",

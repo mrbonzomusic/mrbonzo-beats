@@ -1,6 +1,6 @@
 # Guardrails — UI, i18n, and layout
 
-> **Last save:** 2026-07-16 13:54
+> **Last save:** 2026-08-31 19:09
 
 Rules for future changes so the site stays consistent and flicker-free.
 
@@ -27,19 +27,27 @@ Rules for future changes so the site stays consistent and flicker-free.
 - iframe titles: `data-i18n-title`.
 - New scroll-in sections: add `section-reveal` on the outer section; respect `prefers-reduced-motion`.
 
-## 5. Visual effects (do not regress)
+## 5. UI type floors (do not regress)
+
+- Interactive labels (nav, buttons, footer links): **14px** (`text-sm` or `--ui-interactive`). Desktop nav: `.nav-link`.
+- Meta / chips (badges, year, captions, language switcher): **12px** (`text-xs` or `--ui-meta`).
+- Do **not** use `text-[9px]` / `text-[10px]` / `text-[11px]` (or equivalent `font-size`) for user-facing copy.
+- Prefer tightening letter-spacing or gap if the desktop pill nav crowds — do not drop interactive nav below 14px.
+- Body copy stays 16px+; display headings stay as designed.
+
+## 6. Visual effects (do not regress)
 
 - **Do not reintroduce** full-page custom cursor (dot/ring following the mouse site-wide) or **film grain** unless the user explicitly requests it.
 - Keep **navbar-only** `#nav-hover-ring` (desktop fine pointer, ≥1024px); hide when leaving `#main-header`.
 - Keep native browser cursor everywhere else (including Beatstars iframe).
 
-## 6. Latest Releases
+## 7. Latest Releases
 
 - Cards must stay **newest → oldest** (`sortReleasesNewestFirst`).
 - Prefer Spotify API when credentials work; otherwise RSS/scrape.
 - When API is broken or a brand-new album must show immediately, add it to **`pinnedReleases`** in `index.astro` with a real `releaseDate`, then `npm run save` + rebuild.
 
-## 7. Z-index stacking
+## 8. Z-index stacking
 
 1. BaseBox banner (in-flow)
 2. Sticky `#main-header` (and `#nav-hover-ring` above header chrome)
@@ -47,25 +55,25 @@ Rules for future changes so the site stays consistent and flicker-free.
 
 Document new overlay layers here if added.
 
-## 8. Dangerous patterns to avoid
+## 9. Dangerous patterns to avoid
 
 - No `/* … */` inside HTML tags in `.astro` (breaks attributes in built HTML).
 - Prefer HTML comments outside tags or frontmatter notes.
 
-## 9. `npm run save` workflow (required)
+## 10. `npm run save` workflow (required)
 
 - Prefer **`npm run save -- "your message"`** over raw `git commit` / `git push`.
 - The script **always** updates Last save stamps + the Save log in `architecture.md`.
 - If behaviour/rules change, edit the prose in `architecture.md` / `guardrails.md` / `AGENTS.md` in the same session before save.
 - Alias: `npm run git-save` (same script). See `architecture.md` → Automation for flags.
 
-## 10. Security (CSP, third-party scripts, forms)
+## 11. Security (CSP, third-party scripts, forms)
 
 - Never add a third-party `<script src>` without updating CSP in `BaseLayout.astro` and noting it in `architecture.md`.
 - Do not inject untrusted HTML into `en.ts` / `el.ts`.
 - Contact forms (if added later): honeypot, server validation, rate limits.
 
-## 11. Checklist (self-review)
+## 12. Checklist (self-review)
 
 - [ ] New copy in `en.ts` / `el.ts` + matching `.astro` defaults
 - [ ] Links via `src/config/links.ts` where applicable

@@ -57,38 +57,38 @@ const tags = [
           </p>
           <div class="mt-8 flex flex-wrap gap-3">
             {tags.map((tag) => (
-              <span class="rounded-full border border-fuchsia-500/30 bg-fuchsia-500/10 px-4 py-1.5 text-[10px] font-black text-fuchsia-300 uppercase tracking-wider" data-i18n={tag.key}>{tag.label}</span>
+              <span class="rounded-full border border-fuchsia-500/30 bg-fuchsia-500/10 px-5 py-2 text-xs font-black text-fuchsia-300 uppercase tracking-wide sm:text-sm" data-i18n={tag.key}>{tag.label}</span>
             ))}
           </div>
         </div>
 
         <div id="slide-1" class="slide absolute inset-0 w-full transition-all duration-500 opacity-0 pointer-events-none flex flex-col justify-center text-left">
-          <p class="text-[11px] font-black uppercase tracking-[0.3em] text-fuchsia-400" data-i18n="about.termsLabel">Terms & Usage</p>
+          <p class="text-xs font-black uppercase tracking-[0.2em] text-fuchsia-400" data-i18n="about.termsLabel">Terms & Usage</p>
           <h2 class="display-heading mt-3 text-3xl font-black uppercase text-white sm:text-5xl" data-i18n="about.licensingTitle">Licensing Guide</h2>
           <div class="mt-8 space-y-4 w-full">
             {licenses.map((l, idx) => (
               <div class="rounded-xl border border-white/10 bg-white/[0.03] p-5 transition-colors">
                 <div class="flex justify-between items-center mb-2">
-                  <span class="font-black text-fuchsia-200 text-xs uppercase tracking-widest" data-i18n={idx === 0 ? "about.basicLeaseName" : idx === 1 ? "about.premiumLeaseName" : "about.exclusiveLeaseName"}>{l.name}</span>
-                  <span class="text-[11px] font-black text-white bg-fuchsia-600 px-3 py-1 rounded-full">{l.price}</span>
+                  <span class="font-black text-fuchsia-200 text-sm uppercase tracking-wide" data-i18n={idx === 0 ? "about.basicLeaseName" : idx === 1 ? "about.premiumLeaseName" : "about.exclusiveLeaseName"}>{l.name}</span>
+                  <span class="text-xs font-black text-white bg-fuchsia-600 px-3 py-1.5 rounded-full">{l.price}</span>
                 </div>
-                <p class="text-[13px] text-gray-400 tracking-wide" data-i18n={idx === 0 ? "about.basicLeaseFeatures" : idx === 1 ? "about.premiumLeaseFeatures" : "about.exclusiveLeaseFeatures"}>{l.features.join(" • ")}</p>
+                <p class="text-sm text-gray-400 tracking-wide" data-i18n={idx === 0 ? "about.basicLeaseFeatures" : idx === 1 ? "about.premiumLeaseFeatures" : "about.exclusiveLeaseFeatures"}>{l.features.join(" • ")}</p>
               </div>
             ))}
           </div>
         </div>
 
         <div id="slide-2" class="slide absolute inset-0 w-full transition-all duration-500 opacity-0 pointer-events-none flex flex-col justify-center text-left">
-          <p class="text-[11px] font-black uppercase tracking-[0.3em] text-green-400" data-i18n="about.policyLabel">Claims & Whitelisting</p>
+          <p class="text-xs font-black uppercase tracking-[0.2em] text-green-400" data-i18n="about.policyLabel">Claims & Whitelisting</p>
           <h2 class="display-heading mt-3 text-3xl font-black uppercase text-white sm:text-5xl" data-i18n="about.policyTitle">Usage Policy</h2>
           <div class="mt-8 space-y-5 w-full">
             <div class="rounded-xl border border-green-500/20 bg-green-500/5 p-5">
-              <span class="text-xs font-black text-green-400 uppercase block mb-2 tracking-widest" data-i18n="about.freeSectionTitle">100% Free Beats</span>
-              <p class="text-[13px] text-gray-300 leading-relaxed italic" data-i18n="about.freeSectionDesc">Beats in the 'Free Section' are 100% free for profit. If you get a copyright claim, just contact me with your video link to whitelist you immediately.</p>
+              <span class="text-sm font-black text-green-400 uppercase block mb-2 tracking-wide" data-i18n="about.freeSectionTitle">100% Free Beats</span>
+              <p class="text-sm text-gray-300 leading-relaxed italic" data-i18n="about.freeSectionDesc">Beats in the 'Free Section' are 100% free for profit. If you get a copyright claim, just contact me with your video link to whitelist you immediately.</p>
             </div>
             <div class="rounded-xl border border-fuchsia-500/20 bg-fuchsia-500/5 p-5">
-              <span class="text-xs font-black text-fuchsia-400 uppercase block mb-2 tracking-widest" data-i18n="about.boughtTitle">Bought a License?</span>
-              <p class="text-[13px] text-gray-300 leading-relaxed italic" data-i18n="about.boughtDesc">If you receive a claim on a purchased beat, send me your YouTube link and a screenshot of your receipt (PayPal or Beatstars). I will clear the claim within 24 hours.</p>
+              <span class="text-sm font-black text-fuchsia-400 uppercase block mb-2 tracking-wide" data-i18n="about.boughtTitle">Bought a License?</span>
+              <p class="text-sm text-gray-300 leading-relaxed italic" data-i18n="about.boughtDesc">If you receive a claim on a purchased beat, send me your YouTube link and a screenshot of your receipt (PayPal or Beatstars). I will clear the claim within 24 hours.</p>
             </div>
           </div>
         </div>
@@ -112,7 +112,7 @@ const tags = [
           </button>
         </div>
 
-        <a href={socialLinks.instagram} target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto text-center rounded-full bg-fuchsia-600 px-10 py-4 text-[12px] font-black uppercase tracking-[0.2em] text-white shadow-lg shadow-fuchsia-600/20 hover:bg-fuchsia-500 transition-all" data-i18n="about.contactBtn">
+        <a href={socialLinks.instagram} target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto text-center rounded-full bg-fuchsia-600 px-10 py-4 text-sm font-black uppercase tracking-[0.2em] text-white shadow-lg shadow-fuchsia-600/20 hover:bg-fuchsia-500 transition-all" data-i18n="about.contactBtn">
           Contact for Customs
         </a>
       </div>

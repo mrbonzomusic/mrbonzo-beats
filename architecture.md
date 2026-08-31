@@ -1,6 +1,6 @@
 # Architecture — Mr. Bonzo Beats (Astro)
 
-> **Last save:** 2026-07-16 13:54
+> **Last save:** 2026-08-31 19:09
 
 ## Overview
 
@@ -18,7 +18,7 @@ Order in `src/pages/index.astro` (inside `BaseLayout` → `<main>`):
 6. **Latest Releases** — `#latest-releases` → `DiscographySection.astro` (inner `#releases`)
 7. **About** — `#about` → `AboutSection.astro` + `ServicesSection.astro`
 8. **Contact** — `#contact` → `ContactSection.astro`
-9. **Footer** — `SiteFooter.astro` (+ stats via `FooterStats.astro` where used)
+9. **Footer** — `SiteFooter.astro` (copyright + social links)
 
 Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#main-header` (nav, share, EN/EL, Store, burger + mobile menu) → `#nav-hover-ring`.
 
@@ -30,9 +30,9 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 | `src/layouts/BaseLayout.astro` | Global HTML shell: meta, fonts, analytics, BaseBox, sticky header/nav, mobile menu, **client-side i18n**, navbar hover ring, section reveal init. |
 | `src/components/` | Page sections (Hero, player, playlists, releases, about, contact, footer, etc.). |
 | `src/i18n/en.ts`, `src/i18n/el.ts` | Translation dictionaries (plain objects, default export). |
-| `src/config/` | URLs (`links.ts`), analytics, collaboration list. |
+| `src/config/` | URLs (`links.ts`), collaboration list. |
 | `src/lib/` | Build-time helpers (`spotify.ts`: API / RSS / scrape + `sortReleasesNewestFirst`). |
-| `src/styles/global.css` | Tailwind import + typography, `section-reveal`, `.nav-hover-ring`. |
+| `src/styles/global.css` | Tailwind import + typography tokens (eyebrows, `--ui-interactive` / `--ui-meta`, `.nav-link`), `section-reveal`, `.nav-hover-ring`. |
 | `scripts/save.mjs` | `npm run save` — commit, push, always refresh docs. |
 | `AGENTS.md` / `guardrails.md` | Agent entrypoint + hard rules. |
 
@@ -53,6 +53,13 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 - **BaseBox banner** (`.basebox-banner`): **static** in-flow strip; scrolls away (never `position: fixed`).
 - **Header** (`#main-header`): `position: sticky; top: 0`.
 - **`adjustLayout()`** clears legacy fixed-offset inline styles.
+
+## Typography (UI chrome)
+
+- **Display headings** and **body copy** stay large (`text-3xl`–`text-7xl` / `text-base`–`text-xl`).
+- **Interactive UI** (nav, buttons, footer links): **14px** (`--ui-interactive` / `text-sm`). Desktop nav uses `.nav-link`.
+- **Meta / chips** (badges, captions, year, EN/EL): **12px** (`--ui-meta` / `text-xs`). Nothing user-facing below 12px.
+- GoatCounter **page tracking** lives in `BaseLayout` only. There is no on-page hit counter.
 
 ## Visual effects (runtime)
 
@@ -90,6 +97,8 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 - **Audit log:** `.git/git-save-doc-audit.log` (local, not committed).
 
 ## Save log
+
+- 2026-08-31 19:09 — fix: readable UI type and remove footer counter — 15 files (dist/index.html, src/components/AboutSection.astro, src/components/DiscographySection.astro, src/components/FeaturedBeatstars.astro, src/components/FooterStats.astro, src/components/Hero.astro, src/components/SiteFooter.astro, src/components/TypeBeatGrid.astro (+5 more))
 
 - 2026-07-16 13:54 — fix: Save log prepend handles CRLF and records entries — 1 files (scripts/save.mjs)
 

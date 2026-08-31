@@ -127,10 +127,7 @@ const el = {
     youtube: "YouTube",
     email: "Email",
     tiktok: "TikTok",
-    spotify: "Spotify",
-    totalHitsLabel: "Συνολικές επισκέψεις",
-    activeNowLabel: "Τώρα online",
-    liveWord: "Live"
+    spotify: "Spotify"
   },
   player: {
     noIframeSupport: "-- Ο browser σου δεν υποστηρίζει iframes --",

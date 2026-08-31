@@ -11,6 +11,10 @@
   --label-eyebrow-weight: 800;
   --label-eyebrow-tracking: 0.35em;
   --label-eyebrow-color: rgb(217 70 239 / 0.6);
+
+  /* UI chrome floors: interactive 14px, meta/chips 12px (WCAG-aligned practice) */
+  --ui-interactive: 0.875rem;
+  --ui-meta: 0.75rem;
 }
 
 /* Shared label style: Hero, About (“The Artist”), Contact (“Get in touch”) */
@@ -58,6 +62,15 @@
 /* Same fuchsia tint as section labels (uses --label-eyebrow-color) */
 .text-label-eyebrow {
   color: var(--label-eyebrow-color);
+}
+
+/* Desktop nav labels: 14px, tighter tracking so the pill still fits */
+.nav-link {
+  font-size: var(--ui-interactive);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  line-height: 1.25;
 }
 
 /* Large display headings: modern spacing without cramped glyphs */
