@@ -51,15 +51,13 @@ const translations = { en, el };
     <link rel="preconnect" href="https://www.beatstars.com" crossorigin />
     <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
     <link rel="preconnect" href="https://www.google-analytics.com" crossorigin />
-    <link rel="dns-prefetch" href="https://gc.zgo.at" />
-    <link rel="preconnect" href="https://gc.zgo.at" crossorigin />
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
     <!-- CSP via meta: Beatstars player + analytics; prefer stricter headers on CDN (see public/_headers) -->
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; base-uri 'self'; form-action 'self' https://forms.gle https://docs.google.com; object-src 'none'; upgrade-insecure-requests; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://ssl.google-analytics.com https://gc.zgo.at https://www.beatstars.com https://*.beatstars.com https://*.beatstars.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https://*.beatstars.com https://*.beatstars.net https://*.ytimg.com https://*.ggpht.com https://*.googleusercontent.com https://*.scdn.co https://*.spotifycdn.com https://mrbonzo-beats.pages.dev; font-src 'self' https://fonts.gstatic.com data:; frame-src 'self' https://www.beatstars.com https://*.beatstars.com https://*.beatstars.net https://www.youtube.com https://www.youtube-nocookie.com; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://region1.google-analytics.com https://analytics.google.com https://www.googletagmanager.com https://gc.zgo.at https://*.zgo.at https://mrbonzo.goatcounter.com https://*.doubleclick.net https://*.beatstars.com https://*.beatstars.net;"
+      content="default-src 'self'; base-uri 'self'; form-action 'self' https://forms.gle https://docs.google.com; object-src 'none'; upgrade-insecure-requests; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://ssl.google-analytics.com https://www.beatstars.com https://*.beatstars.com https://*.beatstars.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https://*.beatstars.com https://*.beatstars.net https://*.ytimg.com https://*.ggpht.com https://*.googleusercontent.com https://*.scdn.co https://*.spotifycdn.com https://mrbonzo-beats.pages.dev; font-src 'self' https://fonts.gstatic.com data:; frame-src 'self' https://www.beatstars.com https://*.beatstars.com https://*.beatstars.net https://www.youtube.com https://www.youtube-nocookie.com; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://region1.google-analytics.com https://analytics.google.com https://www.googletagmanager.com https://*.doubleclick.net https://*.beatstars.com https://*.beatstars.net;"
     />
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
@@ -71,7 +69,6 @@ const translations = { en, el };
       gtag('js', new Date());
       gtag('config', 'G-QFJSZGBGZE');
     </script>
-    <script data-goatcounter="https://mrbonzo.goatcounter.com/count" async src="https://gc.zgo.at/count.js" crossorigin="anonymous"></script>
 
     <style is:global>
       /* --- BaseBox Banner (in-flow; scrolls away) --- */

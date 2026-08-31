@@ -1,6 +1,6 @@
 # Architecture — Mr. Bonzo Beats (Astro)
 
-> **Last save:** 2026-08-31 19:09
+> **Last save:** 2026-08-31 19:18
 
 ## Overview
 
@@ -59,7 +59,11 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 - **Display headings** and **body copy** stay large (`text-3xl`–`text-7xl` / `text-base`–`text-xl`).
 - **Interactive UI** (nav, buttons, footer links): **14px** (`--ui-interactive` / `text-sm`). Desktop nav uses `.nav-link`.
 - **Meta / chips** (badges, captions, year, EN/EL): **12px** (`--ui-meta` / `text-xs`). Nothing user-facing below 12px.
-- GoatCounter **page tracking** lives in `BaseLayout` only. There is no on-page hit counter.
+
+## Analytics
+
+- **Google Analytics 4** in `BaseLayout.astro` (`gtag.js`, Measurement ID `G-QFJSZGBGZE`, stream URL `https://mrbonzo-beats.pages.dev/`).
+- GoatCounter was removed (account deleted; no `gc.zgo.at` script or CSP hosts).
 
 ## Visual effects (runtime)
 
@@ -86,7 +90,7 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 ## Performance & security
 
 - Eager high-priority logos; lazy below-the-fold images; Beatstars iframe lazy + low fetch priority.
-- CSP meta in `BaseLayout` must allow Beatstars (`*.beatstars.com`), analytics, Spotify CDN images.
+- CSP meta in `BaseLayout` must allow Beatstars (`*.beatstars.com`), Google Analytics (`googletagmanager.com`, `google-analytics.com`), Spotify CDN images.
 - `public/_headers` for transport headers on supporting hosts.
 
 ## Automation: `npm run save`
@@ -97,6 +101,8 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 - **Audit log:** `.git/git-save-doc-audit.log` (local, not committed).
 
 ## Save log
+
+- 2026-08-31 19:18 — chore: remove GoatCounter after account deletion — 2 files (src/layouts/BaseLayout.astro)
 
 - 2026-08-31 19:09 — fix: readable UI type and remove footer counter — 15 files (dist/index.html, src/components/AboutSection.astro, src/components/DiscographySection.astro, src/components/FeaturedBeatstars.astro, src/components/FooterStats.astro, src/components/Hero.astro, src/components/SiteFooter.astro, src/components/TypeBeatGrid.astro (+5 more))
 
