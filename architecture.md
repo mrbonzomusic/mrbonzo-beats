@@ -1,6 +1,6 @@
 # Architecture — Mr. Bonzo Beats (Astro)
 
-> **Last save:** 2026-08-31 19:36
+> **Last save:** 2026-08-31 19:43
 
 ## Overview
 
@@ -62,7 +62,7 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 
 ## Analytics
 
-- **Google Analytics 4** in `BaseLayout.astro` (`gtag.js`, Measurement ID `G-QFJSZGBGZE`, stream URL `https://mrbonzo-beats.pages.dev/`).
+- **Google Analytics 4** in `BaseLayout.astro` (`gtag.js`, Measurement ID `G-XB55WKEGPE`, stream URL `https://mrbonzo-beats.pages.dev/`).
 - GTM/GA `preconnect` is without `crossorigin` so it matches classic `<script src>` (avoids Chrome `ERR_BLOCKED_BY_ORB` on gtag.js).
 - GoatCounter was removed (account deleted; no `gc.zgo.at` script or CSP hosts).
 
@@ -102,6 +102,8 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 - **Audit log:** `.git/git-save-doc-audit.log` (local, not committed).
 
 ## Save log
+
+- 2026-08-31 19:43 — fix: use live GA4 measurement ID G-XB55WKEGPE — 2 files (src/layouts/BaseLayout.astro)
 
 - 2026-08-31 19:36 — fix: GTM preconnect without CORS to avoid ORB block — 2 files (src/layouts/BaseLayout.astro)
 
