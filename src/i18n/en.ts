@@ -134,8 +134,8 @@ const en = {
   },
   basebox: {
     bannerTitle: "BaseBox",
-    bannerSubtitle: "The Automated Artist & Catalog Manager. Send to PROs & Labels in seconds.",
-    waitlistBtn: "GET EARLY ACCESS"
+    bannerSubtitle: "Looking to organize your catalog?",
+    cta: "BaseBox-DB →"
   }
 };
 

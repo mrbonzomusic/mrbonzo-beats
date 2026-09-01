@@ -1,6 +1,6 @@
 ---
 import "../styles/global.css";
-import { beatstarsLinks, socialLinks } from "../config/links";
+import { basebox, beatstarsLinks, socialLinks } from "../config/links";
 import en from "../i18n/en";
 import el from "../i18n/el";
 
@@ -157,10 +157,10 @@ const translations = { en, el };
 
   <body class="min-h-screen antialiased bg-black text-white">
     <div class="basebox-banner">
-      <a href="https://forms.gle/AC86bRqwhfNmbCUh9" target="_blank" rel="noopener noreferrer">
+      <a href={basebox} target="_blank" rel="noopener noreferrer">
         <span>🚀 <strong>BASEBOX</strong>:</span>
-        <span data-i18n="basebox.bannerSubtitle">The Automated Artist & Catalog Manager. Send to PROs & Labels in seconds.</span>
-        <span class="basebox-badge" data-i18n="basebox.waitlistBtn">GET EARLY ACCESS</span>
+        <span data-i18n="basebox.bannerSubtitle">Looking to organize your catalog?</span>
+        <span class="basebox-badge" data-i18n="basebox.cta">BaseBox-DB →</span>
       </a>
     </div>
 

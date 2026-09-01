@@ -134,8 +134,8 @@ const el = {
   },
   basebox: {
     bannerTitle: "BaseBox",
-    bannerSubtitle: "Αυτοματοποιημένη Διαχείριση Καταλόγου & Καλλιτεχνών. Στείλε σε PROs & Labels σε δευτερόλεπτα.",
-    waitlistBtn: "ΕΙΣΟΔΟΣ ΣΤΗ BETA LIST"
+    bannerSubtitle: "Θέλεις να οργανώσεις τον κατάλογό σου;",
+    cta: "BaseBox-DB →"
   }
 };
 

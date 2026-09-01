@@ -14,3 +14,5 @@ export const beatstarsLinks = {
   profile: "https://www.beatstars.com/mrbonzobeats",
   player: "https://player.beatstars.com/?storeId=133234"
 };
+
+export const basebox = "https://www.basebox-db.com";
