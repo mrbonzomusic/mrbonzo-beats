@@ -37,8 +37,6 @@ const en = {
     drumKits: "Drum Kits"
   },
   hero: {
-    // Updated to match the new branding
-    label: "OFFICIAL WEBSITE",
     subtitle: "Dark, modern, and aggressive type beats built for artists who want energy and edge.",
     browse: "Browse Beats",
     featured: "Featured Player"

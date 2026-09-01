@@ -37,8 +37,6 @@ const el = {
     drumKits: "Drum Kits"
   },
   hero: {
-    // Ενημερώθηκε για να ταιριάζει με το Official Website branding
-    label: "OFFICIAL WEBSITE", 
     subtitle: "Σκοτεινά, μοντέρνα και επιθετικά type beats για artists που θέλουν ένταση και χαρακτήρα.",
     browse: "Άκου Beats",
     featured: "Featured Player"

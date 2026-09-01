@@ -1,6 +1,6 @@
 # Architecture — Mr. Bonzo Beats (Astro)
 
-> **Last save:** 2026-08-31 19:54
+> **Last save:** 2026-09-01 12:52
 
 ## Overview
 
@@ -102,6 +102,8 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 - **Audit log:** `.git/git-save-doc-audit.log` (local, not committed).
 
 ## Save log
+
+- 2026-09-01 12:52 — fix: drop Official Website label and shorten hero — 3 files (src/components/Hero.astro, src/i18n/el.ts, src/i18n/en.ts)
 
 - 2026-08-31 19:54 — fix: GA4 ID G-XBS5WKEGPE for Mr. Bonzo stream — 2 files (src/layouts/BaseLayout.astro)
 
