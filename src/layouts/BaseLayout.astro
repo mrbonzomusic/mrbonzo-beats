@@ -76,11 +76,10 @@ const translations = { en, el };
         background: linear-gradient(90deg, #000, #1a001a, #000);
         color: #fff;
         text-align: center;
-        padding: 8px 12px;
-        font-size: 12px;
-        font-weight: 700;
-        letter-spacing: 0.02em;
-        text-transform: uppercase;
+        padding: 10px 16px;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 0;
         border-bottom: 1px solid rgba(217, 70, 239, 0.2);
         position: static;
         width: 100%;
@@ -88,49 +87,83 @@ const translations = { en, el };
         display: flex;
         justify-content: center;
         align-items: center;
-        min-height: 42px;
+        min-height: 48px;
+        transition: background 0.15s ease;
       }
-      
-      .basebox-banner a { 
-        display: flex; 
-        align-items: center; 
-        justify-content: center; 
-        gap: 8px; 
-        color: inherit; 
-        text-decoration: none; 
+
+      .basebox-banner a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        color: inherit;
+        text-decoration: none;
         flex-wrap: wrap;
       }
-      .basebox-banner strong { color: #d946ef; font-weight: 900; }
+
+      .basebox-banner strong {
+        color: #d946ef;
+        font-weight: 800;
+      }
+
+      .basebox-banner-tagline {
+        color: rgba(255, 255, 255, 0.75);
+        font-weight: 600;
+      }
+
+      .basebox-sep {
+        color: rgba(255, 255, 255, 0.28);
+        font-weight: 400;
+        user-select: none;
+      }
 
       .basebox-logo {
-        height: 18px;
+        height: 26px;
         width: auto;
         flex-shrink: 0;
         display: block;
       }
 
       .basebox-badge {
-        background: rgba(217, 70, 239, 0.15);
-        color: #d946ef;
-        padding: 2px 8px;
-        border-radius: 99px;
-        font-size: 12px;
-        border: 1px solid rgba(217, 70, 239, 0.4);
+        background: #c026d3;
+        color: #fff;
+        padding: 0.25rem 0.75rem;
+        border-radius: 999px;
+        font-size: 13px;
+        font-weight: 700;
+        border: none;
         white-space: nowrap;
-        margin-left: 4px;
+        transition:
+          background 0.15s ease,
+          box-shadow 0.15s ease;
+      }
+
+      .basebox-banner a:hover .basebox-badge {
+        background: #d946ef;
+        box-shadow: 0 0 16px rgba(217, 70, 239, 0.45);
+      }
+
+      .basebox-banner:hover {
+        background: linear-gradient(90deg, #000, #2a002a, #000);
       }
 
       @media (min-width: 640px) {
-        .basebox-logo { height: 20px; }
+        .basebox-logo { height: 28px; }
       }
 
-      @media (max-width: 640px) {
+      @media (max-width: 639px) {
+        .basebox-sep { display: none; }
         .basebox-banner {
-          padding: 8px;
-          line-height: 1.3;
-          letter-spacing: 0.01em;
+          padding: 10px 12px;
+          line-height: 1.35;
         }
-        .basebox-badge { padding: 2px 8px; }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .basebox-banner,
+        .basebox-badge {
+          transition: none;
+        }
       }
 
       /* --- Header: sticky under banner --- */
@@ -170,17 +203,18 @@ const translations = { en, el };
     <div class="basebox-banner">
       <a href={basebox} target="_blank" rel="noopener noreferrer">
         <img
-          src="/images/basebox-logo.png"
+          src="/images/basebox-logo.webp"
           alt="BaseBox-DB"
           data-i18n-alt="basebox.logoAlt"
-          width="20"
-          height="20"
+          width="28"
+          height="28"
           loading="eager"
           decoding="async"
           class="basebox-logo"
         />
         <strong data-i18n="basebox.bannerTitle">BaseBox-DB</strong>
-        <span data-i18n="basebox.bannerSubtitle">Your repertoire, finally organized.</span>
+        <span class="basebox-sep" aria-hidden="true">·</span>
+        <span class="basebox-banner-tagline" data-i18n="basebox.bannerSubtitle">Your repertoire, finally organized.</span>
         <span class="basebox-badge" data-i18n="basebox.cta">Try it free →</span>
       </a>
     </div>

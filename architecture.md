@@ -1,6 +1,6 @@
 # Architecture — Mr. Bonzo Beats (Astro)
 
-> **Last save:** 2026-09-01 21:11
+> **Last save:** 2026-09-01 21:18
 
 ## Overview
 
@@ -50,7 +50,7 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 
 ## BaseBox banner + sticky header
 
-- **BaseBox banner** (`.basebox-banner`): **static** in-flow strip; scrolls away (never `position: fixed`). Cube logo + BaseBox-DB name, product hook, “try it free” CTA. Links to BaseBox-DB (`basebox` in `links.ts`).
+- **BaseBox banner** (`.basebox-banner`): **static** in-flow strip; scrolls away (never `position: fixed`). Sentence-case promo: cube WebP logo, BaseBox-DB name, product hook, filled “try it free” CTA. Links to BaseBox-DB (`basebox` in `links.ts`).
 - **Header** (`#main-header`): `position: sticky; top: 0`.
 - **`adjustLayout()`** clears legacy fixed-offset inline styles.
 
@@ -102,6 +102,8 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 - **Audit log:** `.git/git-save-doc-audit.log` (local, not committed).
 
 ## Save log
+
+- 2026-09-01 21:18 — feat: richer BaseBox promo bar — 5 files (.astro/types.d.ts, public/images/basebox-logo.png, public/images/basebox-logo.webp, src/layouts/BaseLayout.astro)
 
 - 2026-09-01 21:11 — fix: use transparent BaseBox-DB cube logo — 1 files (public/images/basebox-logo.png)
 
