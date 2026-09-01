@@ -133,9 +133,10 @@ const en = {
     iframeTitle: "Mr. Bonzo Beatstars Player"
   },
   basebox: {
-    bannerTitle: "BaseBox",
-    bannerSubtitle: "Looking to organize your catalog?",
-    cta: "BaseBox-DB →"
+    bannerTitle: "BaseBox-DB",
+    bannerSubtitle: "Your repertoire, finally organized.",
+    cta: "Try it free →",
+    logoAlt: "BaseBox-DB"
   }
 };
 

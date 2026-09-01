@@ -133,9 +133,10 @@ const el = {
     iframeTitle: "Mr. Bonzo Beatstars Player"
   },
   basebox: {
-    bannerTitle: "BaseBox",
-    bannerSubtitle: "Θέλεις να οργανώσεις τον κατάλογό σου;",
-    cta: "BaseBox-DB →"
+    bannerTitle: "BaseBox-DB",
+    bannerSubtitle: "Το ρεπερτόριό σου, επιτέλους οργανωμένο.",
+    cta: "Δοκίμασέ το δωρεάν →",
+    logoAlt: "BaseBox-DB"
   }
 };
 
