@@ -1,6 +1,6 @@
 # Architecture — Mr. Bonzo Beats (Astro)
 
-> **Last save:** 2026-09-01 21:04
+> **Last save:** 2026-09-01 21:11
 
 ## Overview
 
@@ -102,6 +102,8 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 - **Audit log:** `.git/git-save-doc-audit.log` (local, not committed).
 
 ## Save log
+
+- 2026-09-01 21:11 — fix: use transparent BaseBox-DB cube logo — 1 files (public/images/basebox-logo.png)
 
 - 2026-09-01 21:04 — feat: professional BaseBox-DB promo banner — 5 files (public/images/basebox-logo.png, src/i18n/el.ts, src/i18n/en.ts, src/layouts/BaseLayout.astro)
 
