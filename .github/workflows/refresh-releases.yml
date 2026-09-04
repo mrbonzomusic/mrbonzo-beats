@@ -1,0 +1,27 @@
+# Rebuild the static site so Latest Releases pick up new Spotify/iTunes drops.
+# Cloudflare Pages only rebuilds on git push unless a Deploy Hook is called.
+#
+# One-time setup: Cloudflare Pages → project → Settings → Deploy hooks → Create
+# hook named "refresh-releases". Add the URL as GitHub secret CLOUDFLARE_PAGES_DEPLOY_HOOK.
+
+name: Refresh releases
+
+on:
+  schedule:
+    - cron: "0 5 * * *"
+  workflow_dispatch:
+
+jobs:
+  trigger-pages:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Cloudflare Pages deploy hook
+        env:
+          HOOK: ${{ secrets.CLOUDFLARE_PAGES_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "CLOUDFLARE_PAGES_DEPLOY_HOOK is not set. Skipping (create a Pages deploy hook and add the secret)."
+            exit 0
+          fi
+          curl -fsS -X POST "$HOOK"
+          echo "Deploy hook accepted."

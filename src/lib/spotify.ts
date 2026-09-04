@@ -40,6 +40,136 @@ export function sortReleasesNewestFirst<T extends { year?: string; releaseDate?:
     .map(({ release }) => release);
 }
 
+function normalizeReleaseTitle(title = "") {
+  return String(title).toLowerCase().replace(/[’']/g, "'").replace(/\s+/g, " ").trim();
+}
+
+function spotifyAlbumId(url = "") {
+  const match = String(url).match(/open\.spotify\.com\/album\/([A-Za-z0-9]{22})/);
+  return match?.[1] || "";
+}
+
+function datePrecision(value = "") {
+  const raw = String(value).trim();
+  if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) return 3;
+  if (/^\d{4}-\d{2}$/.test(raw)) return 2;
+  if (/^\d{4}/.test(raw)) return 1;
+  return 0;
+}
+
+function newerReleaseDate(a = "", b = "") {
+  const pa = datePrecision(a);
+  const pb = datePrecision(b);
+  if (pa === 0) return b;
+  if (pb === 0) return a;
+  if (pa !== pb) return pa > pb ? a : b;
+  return a >= b ? a : b;
+}
+
+function spotifySearchUrl(title: string) {
+  return `https://open.spotify.com/search/${encodeURIComponent(title)}`;
+}
+
+/**
+ * Dedupe by album id / title. Later lists upgrade a row when they have a real
+ * `/album/` URL (Spotify API) instead of a search link (iTunes / pin).
+ */
+export function mergeReleaseLists(...lists: Array<SpotifyRelease[] | undefined>): SpotifyRelease[] {
+  const byTitle = new Map<string, SpotifyRelease>();
+  const seenAlbum = new Set<string>();
+
+  for (const list of lists) {
+    if (!Array.isArray(list)) continue;
+    for (const release of list) {
+      const titleKey = normalizeReleaseTitle(release?.title);
+      if (!titleKey) continue;
+      const albumId = spotifyAlbumId(release.spotify);
+      if (albumId && seenAlbum.has(albumId)) continue;
+
+      const existing = byTitle.get(titleKey);
+      if (!existing) {
+        byTitle.set(titleKey, release);
+        if (albumId) seenAlbum.add(albumId);
+        continue;
+      }
+
+      const existingAlbum = spotifyAlbumId(existing.spotify);
+      if (!existingAlbum && albumId) {
+        const merged = { ...existing, ...release };
+        merged.releaseDate = newerReleaseDate(existing.releaseDate, release.releaseDate);
+        if (merged.releaseDate === existing.releaseDate && existing.year) {
+          merged.year = existing.year;
+        }
+        if (existing.cover?.startsWith("/")) merged.cover = existing.cover;
+        byTitle.set(titleKey, merged);
+        seenAlbum.add(albumId);
+      }
+    }
+  }
+
+  return sortReleasesNewestFirst([...byTitle.values()]);
+}
+
+/** Public iTunes Search API — no auth; often indexes DistroKid drops before Spotify API. */
+export async function getReleasesFromItunes({
+  artistName = "Mr. Bonzo",
+  fallbackCover,
+}: {
+  artistName?: string;
+  fallbackCover: string;
+}): Promise<SpotifyResult> {
+  try {
+    const query = new URL("https://itunes.apple.com/search");
+    query.searchParams.set("term", artistName);
+    query.searchParams.set("entity", "album");
+    query.searchParams.set("limit", "25");
+    query.searchParams.set("country", "US");
+
+    const response = await fetch(query, {
+      headers: { "User-Agent": "MrBonzoBeats/1.0 (+https://mrbonzo-beats.pages.dev)" },
+    });
+    if (!response.ok) {
+      throw new Error(`iTunes search failed: ${response.status}`);
+    }
+
+    const data = await response.json();
+    const results = Array.isArray(data?.results) ? data.results : [];
+    const releases: SpotifyRelease[] = [];
+    const seen = new Set<string>();
+
+    for (const item of results) {
+      const title = String(item?.collectionName || "").trim();
+      const artist = String(item?.artistName || "").trim();
+      if (!title || artist !== artistName) continue;
+      if (/magnus protocol/i.test(title)) continue;
+      const titleKey = normalizeReleaseTitle(title);
+      if (seen.has(titleKey)) continue;
+      seen.add(titleKey);
+
+      const releaseDateRaw = String(item?.releaseDate || "").slice(0, 10);
+      const artwork = String(item?.artworkUrl100 || "").replace("100x100bb", "1000x1000bb");
+
+      releases.push({
+        title,
+        year: releaseDateRaw.slice(0, 4),
+        cover: artwork || fallbackCover,
+        spotify: spotifySearchUrl(title),
+        releaseDate: releaseDateRaw,
+      });
+    }
+
+    return {
+      status: "scrape",
+      releases: sortReleasesNewestFirst(releases).slice(0, 8),
+    };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.error("--- ITUNES SEARCH ERROR ---");
+    console.error(message);
+    return { status: "error", releases: [] };
+  }
+}
+
 export async function getArtistAlbums({
   clientId,
   clientSecret,

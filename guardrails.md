@@ -1,6 +1,6 @@
 # Guardrails — UI, i18n, and layout
 
-> **Last save:** 2026-09-01 22:00
+> **Last save:** 2026-09-04 13:28
 
 Rules for future changes so the site stays consistent and flicker-free.
 
@@ -44,7 +44,8 @@ Rules for future changes so the site stays consistent and flicker-free.
 ## 7. Latest Releases
 
 - Cards must stay **newest → oldest** (`sortReleasesNewestFirst`).
-- Prefer Spotify API when credentials work; otherwise RSS/scrape.
+- Prefer Spotify API when credentials work; otherwise RSS/scrape. **Always merge iTunes** (and `pinnedReleases`) via `mergeReleaseLists` so DistroKid day-one albums are not stuck behind Spotify API lag.
+- Daily rebuild: GitHub Action `refresh-releases.yml` + Cloudflare Pages deploy hook secret `CLOUDFLARE_PAGES_DEPLOY_HOOK`.
 - When API is broken or a brand-new album must show immediately, add it to **`pinnedReleases`** in `index.astro` with a real `releaseDate`, then `npm run save` + rebuild.
 
 ## 8. Z-index stacking

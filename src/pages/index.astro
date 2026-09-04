@@ -10,7 +10,7 @@ import AboutSection from "../components/AboutSection.astro";
 import ServicesSection from "../components/ServicesSection.astro";
 import ContactSection from "../components/ContactSection.astro";
 import SiteFooter from "../components/SiteFooter.astro";
-import { getArtistAlbums, extractSpotifyArtistId, getReleasesFromRss, getReleasesFromSpotifyPage, sortReleasesNewestFirst } from "../lib/spotify";
+import { getArtistAlbums, extractSpotifyArtistId, getReleasesFromRss, getReleasesFromSpotifyPage, getReleasesFromItunes, mergeReleaseLists } from "../lib/spotify";
 import { socialLinks } from "../config/links";
 
 // ΕΙΣΑΓΩΓΗ ΓΛΩΣΣΩΝ
@@ -20,6 +20,13 @@ const fallbackCover = "/images/logo-main.webp";
 /** Pinned so the newest release stays visible even if API/scrape lag. */
 const pinnedReleases = [
   {
+    title: "Anomaly (Beat Tape)",
+    year: "2026",
+    cover: "/images/releases/anomaly-beat-tape.jpg",
+    spotify: "https://open.spotify.com/album/40E8MPpSuH7N0WviIsZuPb",
+    releaseDate: "2026-09-04",
+  },
+  {
     title: "Catalyst (Beat Tape)",
     year: "2026",
     cover: "https://i.scdn.co/image/ab67616d0000b273b7b262b891485d0c7e9a4f0f",
@@ -27,19 +34,6 @@ const pinnedReleases = [
     releaseDate: "2026-07-01",
   },
 ];
-
-function withPinnedReleases(data) {
-  const list = Array.isArray(data?.releases) ? data.releases : [];
-  const seen = new Set();
-  const merged = [];
-  for (const release of [...pinnedReleases, ...list]) {
-    const key = release?.spotify || release?.title;
-    if (!key || seen.has(key)) continue;
-    seen.add(key);
-    merged.push(release);
-  }
-  return { ...data, releases: sortReleasesNewestFirst(merged).slice(0, 6) };
-}
 
 // Primary: Spotify Web API (date-sorted). Fallbacks: RSS → public page scrape.
 let spotifyData = await getArtistAlbums({
@@ -64,7 +58,11 @@ if (!(spotifyData.status === "live" && spotifyData.releases.length > 0)) {
         });
 }
 
-spotifyData = withPinnedReleases(spotifyData);
+const itunesData = await getReleasesFromItunes({ artistName: "Mr. Bonzo", fallbackCover });
+spotifyData = {
+  ...spotifyData,
+  releases: mergeReleaseLists(pinnedReleases, itunesData.releases, spotifyData.releases).slice(0, 6),
+};
 ---
 
 <BaseLayout title="Mr. Bonzo | Official Website">

@@ -1,6 +1,6 @@
 # Architecture — Mr. Bonzo Beats (Astro)
 
-> **Last save:** 2026-09-01 22:00
+> **Last save:** 2026-09-04 13:28
 
 ## Overview
 
@@ -81,17 +81,18 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 
 ## Latest Releases (build-time)
 
-- Fetched at **build**, not on each page view.
+- Fetched at **build**, not on each page view (static host).
 - **Order:** Spotify Web API → RSS (`RELEASES_RSS_URL`) → public page scrape.
-- Then **`pinnedReleases`** (e.g. Catalyst) merged + **`sortReleasesNewestFirst`** (newest → oldest), cap 6.
-- Empty result → `DiscographySection` hardcoded fallbacks.
+- Always merge **iTunes Search API** (no auth; often sees DistroKid drops first) + **`pinnedReleases`**, then **`mergeReleaseLists`** (dedupe by title; prefer a real Spotify `/album/` URL) + **`sortReleasesNewestFirst`**, cap 6.
+- Empty result → `DiscographySection` hardcoded fallbacks (includes Anomaly).
 - Env: `.env.example`. Cloudflare Pages must set `SPOTIFY_CLIENT_ID` / `SPOTIFY_CLIENT_SECRET` for live API (note: some Spotify apps may return 403 without eligible owner subscription).
-- New Spotify drops need a **rebuild/deploy** (or pin in `pinnedReleases`).
+- **Automatic refresh:** GitHub Action `.github/workflows/refresh-releases.yml` runs daily 05:00 UTC (`workflow_dispatch` too) and POSTs `CLOUDFLARE_PAGES_DEPLOY_HOOK`. Without that secret, new drops still need a deploy or pin.
+- Brand-new albums can still be pinned in `pinnedReleases` in `index.astro` (e.g. Anomaly, 2026-09-04) for same-day cover/link.
 
 ## Performance & security
 
 - Eager high-priority logos; lazy below-the-fold images; Beatstars iframe lazy + low fetch priority.
-- CSP meta in `BaseLayout` must allow Beatstars (`*.beatstars.com`), Google Analytics (`*.googletagmanager.com`, `*.google-analytics.com` in script/img/connect), Spotify CDN images.
+- CSP meta in `BaseLayout` must allow Beatstars (`*.beatstars.com`), Google Analytics (`*.googletagmanager.com`, `*.google-analytics.com` in script/img/connect), Spotify CDN images, **Apple artwork** (`*.mzstatic.com`) for iTunes-sourced covers.
 - `public/_headers` for transport headers on supporting hosts.
 
 ## Automation: `npm run save`
@@ -102,6 +103,8 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 - **Audit log:** `.git/git-save-doc-audit.log` (local, not committed).
 
 ## Save log
+
+- 2026-09-04 13:28 — feat: pin Anomaly and auto-refresh releases — 11 files (.astro/types.d.ts, .env.example, .github/workflows/refresh-releases.yml, dist/index.html, public/images/releases/anomaly-beat-tape.jpg, src/components/DiscographySection.astro, src/layouts/BaseLayout.astro, src/lib/spotify.ts (+1 more))
 
 - 2026-09-01 22:00 — feat: larger BaseBox banner type — 2 files (src/layouts/BaseLayout.astro)
 
