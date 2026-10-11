@@ -1,6 +1,6 @@
 # Guardrails — UI, i18n, and layout
 
-> **Last save:** 2026-09-04 13:28
+> **Last save:** 2026-10-11 19:30
 
 Rules for future changes so the site stays consistent and flicker-free.
 
@@ -24,6 +24,7 @@ Rules for future changes so the site stays consistent and flicker-free.
 
 - **External social/store URLs** live in **`src/config/links.ts`** — do not hardcode Discord/TikTok/Spotify/Beatstars profile URLs in components when config already has them.
 - Translatable link labels use `data-i18n`; proper nouns may stay locale-neutral.
+- Collaboration names are the exception: Greek-script forms go in `el.ts` only when the spelling is confirmed. English defaults in the marquee must match `en.ts`.
 - iframe titles: `data-i18n-title`.
 - New scroll-in sections: add `section-reveal` on the outer section; respect `prefers-reduced-motion`.
 

@@ -1,6 +1,6 @@
 # Architecture — Mr. Bonzo Beats (Astro)
 
-> **Last save:** 2026-09-04 13:28
+> **Last save:** 2026-10-11 19:30
 
 ## Overview
 
@@ -78,6 +78,7 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 - Inline script at end of `<body>`; `localStorage['selected-lang']` is only `en` | `el`.
 - Keys: `data-i18n`, `data-i18n-alt`, `data-i18n-title`, `data-i18n-aria-label`.
 - HTML allowlist (`htmlKeys`): `drumkits.title`, `about.titleHtml`, `contact.title`.
+- Collaboration marquee: order in `src/config/collaborations.ts`; labels in `collaborations.artists` (`en.ts` / `el.ts`). Greek script only for names whose Greek spelling is confirmed. The name sits in its own span so `textContent` updates do not remove the separator.
 
 ## Latest Releases (build-time)
 
@@ -103,6 +104,8 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 - **Audit log:** `.git/git-save-doc-audit.log` (local, not committed).
 
 ## Save log
+
+- 2026-10-11 19:30 — feat: add artists and Greek collaboration names — 6 files (src/components/CollaborationsSection.astro, src/config/collaborations.ts, src/i18n/el.ts, src/i18n/en.ts)
 
 - 2026-09-04 13:28 — feat: pin Anomaly and auto-refresh releases — 11 files (.astro/types.d.ts, .env.example, .github/workflows/refresh-releases.yml, dist/index.html, public/images/releases/anomaly-beat-tape.jpg, src/components/DiscographySection.astro, src/layouts/BaseLayout.astro, src/lib/spotify.ts (+1 more))
 

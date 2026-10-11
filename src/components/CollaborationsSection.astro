@@ -1,8 +1,12 @@
 ---
-import { collaborators } from "../config/collaborations";
+import { collaboratorIds } from "../config/collaborations";
+import en from "../i18n/en";
 
-const safeCollaborators = collaborators || [];
-const marquee = [...safeCollaborators, ...safeCollaborators];
+const artists = collaboratorIds.map((id) => ({
+  id,
+  label: en.collaborations.artists[id],
+}));
+const marquee = [...artists, ...artists];
 ---
 
 <section id="collaborations" class="section-reveal relative mt-8 overflow-hidden rounded-3xl border border-fuchsia-500/30 bg-black/80 px-6 py-6 sm:px-10 sm:py-8">
@@ -18,9 +22,9 @@ const marquee = [...safeCollaborators, ...safeCollaborators];
         <div class="marquee-content">
           {
             marquee.length > 0 ? (
-              marquee.map((artist, idx) => (
+              marquee.map((artist) => (
                 <span class="inline-flex items-center text-sm font-extrabold uppercase tracking-[0.2em] text-fuchsia-200 sm:text-base">
-                  {artist}
+                  <span data-i18n={`collaborations.artists.${artist.id}`}>{artist.label}</span>
                   <span class="mx-6 text-fuchsia-500/60 drop-shadow-[0_0_8px_rgba(217,70,239,0.5)]">✦</span>
                 </span>
               ))
@@ -44,7 +48,7 @@ const marquee = [...safeCollaborators, ...safeCollaborators];
   .marquee-content {
     display: inline-flex;
     white-space: nowrap;
-    animation: brand-ticker 35s linear infinite;
+    animation: brand-ticker 40s linear infinite;
   }
 
   @keyframes brand-ticker {
