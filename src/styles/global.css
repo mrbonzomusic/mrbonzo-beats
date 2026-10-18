@@ -73,6 +73,17 @@
   line-height: 1.25;
 }
 
+.legal-link {
+  color: rgb(240 171 252);
+  text-decoration: underline;
+  text-decoration-color: rgb(217 70 239 / 0.4);
+  text-underline-offset: 4px;
+}
+
+.legal-link:hover {
+  color: #fff;
+}
+
 /* Large display headings: modern spacing without cramped glyphs */
 .display-heading {
   letter-spacing: 0.02em;

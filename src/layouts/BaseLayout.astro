@@ -6,6 +6,7 @@ import el from "../i18n/el";
 
 interface Props {
   title?: string;
+  titleI18n?: string;
   description?: string;
   canonicalUrl?: string;
 }
@@ -16,6 +17,7 @@ const siteDescription = "The official website of Mr. Bonzo. Music production, hi
 const siteURL = "https://mrbonzo-beats.pages.dev/";
 const {
   title = "Mr. Bonzo | Official Website",
+  titleI18n,
   description = siteDescription,
   canonicalUrl = siteURL,
 } = Astro.props;
@@ -32,7 +34,7 @@ const translations = { en, el };
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{title}</title>
+    <title data-i18n={titleI18n}>{title}</title>
     <link rel="canonical" href={canonicalUrl} />
     
     <meta name="description" content={description} />
@@ -344,9 +346,10 @@ const translations = { en, el };
 
         document.querySelectorAll('[data-i18n]').forEach(function (node) {
           var key = node.getAttribute('data-i18n');
+          if (!key) return;
           var val = resolveString(dict, key) || resolveString(translations.en, key);
           if (!val) return;
-          if (htmlKeys[key]) node.innerHTML = val;
+          if (htmlKeys[key] || key.indexOf('legal.html.') === 0) node.innerHTML = val;
           else node.textContent = val;
         });
         document.querySelectorAll('[data-i18n-alt]').forEach(function (node) {

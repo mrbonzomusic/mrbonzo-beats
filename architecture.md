@@ -1,10 +1,10 @@
 # Architecture — Mr. Bonzo Beats (Astro)
 
-> **Last save:** 2026-10-18 14:54
+> **Last save:** 2026-10-18 15:03
 
 ## Overview
 
-Static Astro site (`output: "static"`). The homepage (`src/pages/index.astro`) composes sections as Astro components and wraps everything in `BaseLayout.astro`. Legal pages: `src/pages/terms.astro` (`/terms`) and `src/pages/privacy.astro` (`/privacy`), English body copy, same layout and `SiteFooter`. Hosted on Cloudflare Pages (typical).
+Static Astro site (`output: "static"`). The homepage (`src/pages/index.astro`) composes sections as Astro components and wraps everything in `BaseLayout.astro`. Legal pages: `src/pages/terms.astro` (`/terms`) and `src/pages/privacy.astro` (`/privacy`), same layout and `SiteFooter`. Copy lives in `legal` in `en.ts` / `el.ts` and follows the language switcher. Hosted on Cloudflare Pages (typical).
 
 ## Current site map (homepage)
 
@@ -79,7 +79,7 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 
 - Inline script at end of `<body>`; `localStorage['selected-lang']` is only `en` | `el`.
 - Keys: `data-i18n`, `data-i18n-alt`, `data-i18n-title`, `data-i18n-aria-label`.
-- HTML allowlist (`htmlKeys`): `drumkits.title`, `about.titleHtml`, `contact.title`.
+- HTML allowlist (`htmlKeys`): `drumkits.title`, `about.titleHtml`, `contact.title`, plus any `legal.html.*` key (links inside Terms/Privacy).
 - Collaboration marquee: order in `src/config/collaborations.ts`; labels in `collaborations.artists` (`en.ts` / `el.ts`). Greek script only for names whose Greek spelling is confirmed. The name sits in its own span so `textContent` updates do not remove the separator.
 
 ## Latest Releases (build-time)
@@ -106,6 +106,8 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 - **Audit log:** `.git/git-save-doc-audit.log` (local, not committed).
 
 ## Save log
+
+- 2026-10-18 15:03 — feat: translate terms and privacy with language switcher — 8 files (src/i18n/el.ts, src/i18n/en.ts, src/layouts/BaseLayout.astro, src/pages/privacy.astro, src/pages/terms.astro, src/styles/global.css)
 
 - 2026-10-18 14:54 — feat: add public terms and privacy pages — 8 files (src/components/SiteFooter.astro, src/i18n/el.ts, src/i18n/en.ts, src/layouts/BaseLayout.astro, src/pages/privacy.astro, src/pages/terms.astro)
 

@@ -1,6 +1,6 @@
 # Guardrails — UI, i18n, and layout
 
-> **Last save:** 2026-10-18 14:54
+> **Last save:** 2026-10-18 15:03
 
 Rules for future changes so the site stays consistent and flicker-free.
 
@@ -8,7 +8,7 @@ Rules for future changes so the site stays consistent and flicker-free.
 
 - Every **new user-visible string** must have a matching entry in **`src/i18n/en.ts` and `src/i18n/el.ts`** (same key path).
 - Prefer dotted keys: `data-i18n="hero.label"`.
-- HTML only via **`htmlKeys`** allowlist in `BaseLayout.astro` (`drumkits.title`, `about.titleHtml`, `contact.title`); otherwise `textContent`.
+- HTML only via **`htmlKeys`** allowlist in `BaseLayout.astro` (`drumkits.title`, `about.titleHtml`, `contact.title`) or keys starting with `legal.html.`; otherwise `textContent`.
 
 ## 2. English defaults in `.astro` files (flicker / CLS)
 
@@ -25,7 +25,7 @@ Rules for future changes so the site stays consistent and flicker-free.
 - **External social/store URLs** live in **`src/config/links.ts`** — do not hardcode Discord/TikTok/Spotify/Beatstars profile URLs in components when config already has them.
 - Translatable link labels use `data-i18n`; proper nouns may stay locale-neutral.
 - Collaboration names are the exception: Greek-script forms go in `el.ts` only when the spelling is confirmed. English defaults in the marquee must match `en.ts`.
-- `/terms` and `/privacy` body copy stays English in the page files. Footer and desktop-nav labels are `Terms` and `Privacy` in both `en.ts` and `el.ts`, outside the mobile drawer.
+- `/terms` and `/privacy` copy lives in `legal` (`en.ts` / `el.ts`). English defaults in the page files must match `en.ts`. Footer and desktop-nav labels stay outside the mobile drawer.
 - iframe titles: `data-i18n-title`.
 - New scroll-in sections: add `section-reveal` on the outer section; respect `prefers-reduced-motion`.
 
