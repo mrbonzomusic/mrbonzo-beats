@@ -1,0 +1,128 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import { beatstarsLinks, socialLinks } from "../config/links";
+
+const email = socialLinks.email.replace("mailto:", "");
+const canonicalUrl = "https://mrbonzo-beats.pages.dev/terms";
+const description = "Terms of Service for Mr. Bonzo beats, sound kits, and licenses. Operated by Alexandros Pilatos.";
+---
+
+<BaseLayout title="Terms of Service | Mr. Bonzo" description={description} canonicalUrl={canonicalUrl}>
+  <article class="mx-auto max-w-3xl px-2 pb-8 pt-16 sm:px-4 sm:pt-20">
+    <p class="eyebrow-hero-label">Mr. Bonzo</p>
+    <h1 class="display-heading mt-4 text-4xl font-black uppercase text-white sm:text-5xl">Terms of Service</h1>
+    <p class="mt-4 text-xs font-bold uppercase tracking-wide text-fuchsia-300/70">Last updated 18 October 2026</p>
+
+    <div class="mt-10 space-y-10 text-base leading-relaxed text-gray-300">
+      <section>
+        <h2 class="text-xl font-black uppercase tracking-wide text-white">Who these terms are with</h2>
+        <p class="mt-3">
+          These terms cover the website at <a class="text-fuchsia-300 underline decoration-fuchsia-500/40 underline-offset-4 hover:text-white" href="https://mrbonzo-beats.pages.dev/">https://mrbonzo-beats.pages.dev/</a> and the beats, sound kits, and licenses offered from it.
+          The site is operated by Alexandros Pilatos, publicly known as Mr. Bonzo, from Athens. There is no separate company behind this store.
+          Contact: <a class="text-fuchsia-300 underline decoration-fuchsia-500/40 underline-offset-4 hover:text-white" href={socialLinks.email}>{email}</a>
+          and Instagram <a class="text-fuchsia-300 underline decoration-fuchsia-500/40 underline-offset-4 hover:text-white" href={socialLinks.instagram}>@mrbonzobeats</a>.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-black uppercase tracking-wide text-white">What the site sells</h2>
+        <p class="mt-3">
+          Mr. Bonzo sells type beats, sound kits, and licenses to use those recordings, plus music production, recording, mixing, mastering, sound design, and scoring for media when you book that work separately.
+          Checkout for beats and kits runs on <a class="text-fuchsia-300 underline decoration-fuchsia-500/40 underline-offset-4 hover:text-white" href={beatstarsLinks.profile}>Beatstars</a>. The player on this site is the Beatstars player.
+        </p>
+        <p class="mt-3">The homepage Licensing Guide is the price list. These terms do not replace it. The tiers shown there are:</p>
+        <ul class="mt-3 list-disc space-y-2 pl-5">
+          <li>Basic Lease: MP3, 5,000 copies, 200k streams, non-exclusive.</li>
+          <li>Premium Lease: WAV and MP3, 10k copies, 500k streams, non-exclusive.</li>
+          <li>Exclusive License: the beat files listed there (full ownership of that beat, trackouts and WAV, unlimited use), exclusive.</li>
+        </ul>
+        <p class="mt-3">
+          A lease is non-exclusive. Other people can license the same beat until an exclusive license for that beat is sold.
+          An exclusive license is limited to the beat you bought. Beats marked free on the site, including the Free Section, may be used for profit as the Usage Policy on the homepage already says.
+          Sound kits follow the offer on the kit page. A kit marked as a free download is free to download. It is still not a sale of the name Mr. Bonzo.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-black uppercase tracking-wide text-white">A license is a license to the beat</h2>
+        <p class="mt-3">
+          Buying a lease, an exclusive, or a kit gives you the rights stated for that product and nothing else.
+          It does not transfer the name Mr. Bonzo, the artist identity, the website, the artwork of this site, or any right to say that you are Mr. Bonzo.
+          You do not get the right to resell the beat as a stock instrumental, to register it as your own composition, or to claim that you produced the instrumental.
+        </p>
+        <p class="mt-3">
+          This site does not set an extra producer-credit line beyond that. You may credit Mr. Bonzo if you want to.
+          You may not present the beat as a beat you made, and you may not use the name to imply an endorsement that was not agreed in writing.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-black uppercase tracking-wide text-white">Age</h2>
+        <p class="mt-3">
+          You must be 18 or older to buy a license or to book production services. By using the store you confirm that you are at least 18.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-black uppercase tracking-wide text-white">Use of the site</h2>
+        <p class="mt-3">
+          Do not scrape this site, the player, or the store. Do not copy beats, kits, page text, or artwork in bulk, by bot, or by script.
+          Do not upload a beat to a content-identification system as if you were the producer, except where your license expressly allows you to clear a claim on a song that uses the beat.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-black uppercase tracking-wide text-white">Payments and refunds</h2>
+        <p class="mt-3">
+          Beat and kit payments are taken by Beatstars. PayPal may appear on the receipt when that is how the order was paid, which is the same receipt the Usage Policy already asks for if you need a claim cleared.
+          This website does not run its own card checkout.
+        </p>
+        <p class="mt-3">
+          Digital beats, kits, and licenses are delivered as files. This site does not offer refunds once the file or license has been delivered.
+          There is no cooling-off or 14-day return flow on this store. If a file you paid for never arrives, email {email} and I will resend it.
+          Where a mandatory consumer rule in your country cannot be waived, that rule still applies.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-black uppercase tracking-wide text-white">Videos, claims, and whitelisting</h2>
+        <p class="mt-3">
+          You are responsible for using only the license you actually hold. A free beat, a basic lease, a premium lease, and an exclusive license are not the same thing.
+          If a platform such as YouTube or TikTok claims a video, that claim is between you and the platform unless you are inside the license you bought.
+        </p>
+        <p class="mt-3">
+          Whitelisting is a courtesy, not part of the purchase price and not a promise that a platform will drop a claim.
+          The Usage Policy on the homepage is the rule: for a free beat, send the video link; for a beat you bought, send the video link and a screenshot of the PayPal or Beatstars receipt.
+          When that information is complete, Mr. Bonzo will try to clear the claim within 24 hours. A missing receipt or a use outside the license is not covered.
+        </p>
+        <p class="mt-3">
+          Mr. Bonzo is not liable for demonetization, takedowns, strikes, or lost views that come from using a beat outside the license, from failing to send the details the Usage Policy asks for, or from a platform refusing to lift a claim.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-black uppercase tracking-wide text-white">Liability</h2>
+        <p class="mt-3">
+          The site and the beats are provided as offered on the store. To the extent Greek law allows, Alexandros Pilatos is not liable for indirect loss, lost profits, or platform penalties arising from how you use a beat in a third-party video.
+          Nothing in these terms limits liability that cannot legally be limited, including liability for intent or gross negligence, or rights you have as a consumer that cannot be waived.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-black uppercase tracking-wide text-white">Law and courts</h2>
+        <p class="mt-3">
+          These terms are governed by the law of Greece. The courts of Athens have jurisdiction, except where a mandatory consumer rule gives you the right to sue in the courts of your place of residence.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-black uppercase tracking-wide text-white">Privacy</h2>
+        <p class="mt-3">
+          How personal data is handled is described in the <a class="text-fuchsia-300 underline decoration-fuchsia-500/40 underline-offset-4 hover:text-white" href="/privacy">Privacy Policy</a>.
+        </p>
+      </section>
+    </div>
+  </article>
+  <SiteFooter />
+</BaseLayout>

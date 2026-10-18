@@ -6,13 +6,19 @@ import el from "../i18n/el";
 
 interface Props {
   title?: string;
+  description?: string;
+  canonicalUrl?: string;
 }
 
-const { title = "Mr. Bonzo | Official Website" } = Astro.props;
 const logoPath = "/images/logo-main.webp";
 const socialPreviewImage = "https://mrbonzo-beats.pages.dev/og-image-v2.jpg";
 const siteDescription = "The official website of Mr. Bonzo. Music production, high-quality trap beats, and exclusive drum kits.";
 const siteURL = "https://mrbonzo-beats.pages.dev/";
+const {
+  title = "Mr. Bonzo | Official Website",
+  description = siteDescription,
+  canonicalUrl = siteURL,
+} = Astro.props;
 
 const pond5Link = "https://www.pond5.com/artist/mrbonzobeats";
 const ytBeats = "https://www.youtube.com/@mrbonzobeats";
@@ -27,12 +33,13 @@ const translations = { en, el };
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
+    <link rel="canonical" href={canonicalUrl} />
     
-    <meta name="description" content={siteDescription} />
-    <meta property="og:url" content={siteURL} />
+    <meta name="description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
-    <meta property="og:description" content={siteDescription} />
+    <meta property="og:description" content={description} />
     <meta property="og:image" content={socialPreviewImage} />
     <meta property="og:image:type" content="image/jpeg" />
     <meta property="og:image:width" content="1200" />
@@ -40,7 +47,7 @@ const translations = { en, el };
     
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={siteDescription} />
+    <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={socialPreviewImage} />
     
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
@@ -227,11 +234,11 @@ const translations = { en, el };
               <img src={logoPath} alt="Logo" data-i18n-alt="ui.logoAlt" width="120" height="30" loading="eager" fetchpriority="high" decoding="async" class="h-[22px] w-auto sm:h-[30px]" />
             </a>
 
-            <nav class="hidden lg:flex items-center gap-x-2 xl:gap-x-3">
-              <a href="#player" class="nav-link text-fuchsia-400 hover:text-fuchsia-300 transition" data-i18n="nav.player">Player</a>
-              <a href="#beats" class="nav-link text-fuchsia-100/70 hover:text-fuchsia-400 transition" data-i18n="nav.beats">Beats</a>
-              <a href="#drumkits" class="nav-link text-fuchsia-100/70 hover:text-fuchsia-400 transition" data-i18n="nav.kits">Kits</a>
-              <a href="#latest-releases" class="nav-link text-fuchsia-100/70 hover:text-fuchsia-400 transition" data-i18n="nav.releases">Releases</a>
+            <nav class="hidden lg:flex items-center gap-x-1 xl:gap-x-3">
+              <a href="/#player" class="nav-link text-fuchsia-400 hover:text-fuchsia-300 transition" data-i18n="nav.player">Player</a>
+              <a href="/#beats" class="nav-link text-fuchsia-100/70 hover:text-fuchsia-400 transition" data-i18n="nav.beats">Beats</a>
+              <a href="/#drumkits" class="nav-link text-fuchsia-100/70 hover:text-fuchsia-400 transition" data-i18n="nav.kits">Kits</a>
+              <a href="/#latest-releases" class="nav-link text-fuchsia-100/70 hover:text-fuchsia-400 transition" data-i18n="nav.releases">Releases</a>
               
               <div class="nav-divider"></div>
 
@@ -252,8 +259,10 @@ const translations = { en, el };
               
               <div class="nav-divider"></div>
 
-              <a href="#about" class="nav-link text-fuchsia-100/70 hover:text-fuchsia-400 transition" data-i18n="nav.about">About</a>
-              <a href="#contact" class="nav-link text-fuchsia-100/70 hover:text-fuchsia-400 transition" data-i18n="nav.contact">Contact</a>
+              <a href="/#about" class="nav-link text-fuchsia-100/70 hover:text-fuchsia-400 transition" data-i18n="nav.about">About</a>
+              <a href="/#contact" class="nav-link text-fuchsia-100/70 hover:text-fuchsia-400 transition" data-i18n="nav.contact">Contact</a>
+              <a href="/terms" class="nav-link text-fuchsia-100/70 hover:text-fuchsia-400 transition" data-i18n="nav.terms">Terms</a>
+              <a href="/privacy" class="nav-link text-fuchsia-100/70 hover:text-fuchsia-400 transition" data-i18n="nav.privacy">Privacy</a>
             </nav>
 
             <div class="flex items-center gap-2">
@@ -278,12 +287,12 @@ const translations = { en, el };
         <div id="mobile-menu" class="hidden lg:hidden mt-2">
           <div class="rounded-3xl border border-fuchsia-500/20 bg-black/95 backdrop-blur-xl p-2 shadow-2xl max-h-[75vh] overflow-y-auto">
             <div class="mobile-section-label" data-i18n="nav.mobileNavigation">Navigation</div>
-            <a href="#player" class="mobile-link text-fuchsia-400" data-i18n="nav.player">Player</a>
-            <a href="#beats" class="mobile-link" data-i18n="nav.beats">Beats</a>
-            <a href="#drumkits" class="mobile-link" data-i18n="nav.kits">Kits</a>
-            <a href="#latest-releases" class="mobile-link" data-i18n="nav.releases">Releases</a>
-            <a href="#about" class="mobile-link opacity-80" data-i18n="nav.about">About</a>
-            <a href="#contact" class="mobile-link opacity-80" data-i18n="nav.contact">Contact</a>
+            <a href="/#player" class="mobile-link text-fuchsia-400" data-i18n="nav.player">Player</a>
+            <a href="/#beats" class="mobile-link" data-i18n="nav.beats">Beats</a>
+            <a href="/#drumkits" class="mobile-link" data-i18n="nav.kits">Kits</a>
+            <a href="/#latest-releases" class="mobile-link" data-i18n="nav.releases">Releases</a>
+            <a href="/#about" class="mobile-link opacity-80" data-i18n="nav.about">About</a>
+            <a href="/#contact" class="mobile-link opacity-80" data-i18n="nav.contact">Contact</a>
             <div class="mobile-section-label" data-i18n="nav.mobileSocials">Socials</div>
             <a href={ytBeats} target="_blank" rel="noopener noreferrer" class="mobile-link" data-i18n="nav.youtubeBeats">YouTube Beats</a>
             <a href={ytArtist} target="_blank" rel="noopener noreferrer" class="mobile-link" data-i18n="nav.youtubeArtist">YouTube Artist</a>

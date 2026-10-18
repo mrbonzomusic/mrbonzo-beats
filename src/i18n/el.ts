@@ -29,6 +29,8 @@ const el = {
     discord: "Discord",
     about: "About",
     contact: "Contact",
+    terms: "Terms",
+    privacy: "Privacy",
     mobileNavigation: "Πλοήγηση",
     mobileChannels: "Κανάλια",
     mobileSocialMore: "Social & More",
@@ -155,7 +157,9 @@ const el = {
     youtube: "YouTube",
     email: "Email",
     tiktok: "TikTok",
-    spotify: "Spotify"
+    spotify: "Spotify",
+    terms: "Terms",
+    privacy: "Privacy"
   },
   player: {
     noIframeSupport: "-- Ο browser σου δεν υποστηρίζει iframes --",

@@ -29,6 +29,8 @@ const en = {
     discord: "Discord",
     about: "About",
     contact: "Contact",
+    terms: "Terms",
+    privacy: "Privacy",
     mobileNavigation: "Navigation",
     mobileChannels: "Channels",
     mobileSocialMore: "Social & More",
@@ -155,7 +157,9 @@ const en = {
     youtube: "YouTube",
     email: "Email",
     tiktok: "TikTok",
-    spotify: "Spotify"
+    spotify: "Spotify",
+    terms: "Terms",
+    privacy: "Privacy"
   },
   player: {
     noIframeSupport: "-- Your browser does not support iframes --",

@@ -1,10 +1,10 @@
 # Architecture — Mr. Bonzo Beats (Astro)
 
-> **Last save:** 2026-10-11 19:30
+> **Last save:** 2026-10-18 14:54
 
 ## Overview
 
-Static Astro site (`output: "static"`). One primary page (`src/pages/index.astro`) composes sections as Astro components and wraps everything in `BaseLayout.astro`. Hosted on Cloudflare Pages (typical).
+Static Astro site (`output: "static"`). The homepage (`src/pages/index.astro`) composes sections as Astro components and wraps everything in `BaseLayout.astro`. Legal pages: `src/pages/terms.astro` (`/terms`) and `src/pages/privacy.astro` (`/privacy`), English body copy, same layout and `SiteFooter`. Hosted on Cloudflare Pages (typical).
 
 ## Current site map (homepage)
 
@@ -18,7 +18,9 @@ Order in `src/pages/index.astro` (inside `BaseLayout` → `<main>`):
 6. **Latest Releases** — `#latest-releases` → `DiscographySection.astro` (inner `#releases`)
 7. **About** — `#about` → `AboutSection.astro` + `ServicesSection.astro`
 8. **Contact** — `#contact` → `ContactSection.astro`
-9. **Footer** — `SiteFooter.astro` (copyright + social links)
+9. **Footer** — `SiteFooter.astro` (copyright, always-visible Terms and Privacy links, social links)
+
+Legal routes (not part of the homepage scroll): `/terms`, `/privacy`. Canonical URLs use `https://mrbonzo-beats.pages.dev` plus the path. Desktop nav includes the same two links. Section links in the header point at `/#…` so they still reach the homepage from a legal page.
 
 Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#main-header` (nav, share, EN/EL, Store, burger + mobile menu) → `#nav-hover-ring`.
 
@@ -104,6 +106,8 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 - **Audit log:** `.git/git-save-doc-audit.log` (local, not committed).
 
 ## Save log
+
+- 2026-10-18 14:54 — feat: add public terms and privacy pages — 8 files (src/components/SiteFooter.astro, src/i18n/el.ts, src/i18n/en.ts, src/layouts/BaseLayout.astro, src/pages/privacy.astro, src/pages/terms.astro)
 
 - 2026-10-11 19:30 — feat: add artists and Greek collaboration names — 6 files (src/components/CollaborationsSection.astro, src/config/collaborations.ts, src/i18n/el.ts, src/i18n/en.ts)
 

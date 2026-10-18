@@ -1,0 +1,127 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import { beatstarsLinks, socialLinks } from "../config/links";
+
+const email = socialLinks.email.replace("mailto:", "");
+const canonicalUrl = "https://mrbonzo-beats.pages.dev/privacy";
+const description = "Privacy Policy for the Mr. Bonzo beat store. Controller: Alexandros Pilatos (Mr. Bonzo), Athens.";
+---
+
+<BaseLayout title="Privacy Policy | Mr. Bonzo" description={description} canonicalUrl={canonicalUrl}>
+  <article class="mx-auto max-w-3xl px-2 pb-8 pt-16 sm:px-4 sm:pt-20">
+    <p class="eyebrow-hero-label">Mr. Bonzo</p>
+    <h1 class="display-heading mt-4 text-4xl font-black uppercase text-white sm:text-5xl">Privacy Policy</h1>
+    <p class="mt-4 text-xs font-bold uppercase tracking-wide text-fuchsia-300/70">Last updated 18 October 2026</p>
+
+    <div class="mt-10 space-y-10 text-base leading-relaxed text-gray-300">
+      <section>
+        <h2 class="text-xl font-black uppercase tracking-wide text-white">Who the controller is</h2>
+        <p class="mt-3">
+          The controller for personal data on this website is Alexandros Pilatos, publicly known as Mr. Bonzo, in Athens, Greece.
+          This is a personal artist store for beats, sound kits, and licenses, and for production, mixing, and mastering inquiries.
+          There is no separate company and no data-protection officer.
+        </p>
+        <p class="mt-3">
+          Site: <a class="text-fuchsia-300 underline decoration-fuchsia-500/40 underline-offset-4 hover:text-white" href="https://mrbonzo-beats.pages.dev/">https://mrbonzo-beats.pages.dev/</a><br />
+          Email: <a class="text-fuchsia-300 underline decoration-fuchsia-500/40 underline-offset-4 hover:text-white" href={socialLinks.email}>{email}</a><br />
+          Instagram: <a class="text-fuchsia-300 underline decoration-fuchsia-500/40 underline-offset-4 hover:text-white" href={socialLinks.instagram}>@mrbonzobeats</a>
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-black uppercase tracking-wide text-white">What data is processed</h2>
+        <p class="mt-3">This site has no accounts and no contact form. Data appears only if you choose to get in touch or to buy something.</p>
+        <ul class="mt-3 list-disc space-y-2 pl-5">
+          <li>Email you send to {email}: your address and whatever you write.</li>
+          <li>Instagram or Discord messages you send through the links on the site: your username and the message.</li>
+          <li>Orders placed on <a class="text-fuchsia-300 underline decoration-fuchsia-500/40 underline-offset-4 hover:text-white" href={beatstarsLinks.profile}>Beatstars</a>. PayPal may be the payment method or may appear on the receipt. I may see your name, email, the product, and a receipt screenshot if you send one.</li>
+          <li>A language choice stored in your browser (English or Greek) so the site can remember it. That is local storage on your device, not an account.</li>
+          <li>Visit measurements from Google Analytics: pages viewed, approximate location, device and browser type, and the IP address Google receives. Google Analytics uses cookies.</li>
+          <li>Your IP address when the site and its fonts are loaded, because the host and the font provider need it to deliver the page.</li>
+        </ul>
+        <p class="mt-3">I do not ask for a copy of your ID. Do not send payment card numbers by email. Card and PayPal details stay with Beatstars or PayPal.</p>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-black uppercase tracking-wide text-white">Why it is used</h2>
+        <ul class="mt-3 list-disc space-y-2 pl-5">
+          <li>To answer a question about a beat, a kit, a license, or a production service.</li>
+          <li>To deliver the file or license you bought.</li>
+          <li>To clear a content claim when you send the video link and, for a paid beat, the receipt described in the Usage Policy.</li>
+          <li>To remember the language you picked and to see which pages are used.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-black uppercase tracking-wide text-white">Legal bases</h2>
+        <ul class="mt-3 list-disc space-y-2 pl-5">
+          <li>Contract: taking an order, delivering a license or kit, and handling a whitelist request tied to that license.</li>
+          <li>Legitimate interest: replying to an inquiry, keeping a short record of a claim you asked me to clear, remembering your language, and measuring traffic with Google Analytics so I know which pages are used. Analytics is not required to buy a beat. You can block Google Analytics cookies in your browser.</li>
+          <li>Consent: only if I later add an optional cookie that is not needed to run the site. There is no marketing-cookie banner today, because the only analytics tag is the one described above and I do not treat it as a condition of using the store.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-black uppercase tracking-wide text-white">Personal data is not sold</h2>
+        <p class="mt-3">
+          I do not sell personal data. I do not share it with advertisers as a list. I do not trade it for anything.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-black uppercase tracking-wide text-white">Who else handles it</h2>
+        <p class="mt-3">These services already run this site. They process data only so the site, the store, or the message can work:</p>
+        <ul class="mt-3 list-disc space-y-2 pl-5">
+          <li>Cloudflare Pages hosts the website.</li>
+          <li>Google Analytics measures visits. Google Fonts serves the typeface. Google may receive your IP address for those requests.</li>
+          <li>Beatstars hosts the player, the store, checkout, and license delivery.</li>
+          <li>PayPal, when a receipt or payment on an order uses PayPal.</li>
+          <li>Instagram or Discord, if you choose to write through those links. The message is then on that service as well as in my inbox there.</li>
+        </ul>
+        <p class="mt-3">I do not run a separate customer database on this website.</p>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-black uppercase tracking-wide text-white">How long it is kept</h2>
+        <ul class="mt-3 list-disc space-y-2 pl-5">
+          <li>Emails and messages: until the question is finished, and longer only if I still need them as a record of a license or a service you booked.</li>
+          <li>A receipt you send for a claim: until the claim is cleared, and for a short time after in case the same video is claimed again, then deleted.</li>
+          <li>Language preference: it stays in your browser until you clear site data.</li>
+          <li>Analytics: kept by Google under the retention setting of this Analytics property. I do not copy that traffic into another database.</li>
+          <li>Order records on Beatstars or PayPal follow those services. I do not keep a second copy unless you send me a receipt.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-black uppercase tracking-wide text-white">Your rights</h2>
+        <p class="mt-3">
+          You can ask for access, correction, deletion, restriction, or a copy of the personal data I hold about you, and you can object to processing based on legitimate interest.
+          Where a processing activity is based on consent, you can withdraw that consent at any time. Withdrawal does not affect processing that already happened.
+        </p>
+        <p class="mt-3">
+          Email <a class="text-fuchsia-300 underline decoration-fuchsia-500/40 underline-offset-4 hover:text-white" href={socialLinks.email}>{email}</a> with the subject “Data request”.
+          I will reply within one month. I may ask you to confirm you are the person the data is about.
+        </p>
+        <p class="mt-3">
+          You can also complain to the Hellenic Data Protection Authority (HDPA): <a class="text-fuchsia-300 underline decoration-fuchsia-500/40 underline-offset-4 hover:text-white" href="https://www.dpa.gr">www.dpa.gr</a>.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-black uppercase tracking-wide text-white">Children</h2>
+        <p class="mt-3">
+          This site is not directed at anyone under 16. I do not knowingly collect personal data from children. If you believe a child has sent personal data, email {email} and I will delete it.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-black uppercase tracking-wide text-white">Terms</h2>
+        <p class="mt-3">
+          The rules for buying and using a beat are in the <a class="text-fuchsia-300 underline decoration-fuchsia-500/40 underline-offset-4 hover:text-white" href="/terms">Terms of Service</a>.
+        </p>
+      </section>
+    </div>
+  </article>
+  <SiteFooter />
+</BaseLayout>
