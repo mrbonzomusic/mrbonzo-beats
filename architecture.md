@@ -1,6 +1,6 @@
 # Architecture — Mr. Bonzo Beats (Astro)
 
-> **Last save:** 2026-10-28 10:08
+> **Last save:** 2026-10-28 10:15
 
 ## Overview
 
@@ -17,7 +17,7 @@ Order in `src/pages/index.astro` (inside `BaseLayout` → `<main>`):
 5. **Drum kits** — `#drumkits` → `DrumKits.astro`
 6. **Latest Releases** — `#latest-releases` → `DiscographySection.astro` (inner `#releases`)
 7. **About** — `#about` → `AboutSection.astro` + `ServicesSection.astro`
-8. **Contact** — `#contact` → `ContactSection.astro` (email / Instagram / Discord + newsletter form)
+8. **Contact** — `#contact` → `ContactSection.astro` (email / Instagram / Discord)
 9. **Footer** — `SiteFooter.astro` (copyright + social links)
 
 Old `/terms` and `/privacy` redirect to `/` (`public/_redirects`). Header section links use `/#…`.
@@ -81,17 +81,14 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 - Inline script at end of `<body>`; `localStorage['selected-lang']` is only `en` | `el`.
 - Keys: `data-i18n`, `data-i18n-alt`, `data-i18n-title`, `data-i18n-aria-label`.
 - HTML allowlist (`htmlKeys`): `drumkits.title`, `about.titleHtml`, `contact.title`.
-- Extra attributes: `data-i18n-placeholder` (newsletter email field).
+- Extra attributes: `data-i18n-placeholder` (kept for the paused newsletter field).
 - Collaboration marquee: order in `src/config/collaborations.ts`; labels in `collaborations.artists` (`en.ts` / `el.ts`). Greek script only for names whose Greek spelling is confirmed. The name sits in its own span so `textContent` updates do not remove the separator.
 
-## Newsletter (Plunk)
+## Newsletter (Plunk) — paused until a public domain
 
-- UI: `#newsletter-form` in `ContactSection.astro`. Honeypot field `company_url` (off-screen). Client `POST /api/subscribe` with `{ email, lang, company_url }`.
-- Function: `functions/api/subscribe.js`. Env `PLUNK_API_URL` + `PLUNK_SECRET_KEY`. Tries `POST {origin}/v1/contacts` then `/contacts`.
-- Homelab: dashboard `https://plunk.homelab.lan/`, API `https://plunk-api.homelab.lan/` (`POST /contacts`). Pages cannot reach `.lan`.
-- Temporary public path: Docker `plunk-tunnel` on `homelab_homelab-net` (`cloudflared` quick tunnel → `http://plunk:80` with Host `plunk-api.homelab.lan`). URL is `*.trycloudflare.com` and **changes if the container recreates**. Named tunnel + real domain is the durable fix.
-- Pages production secrets: `PLUNK_API_URL`, `PLUNK_SECRET_KEY` (wrangler; never in git). After changing secrets, redeploy so the Function picks them up.
-- Do not put the secret in git or the browser. Double opt-in needs working SMTP; until a domain/SMTP exists, contacts are created as subscribed.
+- Form is **not** on the site. Copy stays in `newsletter.*` (`en.ts` / `el.ts`). Function `functions/api/subscribe.js` returns 503 until re-enabled.
+- When bringing it back: named Cloudflare Tunnel (stable hostname) + `PLUNK_API_URL` / `PLUNK_SECRET_KEY` Pages secrets. Homelab API is `https://plunk-api.homelab.lan/` (`POST /contacts`). Do not put the secret in git or the browser.
+- Quick `trycloudflare.com` tunnels were a stopgap; do not leave `plunk-tunnel` running without a domain (URL changes on PC reboot).
 
 ## Latest Releases (build-time)
 
@@ -117,6 +114,8 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 - **Audit log:** `.git/git-save-doc-audit.log` (local, not committed).
 
 ## Save log
+
+- 2026-10-28 10:15 — chore: pause newsletter until a public domain — 5 files (dist/index.html, functions/api/subscribe.js, src/components/ContactSection.astro)
 
 - 2026-10-28 10:08 — fix: prefer Plunk /contacts and document Cloudflare tunnel — 3 files (.env.example, functions/api/subscribe.js)
 

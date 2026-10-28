@@ -13,7 +13,7 @@ import { socialLinks } from "../config/links";
     </h2>
     
     <p class="text-gray-300 text-base sm:text-lg lg:text-xl mb-16 max-w-2xl mx-auto leading-relaxed" data-i18n="contact.subtitle">
-      Whether it's a custom beat, mixing & mastering, or a collaboration, my door is always open.
+      For custom beats, mixing & mastering, or business inquiries, reach out through your preferred platform.
     </p>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -64,106 +64,5 @@ import { socialLinks } from "../config/links";
       </a>
 
     </div>
-
-    <div class="mt-16 rounded-[2rem] border border-fuchsia-500/25 bg-black/40 px-6 py-10 sm:px-10">
-      <p class="text-lg font-black uppercase tracking-wide text-white sm:text-xl" data-i18n="newsletter.question">Want new drops and free beats in your inbox?</p>
-      <form id="newsletter-form" class="mt-8 mx-auto flex w-full max-w-xl flex-col gap-4 sm:flex-row sm:items-stretch" novalidate>
-        <label class="newsletter-hp" aria-hidden="true">
-          <span>Company</span>
-          <input type="text" name="company_url" tabindex="-1" autocomplete="off" />
-        </label>
-        <input
-          id="newsletter-email"
-          type="email"
-          name="email"
-          required
-          autocomplete="email"
-          inputmode="email"
-          data-i18n-placeholder="newsletter.placeholder"
-          placeholder="diana.k@example.org"
-          class="min-w-0 flex-1 rounded-full border border-fuchsia-500/30 bg-white/5 px-6 py-3.5 text-base text-white placeholder:text-white/40 outline-none focus:border-fuchsia-400"
-        />
-        <button
-          type="submit"
-          id="newsletter-submit"
-          class="rounded-full bg-fuchsia-600 px-8 py-3.5 text-sm font-black uppercase tracking-wide text-white hover:bg-fuchsia-500 transition active:scale-95"
-          data-i18n="newsletter.submit"
-        >Join the list</button>
-      </form>
-      <p id="newsletter-status" class="mt-5 text-sm text-fuchsia-200/90 min-h-[1.25rem]" role="status" aria-live="polite"></p>
-      <span id="newsletter-msg-success" class="hidden" data-i18n="newsletter.success">You're on the list. Watch your inbox for drops.</span>
-      <span id="newsletter-msg-invalid" class="hidden" data-i18n="newsletter.invalid">Enter a valid email address.</span>
-      <span id="newsletter-msg-notReady" class="hidden" data-i18n="newsletter.notReady">The list is not live yet. Email me and I will add you.</span>
-      <span id="newsletter-msg-error" class="hidden" data-i18n="newsletter.error">Something went wrong. Try again, or email me.</span>
-    </div>
   </div>
 </section>
-
-<script is:inline>
-  (function () {
-    var form = document.getElementById("newsletter-form");
-    if (!form || form.dataset.bound === "1") return;
-    form.dataset.bound = "1";
-    var status = document.getElementById("newsletter-status");
-    var submit = document.getElementById("newsletter-submit");
-    var emailInput = document.getElementById("newsletter-email");
-    var lastMsgId = "";
-    function msg(id) {
-      var el = document.getElementById("newsletter-msg-" + id);
-      return el ? el.textContent : "";
-    }
-    function setStatus(id) {
-      lastMsgId = id || "";
-      if (status) status.textContent = id ? msg(id) : "";
-    }
-    try {
-      new MutationObserver(function () {
-        if (lastMsgId) setStatus(lastMsgId);
-      }).observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
-    } catch (err) {}
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-      var email = emailInput ? String(emailInput.value || "").trim() : "";
-      var honey = form.querySelector('[name="company_url"]');
-      var lang = "en";
-      try {
-        var stored = localStorage.getItem("selected-lang");
-        if (stored === "el" || stored === "en") lang = stored;
-      } catch (err) {}
-      if (!email || email.indexOf("@") < 1) {
-        setStatus("invalid");
-        return;
-      }
-      if (submit) submit.disabled = true;
-      fetch("/api/subscribe", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({
-          email: email,
-          lang: lang,
-          company_url: honey ? honey.value : ""
-        })
-      }).then(function (res) {
-        return res.json().then(function (data) {
-          return { res: res, data: data };
-        }).catch(function () {
-          return { res: res, data: {} };
-        });
-      }).then(function (pack) {
-        if (pack.res.ok && pack.data && pack.data.ok) {
-          setStatus("success");
-          form.reset();
-          return;
-        }
-        var code = pack.data && pack.data.error;
-        if (code === "email") setStatus("invalid");
-        else if (code === "not_ready" || pack.res.status === 503 || pack.res.status === 404) setStatus("notReady");
-        else setStatus("error");
-      }).catch(function () {
-        setStatus("error");
-      }).then(function () {
-        if (submit) submit.disabled = false;
-      });
-    });
-  })();
-</script>

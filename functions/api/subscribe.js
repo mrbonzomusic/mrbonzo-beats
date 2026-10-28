@@ -1,4 +1,5 @@
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const NEWSLETTER_ENABLED = false;
 
 function json(body, status) {
   return new Response(JSON.stringify(body), {
@@ -15,6 +16,10 @@ export function onRequestOptions() {
 }
 
 export async function onRequestPost({ request, env }) {
+  if (!NEWSLETTER_ENABLED) {
+    return json({ ok: false, error: "not_ready" }, 503);
+  }
+
   let body;
   try {
     body = await request.json();
