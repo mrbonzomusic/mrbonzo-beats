@@ -73,15 +73,16 @@
   line-height: 1.25;
 }
 
-.legal-link {
-  color: rgb(240 171 252);
-  text-decoration: underline;
-  text-decoration-color: rgb(217 70 239 / 0.4);
-  text-underline-offset: 4px;
-}
-
-.legal-link:hover {
-  color: #fff;
+.newsletter-hp {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 /* Large display headings: modern spacing without cramped glyphs */
@@ -102,6 +103,24 @@
   .display-heading,
   .display-heading-wide {
     letter-spacing: 0.01em;
+    overflow-wrap: anywhere;
+  }
+
+  html[lang="el"] .display-heading,
+  html[lang="el"] .display-heading-wide {
+    letter-spacing: 0;
+    word-break: break-word;
+  }
+
+  html[lang="el"] .eyebrow-hero-label {
+    letter-spacing: 0.12em;
+  }
+
+  html[lang="el"] .basebox-banner,
+  html[lang="el"] .basebox-banner-tagline,
+  html[lang="el"] .basebox-badge {
+    letter-spacing: 0;
+    font-size: 14px;
   }
 }
 

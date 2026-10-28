@@ -1,10 +1,10 @@
 # Architecture — Mr. Bonzo Beats (Astro)
 
-> **Last save:** 2026-10-18 15:03
+> **Last save:** 2026-10-28 09:55
 
 ## Overview
 
-Static Astro site (`output: "static"`). The homepage (`src/pages/index.astro`) composes sections as Astro components and wraps everything in `BaseLayout.astro`. Legal pages: `src/pages/terms.astro` (`/terms`) and `src/pages/privacy.astro` (`/privacy`), same layout and `SiteFooter`. Copy lives in `legal` in `en.ts` / `el.ts` and follows the language switcher. Hosted on Cloudflare Pages (typical).
+Static Astro site (`output: "static"`). The homepage (`src/pages/index.astro`) composes sections as Astro components and wraps everything in `BaseLayout.astro`. Hosted on Cloudflare Pages. Newsletter signup posts to a Pages Function (`functions/api/subscribe.js`) which talks to self-hosted Plunk; the secret stays in Pages env, never in the client.
 
 ## Current site map (homepage)
 
@@ -17,10 +17,10 @@ Order in `src/pages/index.astro` (inside `BaseLayout` → `<main>`):
 5. **Drum kits** — `#drumkits` → `DrumKits.astro`
 6. **Latest Releases** — `#latest-releases` → `DiscographySection.astro` (inner `#releases`)
 7. **About** — `#about` → `AboutSection.astro` + `ServicesSection.astro`
-8. **Contact** — `#contact` → `ContactSection.astro`
-9. **Footer** — `SiteFooter.astro` (copyright, always-visible Terms and Privacy links, social links)
+8. **Contact** — `#contact` → `ContactSection.astro` (email / Instagram / Discord + newsletter form)
+9. **Footer** — `SiteFooter.astro` (copyright + social links)
 
-Legal routes (not part of the homepage scroll): `/terms`, `/privacy`. Canonical URLs use `https://mrbonzo-beats.pages.dev` plus the path. Desktop nav includes the same two links. Section links in the header point at `/#…` so they still reach the homepage from a legal page.
+Old `/terms` and `/privacy` redirect to `/` (`public/_redirects`). Header section links use `/#…`.
 
 Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#main-header` (nav, share, EN/EL, Store, burger + mobile menu) → `#nav-hover-ring`.
 
@@ -35,6 +35,7 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 | `src/config/` | URLs (`links.ts`), collaboration list. |
 | `src/lib/` | Build-time helpers (`spotify.ts`: API / RSS / scrape + `sortReleasesNewestFirst`). |
 | `src/styles/global.css` | Tailwind import + typography tokens (eyebrows, `--ui-interactive` / `--ui-meta`, `.nav-link`), `section-reveal`, `.nav-hover-ring`. |
+| `functions/` | Cloudflare Pages Functions (`api/subscribe.js` → Plunk). |
 | `scripts/save.mjs` | `npm run save` — commit, push, always refresh docs. |
 | `AGENTS.md` / `guardrails.md` | Agent entrypoint + hard rules. |
 
@@ -79,8 +80,16 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 
 - Inline script at end of `<body>`; `localStorage['selected-lang']` is only `en` | `el`.
 - Keys: `data-i18n`, `data-i18n-alt`, `data-i18n-title`, `data-i18n-aria-label`.
-- HTML allowlist (`htmlKeys`): `drumkits.title`, `about.titleHtml`, `contact.title`, plus any `legal.html.*` key (links inside Terms/Privacy).
+- HTML allowlist (`htmlKeys`): `drumkits.title`, `about.titleHtml`, `contact.title`.
+- Extra attributes: `data-i18n-placeholder` (newsletter email field).
 - Collaboration marquee: order in `src/config/collaborations.ts`; labels in `collaborations.artists` (`en.ts` / `el.ts`). Greek script only for names whose Greek spelling is confirmed. The name sits in its own span so `textContent` updates do not remove the separator.
+
+## Newsletter (Plunk)
+
+- UI: `#newsletter-form` in `ContactSection.astro`. Honeypot field `company_url` (off-screen). Client `POST /api/subscribe` with `{ email, lang, company_url }`.
+- Function: `functions/api/subscribe.js`. Env `PLUNK_API_URL` + `PLUNK_SECRET_KEY`. Tries `POST {origin}/v1/contacts` then `/contacts`.
+- Homelab dashboard: `https://plunk.homelab.lan/` (Settings → secret key). Pages cannot reach `.lan`. For live signups, put Plunk on a Cloudflare Tunnel, then set `PLUNK_API_URL` and `PLUNK_SECRET_KEY` in Pages environment variables.
+- Do not put the secret in git or the browser. Double opt-in needs working SMTP; until a domain/SMTP exists, contacts are created as subscribed.
 
 ## Latest Releases (build-time)
 
@@ -106,6 +115,8 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 - **Audit log:** `.git/git-save-doc-audit.log` (local, not committed).
 
 ## Save log
+
+- 2026-10-28 09:55 — feat: newsletter signup, drop terms/privacy, Greek mobile wrapping — 18 files (.env.example, dist/index.html, functions/api/subscribe.js, public/_redirects, public/tiktok-app-icon-1024.png, src/components/CollaborationsSection.astro, src/components/ContactSection.astro, src/components/DrumKits.astro (+8 more))
 
 - 2026-10-18 15:03 — feat: translate terms and privacy with language switcher — 8 files (src/i18n/el.ts, src/i18n/en.ts, src/layouts/BaseLayout.astro, src/pages/privacy.astro, src/pages/terms.astro, src/styles/global.css)
 

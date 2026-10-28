@@ -1,6 +1,6 @@
 # Guardrails — UI, i18n, and layout
 
-> **Last save:** 2026-10-18 15:03
+> **Last save:** 2026-10-28 09:55
 
 Rules for future changes so the site stays consistent and flicker-free.
 
@@ -8,24 +8,25 @@ Rules for future changes so the site stays consistent and flicker-free.
 
 - Every **new user-visible string** must have a matching entry in **`src/i18n/en.ts` and `src/i18n/el.ts`** (same key path).
 - Prefer dotted keys: `data-i18n="hero.label"`.
-- HTML only via **`htmlKeys`** allowlist in `BaseLayout.astro` (`drumkits.title`, `about.titleHtml`, `contact.title`) or keys starting with `legal.html.`; otherwise `textContent`.
+- HTML only via **`htmlKeys`** allowlist in `BaseLayout.astro` (`drumkits.title`, `about.titleHtml`, `contact.title`); otherwise `textContent`.
 
 ## 2. English defaults in `.astro` files (flicker / CLS)
 
 - Default text between tags with `data-i18n` must match **`en.ts` exactly**.
-- Same for `data-i18n-alt` / `data-i18n-title` / `data-i18n-aria-label`.
+- Same for `data-i18n-alt` / `data-i18n-title` / `data-i18n-aria-label` / `data-i18n-placeholder`.
 
 ## 3. Client script expectations
 
 - `localStorage['selected-lang']` only `en` | `el`.
 - New translation attribute types require extending `applyTranslations()` in `BaseLayout.astro`.
+- Current extra attrs: `data-i18n-alt`, `data-i18n-title`, `data-i18n-aria-label`, `data-i18n-placeholder`.
 
 ## 4. Links and images
 
 - **External social/store URLs** live in **`src/config/links.ts`** — do not hardcode Discord/TikTok/Spotify/Beatstars profile URLs in components when config already has them.
 - Translatable link labels use `data-i18n`; proper nouns may stay locale-neutral.
 - Collaboration names are the exception: Greek-script forms go in `el.ts` only when the spelling is confirmed. English defaults in the marquee must match `en.ts`.
-- `/terms` and `/privacy` copy lives in `legal` (`en.ts` / `el.ts`). English defaults in the page files must match `en.ts`. Footer and desktop-nav labels stay outside the mobile drawer.
+- Greek on small screens: keep display headings wrapping (`overflow-wrap` / less letter-spacing under `html[lang="el"]`). Do not shrink interactive type below 14px to fit long Greek.
 - iframe titles: `data-i18n-title`.
 - New scroll-in sections: add `section-reveal` on the outer section; respect `prefers-reduced-motion`.
 
@@ -74,7 +75,7 @@ Document new overlay layers here if added.
 
 - Never add a third-party `<script src>` without updating CSP in `BaseLayout.astro` and noting it in `architecture.md`.
 - Do not inject untrusted HTML into `en.ts` / `el.ts`.
-- Contact forms (if added later): honeypot, server validation, rate limits.
+- Newsletter: honeypot `company_url`, validate email in `functions/api/subscribe.js`, never expose `PLUNK_SECRET_KEY` to the client. No third-party form scripts.
 
 ## 12. Checklist (self-review)
 

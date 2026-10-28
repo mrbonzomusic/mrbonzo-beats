@@ -1,6 +1,6 @@
 <section id="services" class="mt-20 rounded-[2.5rem] border border-fuchsia-500/30 bg-black/85 p-8 sm:p-12 lg:p-16">
   <div class="mb-10">
-    <h3 class="display-heading text-4xl font-black uppercase tracking-tight text-white sm:text-5xl lg:text-6xl" data-i18n="services.title">
+    <h3 class="display-heading text-3xl font-black uppercase tracking-tight text-white sm:text-5xl lg:text-6xl" data-i18n="services.title">
       Professional Services
     </h3>
     <p class="mt-4 text-base text-purple-100/75 sm:text-lg lg:text-xl max-w-2xl" data-i18n="services.subtitle">
@@ -16,12 +16,12 @@
       { key: "services.soundDesign", label: "Sound Design" },
       { key: "services.scoringMedia", label: "Scoring for Media" }
     ].map((service) => (
-      <div class="group flex items-center justify-center rounded-2xl border border-fuchsia-500/20 bg-gradient-to-br from-fuchsia-500/10 to-transparent px-6 py-6 text-[15px] font-black uppercase tracking-[0.2em] text-fuchsia-100 transition-all duration-300 hover:border-fuchsia-500/50 hover:bg-fuchsia-500/10 hover:shadow-[0_0_30px_rgba(217,70,239,0.15)] text-center" data-i18n={service.key}>
+      <div class="group flex items-center justify-center rounded-2xl border border-fuchsia-500/20 bg-gradient-to-br from-fuchsia-500/10 to-transparent px-6 py-6 text-[15px] font-black uppercase tracking-wide sm:tracking-[0.2em] text-fuchsia-100 transition-all duration-300 hover:border-fuchsia-500/50 hover:bg-fuchsia-500/10 hover:shadow-[0_0_30px_rgba(217,70,239,0.15)] text-center break-words" data-i18n={service.key}>
         {service.label}
       </div>
     ))}
     
-    <div class="flex items-center justify-center rounded-2xl border border-white/10 bg-white/5 px-6 py-6 text-[13px] font-bold uppercase tracking-[0.15em] text-gray-400 italic" data-i18n="services.moreOnRequest">
+    <div class="flex items-center justify-center rounded-2xl border border-white/10 bg-white/5 px-6 py-6 text-xs font-bold uppercase tracking-wide sm:tracking-[0.15em] text-gray-400 italic text-center break-words" data-i18n="services.moreOnRequest">
       & more upon request
     </div>
   </div>

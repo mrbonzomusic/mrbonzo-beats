@@ -236,7 +236,7 @@ const translations = { en, el };
               <img src={logoPath} alt="Logo" data-i18n-alt="ui.logoAlt" width="120" height="30" loading="eager" fetchpriority="high" decoding="async" class="h-[22px] w-auto sm:h-[30px]" />
             </a>
 
-            <nav class="hidden lg:flex items-center gap-x-1 xl:gap-x-3">
+            <nav class="hidden lg:flex items-center gap-x-2 xl:gap-x-3">
               <a href="/#player" class="nav-link text-fuchsia-400 hover:text-fuchsia-300 transition" data-i18n="nav.player">Player</a>
               <a href="/#beats" class="nav-link text-fuchsia-100/70 hover:text-fuchsia-400 transition" data-i18n="nav.beats">Beats</a>
               <a href="/#drumkits" class="nav-link text-fuchsia-100/70 hover:text-fuchsia-400 transition" data-i18n="nav.kits">Kits</a>
@@ -263,8 +263,6 @@ const translations = { en, el };
 
               <a href="/#about" class="nav-link text-fuchsia-100/70 hover:text-fuchsia-400 transition" data-i18n="nav.about">About</a>
               <a href="/#contact" class="nav-link text-fuchsia-100/70 hover:text-fuchsia-400 transition" data-i18n="nav.contact">Contact</a>
-              <a href="/terms" class="nav-link text-fuchsia-100/70 hover:text-fuchsia-400 transition" data-i18n="nav.terms">Terms</a>
-              <a href="/privacy" class="nav-link text-fuchsia-100/70 hover:text-fuchsia-400 transition" data-i18n="nav.privacy">Privacy</a>
             </nav>
 
             <div class="flex items-center gap-2">
@@ -349,7 +347,7 @@ const translations = { en, el };
           if (!key) return;
           var val = resolveString(dict, key) || resolveString(translations.en, key);
           if (!val) return;
-          if (htmlKeys[key] || key.indexOf('legal.html.') === 0) node.innerHTML = val;
+          if (htmlKeys[key]) node.innerHTML = val;
           else node.textContent = val;
         });
         document.querySelectorAll('[data-i18n-alt]').forEach(function (node) {
@@ -366,6 +364,11 @@ const translations = { en, el };
           var key = node.getAttribute('data-i18n-aria-label');
           var val = resolveString(dict, key) || resolveString(translations.en, key);
           if (val) node.setAttribute('aria-label', safeAttr(val));
+        });
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(function (node) {
+          var key = node.getAttribute('data-i18n-placeholder');
+          var val = resolveString(dict, key) || resolveString(translations.en, key);
+          if (val) node.setAttribute('placeholder', safeAttr(val));
         });
         document.querySelectorAll('.lang-switch-btn').forEach(function (btn) {
           btn.setAttribute('data-active', btn.getAttribute('data-lang-switch') === lang ? 'true' : 'false');
