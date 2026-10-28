@@ -50,7 +50,7 @@ export async function onRequestPost({ request, env }) {
     "Content-Type": "application/json",
   };
 
-  const paths = ["/v1/contacts", "/contacts"];
+  const paths = ["/contacts", "/v1/contacts"];
   for (const path of paths) {
     try {
       const res = await fetch(apiRoot + path, {

@@ -1,6 +1,6 @@
 # Architecture — Mr. Bonzo Beats (Astro)
 
-> **Last save:** 2026-10-28 09:55
+> **Last save:** 2026-10-28 10:08
 
 ## Overview
 
@@ -88,7 +88,9 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 
 - UI: `#newsletter-form` in `ContactSection.astro`. Honeypot field `company_url` (off-screen). Client `POST /api/subscribe` with `{ email, lang, company_url }`.
 - Function: `functions/api/subscribe.js`. Env `PLUNK_API_URL` + `PLUNK_SECRET_KEY`. Tries `POST {origin}/v1/contacts` then `/contacts`.
-- Homelab dashboard: `https://plunk.homelab.lan/` (Settings → secret key). Pages cannot reach `.lan`. For live signups, put Plunk on a Cloudflare Tunnel, then set `PLUNK_API_URL` and `PLUNK_SECRET_KEY` in Pages environment variables.
+- Homelab: dashboard `https://plunk.homelab.lan/`, API `https://plunk-api.homelab.lan/` (`POST /contacts`). Pages cannot reach `.lan`.
+- Temporary public path: Docker `plunk-tunnel` on `homelab_homelab-net` (`cloudflared` quick tunnel → `http://plunk:80` with Host `plunk-api.homelab.lan`). URL is `*.trycloudflare.com` and **changes if the container recreates**. Named tunnel + real domain is the durable fix.
+- Pages production secrets: `PLUNK_API_URL`, `PLUNK_SECRET_KEY` (wrangler; never in git). After changing secrets, redeploy so the Function picks them up.
 - Do not put the secret in git or the browser. Double opt-in needs working SMTP; until a domain/SMTP exists, contacts are created as subscribed.
 
 ## Latest Releases (build-time)
@@ -115,6 +117,8 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 - **Audit log:** `.git/git-save-doc-audit.log` (local, not committed).
 
 ## Save log
+
+- 2026-10-28 10:08 — fix: prefer Plunk /contacts and document Cloudflare tunnel — 3 files (.env.example, functions/api/subscribe.js)
 
 - 2026-10-28 09:55 — feat: newsletter signup, drop terms/privacy, Greek mobile wrapping — 18 files (.env.example, dist/index.html, functions/api/subscribe.js, public/_redirects, public/tiktok-app-icon-1024.png, src/components/CollaborationsSection.astro, src/components/ContactSection.astro, src/components/DrumKits.astro (+8 more))
 
