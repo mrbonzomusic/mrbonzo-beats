@@ -37,9 +37,10 @@ const en = {
     drumKits: "Drum Kits"
   },
   hero: {
+    h1: "Mr. Bonzo",
     subtitle: "Dark, modern, and aggressive type beats built for artists who want energy and edge.",
     browse: "Browse Beats",
-    featured: "Featured Player"
+    featured: "Play beats"
   },
   drumkits: {
     title: "SOUND <span class='text-fuchsia-500'>KITS</span>",
@@ -164,7 +165,9 @@ const en = {
     youtube: "YouTube",
     email: "Email",
     tiktok: "TikTok",
-    spotify: "Spotify"
+    spotify: "Spotify",
+    store: "Beatstars",
+    discord: "Discord"
   },
   player: {
     noIframeSupport: "-- Your browser does not support iframes --",

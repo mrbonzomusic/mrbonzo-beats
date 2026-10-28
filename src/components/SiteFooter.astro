@@ -1,5 +1,5 @@
 ---
-import { socialLinks } from "../config/links";
+import { beatstarsLinks, socialLinks } from "../config/links";
 ---
 
 <footer class="mt-32 pb-16 border-t border-white/5">
@@ -13,11 +13,13 @@ import { socialLinks } from "../config/links";
       </div>
 
       <div class="flex flex-wrap justify-center gap-6">
-        <a href={socialLinks.instagram} target="_blank" class="text-sm font-black uppercase tracking-wide text-white/60 hover:text-fuchsia-400 transition" data-i18n="contact.instagram">Instagram</a>
-        <a href="https://www.youtube.com/@mrbonzobeatz" target="_blank" class="text-sm font-black uppercase tracking-wide text-white/60 hover:text-fuchsia-400 transition" data-i18n="footer.youtube">YouTube</a>
-        <a href="mailto:mrbonzomusic@gmail.com" class="text-sm font-black uppercase tracking-wide text-white/60 hover:text-fuchsia-400 transition" data-i18n="footer.email">Email</a>
-        <a href={socialLinks.tiktok} target="_blank" class="text-sm font-black uppercase tracking-wide text-white/60 hover:text-fuchsia-400 transition" data-i18n="footer.tiktok">TikTok</a>
-        <a href={socialLinks.spotify} target="_blank" class="text-sm font-black uppercase tracking-wide text-white/60 hover:text-fuchsia-400 transition" data-i18n="footer.spotify">Spotify</a>
+        <a href={beatstarsLinks.profile} target="_blank" rel="noopener noreferrer" class="text-sm font-black uppercase tracking-wide text-white/60 hover:text-fuchsia-400 transition" data-i18n="footer.store">Beatstars</a>
+        <a href={socialLinks.discord} target="_blank" rel="noopener noreferrer" class="text-sm font-black uppercase tracking-wide text-white/60 hover:text-fuchsia-400 transition" data-i18n="footer.discord">Discord</a>
+        <a href={socialLinks.instagram} target="_blank" rel="noopener noreferrer" class="text-sm font-black uppercase tracking-wide text-white/60 hover:text-fuchsia-400 transition" data-i18n="contact.instagram">Instagram</a>
+        <a href={socialLinks.youtube} target="_blank" rel="noopener noreferrer" class="text-sm font-black uppercase tracking-wide text-white/60 hover:text-fuchsia-400 transition" data-i18n="footer.youtube">YouTube</a>
+        <a href={socialLinks.email} class="text-sm font-black uppercase tracking-wide text-white/60 hover:text-fuchsia-400 transition" data-i18n="footer.email">Email</a>
+        <a href={socialLinks.tiktok} target="_blank" rel="noopener noreferrer" class="text-sm font-black uppercase tracking-wide text-white/60 hover:text-fuchsia-400 transition" data-i18n="footer.tiktok">TikTok</a>
+        <a href={socialLinks.spotify} target="_blank" rel="noopener noreferrer" class="text-sm font-black uppercase tracking-wide text-white/60 hover:text-fuchsia-400 transition" data-i18n="footer.spotify">Spotify</a>
       </div>
 
     </div>

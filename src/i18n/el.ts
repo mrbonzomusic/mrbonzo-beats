@@ -37,9 +37,10 @@ const el = {
     drumKits: "Drum Kits"
   },
   hero: {
+    h1: "Mr. Bonzo",
     subtitle: "Σκοτεινά, μοντέρνα και επιθετικά type beats για artists που θέλουν ένταση και χαρακτήρα.",
     browse: "Άκου Beats",
-    featured: "Featured Player"
+    featured: "Παίξε beats"
   },
   drumkits: {
     title: "SOUND <span class='text-fuchsia-500'>KITS</span>",
@@ -164,7 +165,9 @@ const el = {
     youtube: "YouTube",
     email: "Email",
     tiktok: "TikTok",
-    spotify: "Spotify"
+    spotify: "Spotify",
+    store: "Beatstars",
+    discord: "Discord"
   },
   player: {
     noIframeSupport: "-- Ο browser σου δεν υποστηρίζει iframes --",

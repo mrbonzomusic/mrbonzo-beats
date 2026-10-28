@@ -1,6 +1,6 @@
 # Architecture — Mr. Bonzo Beats (Astro)
 
-> **Last save:** 2026-10-28 10:15
+> **Last save:** 2026-10-28 10:24
 
 ## Overview
 
@@ -48,8 +48,8 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 ## Links & config
 
 - **Canonical social / store URLs:** `src/config/links.ts` (`socialLinks`, `beatstarsLinks`, `basebox`).
-- Nav Discord / TikTok / Spotify and Contact Discord must use `socialLinks.*` (no duplicate hardcoded invites).
-- Pond5 / YouTube channel URLs may remain locals in `BaseLayout` if not yet moved into config.
+- YouTube beats: `socialLinks.youtube` (`@mrbonzobeats`). Artist channel: `socialLinks.youtubeArtist` (`@mrbonzomusic`). Pond5: `socialLinks.pond5`.
+- Nav Discord / TikTok / Spotify / YouTube / Pond5 and Contact Discord must use `socialLinks.*` (no duplicate hardcoded invites).
 
 ## BaseBox banner + sticky header
 
@@ -66,8 +66,14 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 ## Analytics
 
 - **Google Analytics 4** in `BaseLayout.astro` (`gtag.js`, Measurement ID `G-XBS5WKEGPE`, stream URL `https://mrbonzo-beats.pages.dev/`).
+- Outbound clicks (Beatstars, Discord, Spotify, TikTok, Instagram, YouTube, Pond5) send `gtag('event', 'outbound_click', { link_url, link_host })`.
 - GTM/GA `preconnect` is without `crossorigin` so it matches classic `<script src>` (avoids Chrome `ERR_BLOCKED_BY_ORB` on gtag.js).
 - GoatCounter was removed (account deleted; no `gc.zgo.at` script or CSP hosts).
+
+## SEO
+
+- `public/robots.txt` + `public/sitemap.xml` (homepage). JSON-LD `MusicGroup` + `sameAs` in `BaseLayout`. OG image `/og-image-v2.jpg`. Hero has `sr-only` `<h1>`.
+- Newsletter remains paused until a public domain.
 
 ## Visual effects (runtime)
 
@@ -114,6 +120,8 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 - **Audit log:** `.git/git-save-doc-audit.log` (local, not committed).
 
 ## Save log
+
+- 2026-10-28 10:24 — feat: SEO, canonical YouTube, and conversion polish — 13 files (dist/index.html, public/manifest.json, public/robots.txt, public/sitemap.xml, src/components/FeaturedBeatstars.astro, src/components/Hero.astro, src/components/SiteFooter.astro, src/components/TypeBeatGrid.astro (+4 more))
 
 - 2026-10-28 10:15 — chore: pause newsletter until a public domain — 5 files (dist/index.html, functions/api/subscribe.js, src/components/ContactSection.astro)
 

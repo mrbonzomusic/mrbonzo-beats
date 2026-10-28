@@ -22,11 +22,25 @@ const {
   canonicalUrl = siteURL,
 } = Astro.props;
 
-const pond5Link = "https://www.pond5.com/artist/mrbonzobeats";
-const ytBeats = "https://www.youtube.com/@mrbonzobeats";
-const ytArtist = "https://www.youtube.com/@mrbonzomusic";
-const spotifyLink = socialLinks.spotify;
 const translations = { en, el };
+const jsonLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "MusicGroup",
+  name: "Mr. Bonzo",
+  url: siteURL,
+  image: socialPreviewImage,
+  description: siteDescription,
+  sameAs: [
+    socialLinks.spotify,
+    socialLinks.youtube,
+    socialLinks.youtubeArtist,
+    socialLinks.instagram,
+    socialLinks.tiktok,
+    beatstarsLinks.profile,
+    socialLinks.discord,
+    socialLinks.pond5,
+  ],
+});
 ---
 
 <!doctype html>
@@ -40,6 +54,8 @@ const translations = { en, el };
     <meta name="description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Mr. Bonzo" />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={socialPreviewImage} />
@@ -52,8 +68,11 @@ const translations = { en, el };
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={socialPreviewImage} />
     
+    <meta name="theme-color" content="#000000" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.json" />
+    <script type="application/ld+json" set:html={jsonLd}></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -249,15 +268,15 @@ const translations = { en, el };
                   <span data-i18n="nav.youtube">YouTube</span> <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
                 <div class="nav-dropdown-content">
-                  <a href={ytBeats} target="_blank" class="mobile-link" data-i18n="nav.youtubeBeats">Beats Channel</a>
-                  <a href={ytArtist} target="_blank" class="mobile-link" data-i18n="nav.youtubeArtist">Artist Channel</a>
+                  <a href={socialLinks.youtube} target="_blank" rel="noopener noreferrer" class="mobile-link" data-i18n="nav.youtubeBeats">Beats Channel</a>
+                  <a href={socialLinks.youtubeArtist} target="_blank" rel="noopener noreferrer" class="mobile-link" data-i18n="nav.youtubeArtist">Artist Channel</a>
                 </div>
               </div>
 
-              <a href={spotifyLink} target="_blank" class="nav-link text-fuchsia-100/70 hover:text-fuchsia-400 transition" data-i18n="nav.spotify">Spotify</a>
-              <a href={socialLinks.tiktok} target="_blank" class="nav-link text-fuchsia-100/70 hover:text-fuchsia-400 transition" data-i18n="nav.tiktok">TikTok</a>
-              <a href={pond5Link} target="_blank" class="nav-link text-fuchsia-100/70 hover:text-fuchsia-400 transition" data-i18n="nav.pond5">Pond5</a>
-              <a href={socialLinks.discord} target="_blank" class="nav-link text-fuchsia-100/70 hover:text-fuchsia-400 transition" data-i18n="nav.discord">Discord</a>
+              <a href={socialLinks.spotify} target="_blank" rel="noopener noreferrer" class="nav-link text-fuchsia-100/70 hover:text-fuchsia-400 transition" data-i18n="nav.spotify">Spotify</a>
+              <a href={socialLinks.tiktok} target="_blank" rel="noopener noreferrer" class="nav-link text-fuchsia-100/70 hover:text-fuchsia-400 transition" data-i18n="nav.tiktok">TikTok</a>
+              <a href={socialLinks.pond5} target="_blank" rel="noopener noreferrer" class="nav-link text-fuchsia-100/70 hover:text-fuchsia-400 transition" data-i18n="nav.pond5">Pond5</a>
+              <a href={socialLinks.discord} target="_blank" rel="noopener noreferrer" class="nav-link text-fuchsia-100/70 hover:text-fuchsia-400 transition" data-i18n="nav.discord">Discord</a>
               
               <div class="nav-divider"></div>
 
@@ -276,7 +295,7 @@ const translations = { en, el };
                   <button type="button" data-lang-switch="en" class="lang-switch-btn text-fuchsia-200/40 data-[active=true]:text-fuchsia-400 px-1">EN</button>
                   <button type="button" data-lang-switch="el" class="lang-switch-btn text-fuchsia-200/40 data-[active=true]:text-fuchsia-400 px-1">EL</button>
                 </div>
-                <a href={beatstarsLinks.profile} target="_blank" class="rounded-full bg-fuchsia-600 px-4 py-2 text-sm font-black uppercase text-white hover:bg-fuchsia-500 transition" data-i18n="nav.store">Store</a>
+                <a href={beatstarsLinks.profile} target="_blank" rel="noopener noreferrer" class="rounded-full bg-fuchsia-600 px-4 py-2 text-sm font-black uppercase text-white hover:bg-fuchsia-500 transition" data-i18n="nav.store">Store</a>
                 <button id="burger-btn" type="button" class="lg:hidden p-1 text-fuchsia-400" data-i18n-aria-label="ui.menuToggleAriaLabel">
                   <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M4 6h16M4 12h16m-7 6h7"/></svg>
                 </button>
@@ -294,11 +313,11 @@ const translations = { en, el };
             <a href="/#about" class="mobile-link opacity-80" data-i18n="nav.about">About</a>
             <a href="/#contact" class="mobile-link opacity-80" data-i18n="nav.contact">Contact</a>
             <div class="mobile-section-label" data-i18n="nav.mobileSocials">Socials</div>
-            <a href={ytBeats} target="_blank" rel="noopener noreferrer" class="mobile-link" data-i18n="nav.youtubeBeats">YouTube Beats</a>
-            <a href={ytArtist} target="_blank" rel="noopener noreferrer" class="mobile-link" data-i18n="nav.youtubeArtist">YouTube Artist</a>
-            <a href={spotifyLink} target="_blank" rel="noopener noreferrer" class="mobile-link" data-i18n="nav.spotify">Spotify</a>
+            <a href={socialLinks.youtube} target="_blank" rel="noopener noreferrer" class="mobile-link" data-i18n="nav.youtubeBeats">YouTube Beats</a>
+            <a href={socialLinks.youtubeArtist} target="_blank" rel="noopener noreferrer" class="mobile-link" data-i18n="nav.youtubeArtist">YouTube Artist</a>
+            <a href={socialLinks.spotify} target="_blank" rel="noopener noreferrer" class="mobile-link" data-i18n="nav.spotify">Spotify</a>
             <a href={socialLinks.tiktok} target="_blank" rel="noopener noreferrer" class="mobile-link" data-i18n="nav.tiktok">TikTok</a>
-            <a href={pond5Link} target="_blank" rel="noopener noreferrer" class="mobile-link" data-i18n="nav.pond5">Pond5</a>
+            <a href={socialLinks.pond5} target="_blank" rel="noopener noreferrer" class="mobile-link" data-i18n="nav.pond5">Pond5</a>
             <a href={socialLinks.discord} target="_blank" rel="noopener noreferrer" class="mobile-link" data-i18n="nav.discord">Discord</a>
           </div>
         </div>
@@ -386,6 +405,24 @@ const translations = { en, el };
       // ΑΜΕΣΗ ΕΚΤΕΛΕΣΗ πριν το load για αποφυγή του "τρεμουλιάσματος"
       applyTranslations();
       adjustLayout();
+      if (!document.documentElement.dataset.outboundBound) {
+        document.documentElement.dataset.outboundBound = '1';
+        document.addEventListener('click', function (e) {
+          var t = e.target;
+          var a = t && t.closest ? t.closest('a[href]') : null;
+          if (!a) return;
+          var href = a.getAttribute('href') || '';
+          if (!/^https?:/i.test(href)) return;
+          var hosts = ['beatstars.com', 'discord.gg', 'discord.com', 'spotify.com', 'tiktok.com', 'instagram.com', 'youtube.com', 'youtu.be', 'pond5.com'];
+          try {
+            var host = new URL(href, location.href).hostname.replace(/^www\./, '');
+            var hit = hosts.some(function (h) { return host === h || host.slice(-(h.length + 1)) === '.' + h; });
+            var send = typeof window.gtag === 'function' ? window.gtag : null;
+            if (!hit || !send) return;
+            send('event', 'outbound_click', { link_url: href, link_host: host });
+          } catch (err) {}
+        });
+      }
 
       function initEventListeners() {
         document.querySelectorAll('.lang-switch-btn').forEach(function (btn) {

@@ -1,6 +1,7 @@
 ---
-// Correct Beatstars player URL format avoids 403 Forbidden on embed
-const playerUrl = "https://www.beatstars.com/player/?storeId=133234";
+import { beatstarsLinks } from "../config/links";
+
+const playerUrl = beatstarsLinks.player;
 ---
 
 <section class="px-2 sm:px-4 mt-8" style="scroll-margin-top: 100px;">
@@ -15,7 +16,7 @@ const playerUrl = "https://www.beatstars.com/player/?storeId=133234";
         width="100%"
         title="Mr. Bonzo Beatstars Player"
         data-i18n-title="player.iframeTitle"
-        style="height: calc(100dvh - 220px); min-height: 480px; border:none; border-radius: 20px;"
+        style="border:none; border-radius: 20px;"
         loading="lazy"
         fetchpriority="low"
         referrerpolicy="strict-origin-when-cross-origin"
@@ -31,3 +32,16 @@ const playerUrl = "https://www.beatstars.com/player/?storeId=133234";
     Secure Checkout • Licensing & Contracts powered by Beatstars
   </p>
 </section>
+
+<style>
+  .beatstars-embed-iframe {
+    min-height: 380px;
+    height: min(560px, calc(100dvh - 240px));
+  }
+  @media (min-width: 768px) {
+    .beatstars-embed-iframe {
+      min-height: 480px;
+      height: min(720px, calc(100dvh - 220px));
+    }
+  }
+</style>
