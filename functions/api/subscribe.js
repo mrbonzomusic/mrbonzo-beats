@@ -1,5 +1,6 @@
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const NEWSLETTER_ENABLED = true;
+const MAILERLITE_SUBSCRIBERS = "https://connect.mailerlite.com/api/subscribers";
 
 function json(body, status) {
   return new Response(JSON.stringify(body), {
@@ -37,38 +38,42 @@ export async function onRequestPost({ request, env }) {
   }
 
   const lang = body.lang === "el" ? "el" : "en";
-  const apiRoot = String(env.PLUNK_API_URL || "").replace(/\/$/, "");
-  const secret = env.PLUNK_SECRET_KEY || "";
+  const token = env.MAILERLITE_API_TOKEN || "";
+  const groupId = String(env.MAILERLITE_GROUP_ID || "").trim();
 
-  if (!apiRoot || !secret) {
+  if (!token || !groupId) {
     return json({ ok: false, error: "not_ready" }, 503);
   }
 
-  const payload = JSON.stringify({
+  const payload = {
     email,
-    subscribed: true,
-    data: { locale: lang, source: "website" },
-  });
-
-  const headers = {
-    Authorization: "Bearer " + secret,
-    "Content-Type": "application/json",
+    fields: { locale: lang, source: "website" },
+    groups: [groupId],
+    status: "active",
   };
 
-  const paths = ["/contacts", "/v1/contacts"];
-  for (const path of paths) {
-    try {
-      const res = await fetch(apiRoot + path, {
+  const headers = {
+    Authorization: "Bearer " + token,
+    "Content-Type": "application/json",
+    Accept: "application/json",
+  };
+
+  try {
+    let res = await fetch(MAILERLITE_SUBSCRIBERS, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok && res.status === 422) {
+      res = await fetch(MAILERLITE_SUBSCRIBERS, {
         method: "POST",
         headers,
-        body: payload,
+        body: JSON.stringify({ email, groups: [groupId], status: "active" }),
       });
-      if (res.ok) return json({ ok: true }, 200);
-      if (res.status !== 404) return json({ ok: false, error: "upstream" }, 502);
-    } catch {
-      /* try next path */
     }
+    if (res.ok) return json({ ok: true }, 200);
+    return json({ ok: false, error: "upstream" }, 502);
+  } catch {
+    return json({ ok: false, error: "upstream" }, 502);
   }
-
-  return json({ ok: false, error: "upstream" }, 502);
 }

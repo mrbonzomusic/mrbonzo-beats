@@ -9,7 +9,7 @@ export const privacyHtml = `
 <li>an official artist website with beats, drum kits, discography, contact, and language choice (English / Greek);</li>
 <li>licensing and downloads fulfilled by third-party stores, mainly <a href="https://www.beatstars.com/mrbonzobeats">Beatstars</a> (and Pond5 for stock audio);</li>
 <li>studio services (production, recording, mixing and mastering, sound design, scoring) arranged by enquiry;</li>
-<li>optional newsletter signup (Plunk, via the site popup and contact form);</li>
+<li>optional newsletter signup (MailerLite, via the site popup and contact form);</li>
 <li>internal publishing software (n8n workflows and a private uploader) that posts videos and related assets to channels we own, including YouTube, using Google APIs.</li>
 </ul>
 
@@ -20,7 +20,7 @@ export const privacyHtml = `
 <li><strong>Analytics:</strong> Google Analytics 4 (measurement ID G-XBS5WKEGPE) records approximate usage (pages, device/browser, coarse location, outbound clicks to stores and socials). GA uses Google cookies/identifiers. Google acts as processor; see <a href="https://policies.google.com/privacy" rel="noopener noreferrer" target="_blank">Google’s Privacy Policy</a>.</li>
 <li><strong>Technical logs:</strong> Cloudflare may log IP address, user-agent, and request metadata to operate the CDN, DDoS protection, and TLS. Logs are retained according to Cloudflare’s policies.</li>
 <li><strong>Contact:</strong> if you email us, message Discord, or write on Instagram, we receive whatever you send (name, handle, message, attachments such as receipts for claim clearance).</li>
-<li><strong>Newsletter:</strong> email address, language preference, signup time, and anti-spam honeypot fields. Stored in our self-hosted Plunk instance behind <code>newsletter.mrbonzo.com</code>. Not sold. Unsubscribe any time via the link in each email.</li>
+<li><strong>Newsletter:</strong> email address, language preference, signup time, and anti-spam honeypot fields. Stored with MailerLite. Not sold. Unsubscribe any time via the link in each email.</li>
 <li><strong>Purchases:</strong> Beatstars, PayPal, Pond5, and similar platforms process payments. We do not receive your full card data. We may see your store username, order ID, or a receipt you forward so we can whitelist a YouTube claim.</li>
 </ul>
 <p>We do not run a user account system on this website. We do not sell personal data.</p>

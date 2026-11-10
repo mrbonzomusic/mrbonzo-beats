@@ -9,7 +9,7 @@ export const privacyHtml = `
 <li>επίσημο artist website με beats, drum kits, δισκογραφία, επικοινωνία και επιλογή γλώσσας (Αγγλικά / Ελληνικά)·</li>
 <li>αδειοδότηση και λήψεις μέσω τρίτων καταστημάτων, κυρίως <a href="https://www.beatstars.com/mrbonzobeats">Beatstars</a> (και Pond5 για stock audio)·</li>
 <li>υπηρεσίες στούντιο (παραγωγή, ηχογράφηση, μίξη και mastering, sound design, scoring) κατόπιν επικοινωνίας·</li>
-<li>προαιρετικό newsletter (Plunk, μέσω popup και φόρμας επικοινωνίας)·</li>
+<li>προαιρετικό newsletter (MailerLite, μέσω popup και φόρμας επικοινωνίας)·</li>
 <li>εσωτερικό λογισμικό δημοσίευσης (ροές n8n και ιδιωτικός uploader) που ανεβάζει βίντεο στα κανάλια μας, συμπεριλαμβανομένου του YouTube, μέσω Google APIs.</li>
 </ul>
 
@@ -20,7 +20,7 @@ export const privacyHtml = `
 <li><strong>Αναλυτικά:</strong> Google Analytics 4 (G-XBS5WKEGPE) καταγράφει κατά προσέγγιση χρήση (σελίδες, συσκευή/browser, αδρή τοποθεσία, εξερχόμενα κλικ προς καταστήματα και social). Το GA χρησιμοποιεί cookies/αναγνωριστικά Google. Η Google ενεργεί ως επεξεργαστής· βλ. <a href="https://policies.google.com/privacy" rel="noopener noreferrer" target="_blank">Πολιτική απορρήτου Google</a>.</li>
 <li><strong>Τεχνικά αρχεία καταγραφής:</strong> η Cloudflare μπορεί να καταγράφει IP, user-agent και μεταδεδομένα αιτήματος για CDN, προστασία DDoS και TLS, σύμφωνα με τις πολιτικές της.</li>
 <li><strong>Επικοινωνία:</strong> αν στείλετε email, μήνυμα Discord ή Instagram, λαμβάνουμε ό,τι μας δίνετε (όνομα, handle, μήνυμα, συνημμένα όπως αποδείξεις για ξεμπλοκάρισμα claim).</li>
-<li><strong>Newsletter:</strong> διεύθυνση email, προτίμηση γλώσσας, χρόνος εγγραφής και honeypot κατά spam. Αποθήκευση στο αυτοφιλοξενούμενο Plunk πίσω από το <code>newsletter.mrbonzo.com</code>. Δεν πωλείται. Unsubscribe οποιαδήποτε στιγμή από τον σύνδεσμο σε κάθε email.</li>
+<li><strong>Newsletter:</strong> διεύθυνση email, προτίμηση γλώσσας, χρόνος εγγραφής και honeypot κατά spam. Αποθήκευση στο MailerLite. Δεν πωλείται. Unsubscribe οποιαδήποτε στιγμή από τον σύνδεσμο σε κάθε email.</li>
 <li><strong>Αγορές:</strong> Beatstars, PayPal, Pond5 κ.λπ. επεξεργάζονται πληρωμές. Δεν λαμβάνουμε πλήρη στοιχεία κάρτας. Μπορεί να δούμε username καταστήματος, αριθμό παραγγελίας ή απόδειξη που μας προωθείτε για whitelist σε YouTube claim.</li>
 </ul>
 <p>Δεν υπάρχει σύστημα λογαριασμών χρηστών σε αυτόν τον ιστότοπο. Δεν πωλούμε δεδομένα προσωπικού χαρακτήρα.</p>

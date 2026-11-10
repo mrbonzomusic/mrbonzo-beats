@@ -1,6 +1,6 @@
 # Guardrails — UI, i18n, and layout
 
-> **Last save:** 2026-11-10 14:37
+> **Last save:** 2026-11-10 15:23
 
 Rules for future changes so the site stays consistent and flicker-free.
 
@@ -75,7 +75,7 @@ Document new overlay layers here if added.
 
 - Never add a third-party `<script src>` without updating CSP in `BaseLayout.astro` and noting it in `architecture.md`.
 - Do not inject untrusted HTML into `en.ts` / `el.ts`.
-- Newsletter: honeypot `company_url`, validate email in `functions/api/subscribe.js`, never expose `PLUNK_SECRET_KEY` to the client. Public API is `newsletter.mrbonzo.com` (tunnel); Plunk dashboard stays LAN-only.
+- Newsletter: honeypot `company_url`, validate email in `functions/api/subscribe.js`, never expose `MAILERLITE_API_TOKEN` to the client. Signup posts to MailerLite; campaigns are sent from the MailerLite dashboard. Do not change mrbonzo.com MX for MailerLite.
 - Keep `/privacy` and `/terms` as real pages (footer + Google Cloud OAuth consent). Do not 301 them to `/` unless the user asks.
 
 ## 12. Checklist (self-review)

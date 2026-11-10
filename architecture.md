@@ -1,10 +1,10 @@
 # Architecture — Mr. Bonzo Beats (Astro)
 
-> **Last save:** 2026-11-10 14:37
+> **Last save:** 2026-11-10 15:23
 
 ## Overview
 
-Static Astro site (`output: "static"`). The homepage (`src/pages/index.astro`) composes sections as Astro components and wraps everything in `BaseLayout.astro`. Hosted on Cloudflare Pages. Newsletter signup posts to a Pages Function (`functions/api/subscribe.js`) which talks to self-hosted Plunk; the secret stays in Pages env, never in the client.
+Static Astro site (`output: "static"`). The homepage (`src/pages/index.astro`) composes sections as Astro components and wraps everything in `BaseLayout.astro`. Hosted on Cloudflare Pages. Newsletter signup posts to a Pages Function (`functions/api/subscribe.js`) which talks to MailerLite; the API token stays in Pages env, never in the client.
 
 ## Current site map (homepage)
 
@@ -35,7 +35,7 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 | `src/config/` | URLs (`links.ts`), collaboration list. |
 | `src/lib/` | Build-time helpers (`spotify.ts`: API / RSS / scrape + `sortReleasesNewestFirst`). |
 | `src/styles/global.css` | Tailwind import + typography tokens (eyebrows, `--ui-interactive` / `--ui-meta`, `.nav-link`), `section-reveal`, `.nav-hover-ring`. |
-| `functions/` | Cloudflare Pages Functions (`api/subscribe.js` → Plunk). |
+| `functions/` | Cloudflare Pages Functions (`api/subscribe.js` → MailerLite). |
 | `scripts/save.mjs` | `npm run save` — commit, push, always refresh docs. |
 | `AGENTS.md` / `guardrails.md` | Agent entrypoint + hard rules. |
 
@@ -74,7 +74,7 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 
 - Canonical / OG / JSON-LD / robots / sitemap use **`https://mrbonzo.com/`**.
 - Domain is registered at Papaki. **Nameservers** are Cloudflare (`alla.ns.cloudflare.com`, `lee.ns.cloudflare.com`). Apex + `www` are **CNAME** (proxied) → `mrbonzo-beats.pages.dev` on the Cloudflare zone; both hostnames are custom domains on Pages project `mrbonzo-beats`. Mail records stay DNS-only.
-- Newsletter is live via named tunnel `newsletter.mrbonzo.com` → Plunk API.
+- Newsletter signup is live via MailerLite (no AWS SES). Apex MX stays on existing mail.
 
 ## Visual effects (runtime)
 
@@ -91,11 +91,13 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 - Extra attributes: `data-i18n-placeholder` (newsletter email field).
 - Collaboration marquee: order in `src/config/collaborations.ts`; labels in `collaborations.artists` (`en.ts` / `el.ts`). Greek script only for names whose Greek spelling is confirmed. The name sits in its own span so `textContent` updates do not remove the separator.
 
-## Newsletter (Plunk)
+## Newsletter (MailerLite)
 
 - Popup (`NewsletterModal.astro` in `BaseLayout`) after ~12s or 40% scroll; skipped on `/privacy` and `/terms`; dismiss stored 30 days in `localStorage['mb-newsletter-dismiss']`. Inline form also in `ContactSection.astro`.
-- Posts to same-origin `functions/api/subscribe.js` (honeypot `company_url`). Secret `PLUNK_SECRET_KEY` is a Pages env var only. Public API hostname: `https://newsletter.mrbonzo.com` (named Cloudflare Tunnel to LAN Plunk API; dashboard stays on `plunk.homelab.lan`).
-- Copy in `newsletter.*` (`en.ts` / `el.ts`). Campaigns still need AWS SES later; signup stores contacts without SES.
+- Posts to same-origin `functions/api/subscribe.js` (honeypot `company_url`) → MailerLite `POST /api/subscribers`. Secrets `MAILERLITE_API_TOKEN` and `MAILERLITE_GROUP_ID` are Pages env vars only.
+- Campaigns are composed and sent in the MailerLite dashboard (free plan). n8n may create a draft campaign for YouTube longs; auto-send stays off until tested. Do not use AWS SES.
+- Self-hosted Plunk on LAN is leftover (signup no longer uses `newsletter.mrbonzo.com`). Do not change apex MX for MailerLite DKIM/SPF.
+- Copy in `newsletter.*` (`en.ts` / `el.ts`).
 - Do not use `trycloudflare.com` for production.
 
 ## Latest Releases (build-time)
@@ -122,6 +124,8 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 - **Audit log:** `.git/git-save-doc-audit.log` (local, not committed).
 
 ## Save log
+
+- 2026-11-10 15:23 — feat: point newsletter signup at MailerLite — 6 files (.env.example, functions/api/subscribe.js, src/i18n/legal-el.ts, src/i18n/legal-en.ts)
 
 - 2026-11-10 14:37 — fix: legal copy now that newsletter is live — 3 files (src/i18n/legal-el.ts, src/i18n/legal-en.ts)
 
