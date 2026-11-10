@@ -1,0 +1,513 @@
+{
+  "id": "WjvtaC5sGsBaXcst",
+  "name": "BaseBox weekly Facebook",
+  "active": true,
+  "nodes": [
+    {
+      "id": "37b9c25e-0f6c-4c78-8d5c-454f9ea4917d",
+      "name": "Every Tuesday 10:00",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        200
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "weeksInterval": 1,
+              "triggerAtDay": [
+                2
+              ],
+              "triggerAtHour": 10,
+              "triggerAtMinute": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "4cd1f483-3d2c-4425-96f9-c773427cd775",
+      "name": "Test BaseBox only",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        460
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "bff70fc0-7e0b-40aa-9a12-99e0e548c394",
+      "name": "Only BaseBox",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        280,
+        460
+      ],
+      "parameters": {
+        "mode": "manual",
+        "duplicateItem": false,
+        "assignments": {
+          "assignments": [
+            {
+              "id": "test-page",
+              "name": "testPage",
+              "value": "basebox",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "1ed1daef-e686-42a8-85bf-9f4c215825a8",
+      "name": "Pick posts",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        560,
+        300
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const now = $now.setZone('Europe/Athens');\nconst week = now.weekNumber;\nconst day = now.day;\nconst month = now.month;\nconst raw = $input.first().json || {};\nconst input = (raw.body && typeof raw.body === 'object') ? Object.assign({}, raw, raw.body) : raw;\nconst testPage = String(input.testPage || '');\nconst pagesIn = Array.isArray(input.pages) ? input.pages.map(String).filter(Boolean) : [];\nconst luxonDay = now.weekday;\nconst panelDay = luxonDay === 7 ? 0 : luxonDay;\nif (!pagesIn.length && !testPage && panelDay !== 2) return [];\nconst customCaption = String(input.caption || '');\nconst image = String(input.image || \"https://basebox-db.com/branding/social/og-landing.png?v=21\");\nconst link = String(input.link || \"https://basebox-db.com/\");\nconst pools = {\"basebox\": [\"Οργάνωσε τον μουσικό κατάλογό σου, τα έργα, τους συντελεστές και τα ποσοστά σε ένα ενιαίο workspace. Δημιούργησε split sheets και συμφωνητικά άμεσα, και συμπλήρωσε τις φόρμες ΟΣΔ (Οργανισμός Συλλογικής Διαχείρισης) αυτόματα από τον κατάλογό σου χωρίς να ξαναγράφεις τα ίδια στοιχεία. Όλα σε ένα σημείο, φτιαγμένο από έναν μουσικό για ανεξάρτητους καλλιτέχνες και μικρά labels.\"], \"mrbonzo\": [\"Οργάνωσε τον μουσικό κατάλογό σου, τα έργα, τους συντελεστές και τα ποσοστά σε ένα ενιαίο workspace. Δημιούργησε split sheets και συμφωνητικά άμεσα, και συμπλήρωσε τις φόρμες ΟΣΔ (Οργανισμός Συλλογικής Διαχείρισης) αυτόματα από τον κατάλογό σου χωρίς να ξαναγράφεις τα ίδια στοιχεία. Όλα σε ένα σημείο, φτιαγμένο από έναν μουσικό για ανεξάρτητους καλλιτέχνες και μικρά labels.\"], \"studio\": [\"Οργάνωσε τον μουσικό κατάλογό σου, τα έργα, τους συντελεστές και τα ποσοστά σε ένα ενιαίο workspace. Δημιούργησε split sheets και συμφωνητικά άμεσα, και συμπλήρωσε τις φόρμες ΟΣΔ (Οργανισμός Συλλογικής Διαχείρισης) αυτόματα από τον κατάλογό σου χωρίς να ξαναγράφεις τα ίδια στοιχεία. Όλα σε ένα σημείο, φτιαγμένο από έναν μουσικό για ανεξάρτητους καλλιτέχνες και μικρά labels.\"]};\nconst rules = {\"basebox\": \"always\", \"mrbonzo\": \"day_1_7\", \"studio\": \"day_15_21\"};\nconst line = (text) => {\n  const t = String(text || '').trim();\n  if (!t) return link;\n  if (/https?:\\/\\//i.test(t)) return t;\n  return t + String.fromCharCode(10) + link;\n};\nconst want = (page) => {\n  if (pagesIn.length) return pagesIn.includes(page);\n  if (testPage) return testPage === page;\n  const rule = rules[page] || 'always';\n  if (rule === 'day_1_7') return day <= 7;\n  if (rule === 'day_15_21') return day >= 15 && day <= 21;\n  if (rule === 'twice_month') return day <= 7 || (day >= 15 && day <= 21);\n  return true;\n};\nconst captionFor = (page) => {\n  if (customCaption) return line(customCaption);\n  const pool = pools[page] || [''];\n  const idx = (rules[page] === 'always' || rules[page] === 'twice_month') ? week : Math.max(0, month - 1);\n  return line(pool[idx % pool.length] || pool[0] || '');\n};\nconst posts = [];\nfor (const page of Object.keys(pools)) {\n  if (!want(page)) continue;\n  posts.push({ json: { page, caption: captionFor(page), image, link } });\n}\nreturn posts;\n"
+      }
+    },
+    {
+      "id": "0bd304ad-506a-4e11-8bf6-076c943bf4a2",
+      "name": "Page is BaseBox",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        860,
+        80
+      ],
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "cond-basebox",
+              "leftValue": "={{ $json.page }}",
+              "rightValue": "basebox",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "c8e76e16-72c3-41b6-bee5-f62c2f408a19",
+      "name": "Page is Mr Bonzo",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        860,
+        300
+      ],
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "cond-mrbonzo",
+              "leftValue": "={{ $json.page }}",
+              "rightValue": "mrbonzo",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "a4e8b460-4627-48e6-a6b3-28b051f5b5a6",
+      "name": "Page is Purple Sound",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        860,
+        520
+      ],
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "cond-studio",
+              "leftValue": "={{ $json.page }}",
+              "rightValue": "studio",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "f5c9703e-027b-408e-bea5-0ec471a4e0aa",
+      "name": "Facebook BaseBox",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 4000,
+      "position": [
+        1160,
+        80
+      ],
+      "parameters": {
+        "graphApiVersion": "v21.0",
+        "httpRequestMethod": "POST",
+        "node": "/me/photos",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "url",
+                "value": "={{ $json.image }}"
+              },
+              {
+                "name": "caption",
+                "value": "={{ $json.caption }}"
+              },
+              {
+                "name": "published",
+                "value": "true"
+              }
+            ]
+          }
+        }
+      },
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "Om8mOVmDSmWGMcEb",
+          "name": "Facebook BaseBox"
+        }
+      }
+    },
+    {
+      "id": "ffe84f48-d767-48ff-965f-d9a6144a5531",
+      "name": "Facebook Mr Bonzo",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 4000,
+      "position": [
+        1160,
+        300
+      ],
+      "parameters": {
+        "graphApiVersion": "v21.0",
+        "httpRequestMethod": "POST",
+        "node": "/me/photos",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "url",
+                "value": "={{ $json.image }}"
+              },
+              {
+                "name": "caption",
+                "value": "={{ $json.caption }}"
+              },
+              {
+                "name": "published",
+                "value": "true"
+              }
+            ]
+          }
+        }
+      },
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "HzmFdeNPMKO2sQtk",
+          "name": "Facebook Mr Bonzo"
+        }
+      }
+    },
+    {
+      "id": "9e5dfc7b-74e6-477a-a07a-4a300a448831",
+      "name": "Facebook Purple Sound",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 4000,
+      "position": [
+        1160,
+        520
+      ],
+      "parameters": {
+        "graphApiVersion": "v21.0",
+        "httpRequestMethod": "POST",
+        "node": "/me/photos",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "url",
+                "value": "={{ $json.image }}"
+              },
+              {
+                "name": "caption",
+                "value": "={{ $json.caption }}"
+              },
+              {
+                "name": "published",
+                "value": "true"
+              }
+            ]
+          }
+        }
+      },
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "2j5nLm4cM61OnjnE",
+          "name": "Facebook Purple Sound"
+        }
+      }
+    },
+    {
+      "id": "c0d311ea-a4e5-43d1-9f1a-2e9f3ce786b7",
+      "name": "Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -20,
+        -220
+      ],
+      "parameters": {
+        "width": 520,
+        "height": 280,
+        "content": "## BaseBox weekly Facebook\n\nΚάθε Τρίτη 10:00, ώρα Αθήνας.\n\n- BaseBox-DB: κάθε εβδομάδα\n- Mr. Bonzo: πρώτη Τρίτη του μήνα\n- Purple Sound Studio: Τρίτη στις 15–21\n\nΤο κείμενο αλλάζει με την εβδομάδα. Η εικόνα είναι το og-image του site.\n\nΤο manual ποστάρει μόνο στη σελίδα BaseBox.\n\nΜένει ανενεργό μέχρι το credential Facebook BaseBox και ένα δοκιμαστικό."
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "weekly-basebox",
+        "responseMode": "onReceived",
+        "options": {},
+        "authentication": "headerAuth"
+      },
+      "id": "wh-weekly-basebox",
+      "name": "Manual weekly BaseBox",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -280,
+        280
+      ],
+      "webhookId": "weekly-basebox",
+      "notes": "Το panel στέλνει εδώ ένα παλιό ή επιλεγμένο βίντεο. Το RSS δεν περνάει από αυτόν τον κόμβο.",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "arrsEi2jlmdTTMYg",
+          "name": "n8n panel webhook"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "wkn-testPage",
+              "name": "testPage",
+              "value": "={{ ($json.body && $json.body.testPage) || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "wkn-caption",
+              "name": "caption",
+              "value": "={{ ($json.body && $json.body.caption) || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "wkn-image",
+              "name": "image",
+              "value": "={{ ($json.body && $json.body.image) || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "wkn-link",
+              "name": "link",
+              "value": "={{ ($json.body && $json.body.link) || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "wkn-pages",
+              "name": "pages",
+              "value": "={{ ($json.body && $json.body.pages) || [] }}",
+              "type": "array"
+            }
+          ]
+        },
+        "includeOtherFields": false,
+        "options": {}
+      },
+      "id": "wkn-weekly-basebox",
+      "name": "Weekly normalize",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -40,
+        460
+      ]
+    }
+  ],
+  "connections": {
+    "Every Tuesday 10:00": {
+      "main": [
+        [
+          {
+            "node": "Pick posts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Test BaseBox only": {
+      "main": [
+        [
+          {
+            "node": "Only BaseBox",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Only BaseBox": {
+      "main": [
+        [
+          {
+            "node": "Pick posts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pick posts": {
+      "main": [
+        [
+          {
+            "node": "Page is BaseBox",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Page is Mr Bonzo",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Page is Purple Sound",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Page is BaseBox": {
+      "main": [
+        [
+          {
+            "node": "Facebook BaseBox",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Page is Mr Bonzo": {
+      "main": [
+        [
+          {
+            "node": "Facebook Mr Bonzo",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Page is Purple Sound": {
+      "main": [
+        [
+          {
+            "node": "Facebook Purple Sound",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Manual weekly BaseBox": {
+      "main": [
+        [
+          {
+            "node": "Weekly normalize",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Weekly normalize": {
+      "main": [
+        [
+          {
+            "node": "Pick posts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Europe/Athens",
+    "binaryMode": "separate",
+    "errorWorkflow": "a1111111-e110-4e57-a000-00000000err1"
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "name": "Panel Instagram delete",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "instagram-delete",
+        "responseMode": "lastNode",
+        "options": {},
+        "authentication": "headerAuth"
+      },
+      "id": "wh-instagram-delete",
+      "name": "Instagram delete",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 200],
+      "webhookId": "instagram-delete",
+      "notes": "Το panel στέλνει το media id του reel. Το credential μένει στο n8n.",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "arrsEi2jlmdTTMYg",
+          "name": "n8n panel webhook"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const raw = $input.first().json || {};\nconst body = (raw.body && typeof raw.body === 'object') ? raw.body : raw;\nconst mediaId = String(body.mediaId || '').trim();\nif (!/^\\d{8,}$/.test(mediaId)) throw new Error('Άκυρο Instagram media id');\nreturn [{ json: { mediaId } }];"
+      },
+      "id": "code-instagram-delete",
+      "name": "Delete normalize",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [280, 200]
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "DELETE",
+        "graphApiVersion": "v21.0",
+        "node": "={{ '/' + $json.mediaId }}",
+        "options": {}
+      },
+      "id": "ig-del-mrbonzo",
+      "name": "Delete Instagram",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "onError": "continueRegularOutput",
+      "position": [560, 200],
+      "notes": "DELETE /{ig-media-id}. Χρειάζεται instagram_manage_contents στο Facebook Mr Bonzo.",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "HzmFdeNPMKO2sQtk",
+          "name": "Facebook Mr Bonzo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const row = $input.first().json || {};\nconst text = JSON.stringify(row).toLowerCase();\nconst failed = !!(row.error || row.errorMessage);\nif (failed) {\n  const gone = text.includes('does not exist') || text.includes('bad request') || text.includes('unsupported delete') || text.includes('not found');\n  if (!gone) throw new Error(row.error?.message || row.message || 'Το Instagram story δεν σβήστηκε.');\n  return [{ json: { ok: true, gone: true } }];\n}\nreturn [{ json: { ok: true, gone: false } }];"
+      },
+      "id": "ig-del-result",
+      "name": "Delete result",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [840, 200]
+    }
+  ],
+  "connections": {
+    "Instagram delete": {
+      "main": [[{ "node": "Delete normalize", "type": "main", "index": 0 }]]
+    },
+    "Delete normalize": {
+      "main": [[{ "node": "Delete Instagram", "type": "main", "index": 0 }]]
+    },
+    "Delete Instagram": {
+      "main": [[{ "node": "Delete result", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

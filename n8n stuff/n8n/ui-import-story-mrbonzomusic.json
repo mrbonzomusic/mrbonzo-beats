@@ -1,0 +1,1687 @@
+{
+  "name": "Story clip - mrbonzomusic",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "story-mrbonzomusic",
+        "responseMode": "onReceived",
+        "options": {},
+        "authentication": "headerAuth"
+      },
+      "id": "wh-story-mrbonzomusic",
+      "name": "Manual story mrbonzomusic",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -280,
+        0
+      ],
+      "webhookId": "story-mrbonzomusic",
+      "notes": "Το panel στέλνει εδώ ένα παλιό ή επιλεγμένο βίντεο. Το RSS δεν περνάει από αυτόν τον κόμβο.",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "arrsEi2jlmdTTMYg",
+          "name": "n8n panel webhook"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "story-videoId",
+              "name": "videoId",
+              "value": "={{ ($json.body && $json.body.videoId) || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "story-title",
+              "name": "title",
+              "value": "={{ ($json.body && $json.body.title) || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "story-requestId",
+              "name": "requestId",
+              "value": "={{ ($json.body && $json.body.requestId) || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "story-clipStart",
+              "name": "clipStart",
+              "value": "={{ (() => { const s = String(($json.body && ($json.body.start || $json.body.clipStart)) || 'auto').trim(); return (s === 'auto' || /^[0-9]+$/.test(s)) ? s : 'auto'; })() }}",
+              "type": "string"
+            },
+            {
+              "id": "story-clipSeconds",
+              "name": "clipSeconds",
+              "value": "={{ (() => { const raw = ($json.body && ($json.body.seconds || $json.body.clipSeconds)); const n = Number(raw); if (raw === undefined || raw === null || raw === '' || !Number.isFinite(n) || n > 60 || n < 5) return 30; return Math.round(n); })() }}",
+              "type": "number"
+            },
+            {
+              "id": "story-hookText",
+              "name": "hookText",
+              "value": "={{ ($json.body && $json.body.hook != null && String($json.body.hook) !== '') ? String($json.body.hook) : \"MR. BONZO \\u266a\" }}",
+              "type": "string"
+            },
+            {
+              "id": "story-ctaText",
+              "name": "ctaText",
+              "value": "={{ ($json.body && $json.body.cta != null && String($json.body.cta) !== '') ? String($json.body.cta) : \"Link in bio \\u25b6\" }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": false,
+        "options": {}
+      },
+      "id": "norm-story-mrbonzomusic",
+      "name": "Manual normalize",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "rss-mrbonzomusic",
+      "name": "RSS mrbonzomusic",
+      "type": "n8n-nodes-base.rssFeedReadTrigger",
+      "typeVersion": 1,
+      "position": [
+        -520,
+        320
+      ],
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyX",
+              "value": 15,
+              "unit": "minutes"
+            }
+          ]
+        },
+        "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCAPju2g7sZ4z0qwMhrkhYng"
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json || {};\nconst published = Date.parse(String(item.isoDate || item.pubDate || ''));\nconst fresh = Number.isFinite(published) && (Date.now() - published) < 48 * 60 * 60 * 1000;\nreturn [{ json: Object.assign({}, item, { fresh }) }];\n",
+        "mode": "runOnceForAllItems",
+        "language": "javaScript"
+      },
+      "id": "rss-age-mrbonzomusic",
+      "name": "RSS age",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -280,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "rss-fresh-mrbonzomusic-c",
+              "leftValue": "={{ $json.fresh === true }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "id": "rss-fresh-mrbonzomusic",
+      "name": "If fresh",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -40,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "rss-format-mrbonzomusic-videoId",
+              "name": "videoId",
+              "value": "={{ (String($json.link || '').match(/[?&]v=([^&]+)/) || String($json.link || '').match(/\\/shorts\\/([^/?]+)/) || [null,''])[1] || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "rss-format-mrbonzomusic-title",
+              "name": "title",
+              "value": "={{ $json.title || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "rss-format-mrbonzomusic-link",
+              "name": "link",
+              "value": "={{ $json.link || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "rss-format-mrbonzomusic-requestId",
+              "name": "requestId",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "rss-format-mrbonzomusic-clipStart",
+              "name": "clipStart",
+              "value": "auto",
+              "type": "string"
+            },
+            {
+              "id": "rss-format-mrbonzomusic-clipSeconds",
+              "name": "clipSeconds",
+              "value": "30",
+              "type": "number"
+            },
+            {
+              "id": "rss-format-mrbonzomusic-hookText",
+              "name": "hookText",
+              "value": "NEW MUSIC ♪",
+              "type": "string"
+            },
+            {
+              "id": "rss-format-mrbonzomusic-ctaText",
+              "name": "ctaText",
+              "value": "Link in bio ▶",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": false,
+        "options": {}
+      },
+      "id": "rss-format-mrbonzomusic",
+      "name": "RSS format",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        200,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ 'http://n8n-reels:8080/info?videoId=' + encodeURIComponent((($('RSS format').item.json.link || '').match(/[?&]v=([^&]+)/) || ($('RSS format').item.json.link || '').match(/\\/shorts\\/([^/?]+)/) || [null,''])[1] || '') }}",
+        "options": {
+          "timeout": 20000,
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "id": "video-info-mrbonzomusic",
+      "name": "Video info",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        440,
+        320
+      ],
+      "onError": "continueRegularOutput",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 3000
+    },
+    {
+      "parameters": {
+        "jsCode": "const pack = $('RSS format').first().json || {};\nconst title = String(pack.title || '').toLowerCase();\nconst link = String(pack.link || '');\nlet dur = null;\ntry {\n  const info = $('Video info').first().json || {};\n  dur = Number(info.durationSeconds || info.duration);\n} catch (e) {}\nconst isShort = title.includes('#shorts') || link.includes('/shorts/') || (Number.isFinite(dur) && dur > 0 && dur <= 60);\nreturn [{ json: Object.assign({}, pack, { isShort }) }];\n",
+        "mode": "runOnceForAllItems",
+        "language": "javaScript"
+      },
+      "id": "rss-long-mrbonzomusic",
+      "name": "Long check",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        680,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "rss-only-long-mrbonzomusic-c",
+              "leftValue": "={{ $json.isShort !== true }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "id": "rss-only-long-mrbonzomusic",
+      "name": "Only long videos",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        920,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const kind = \"story\";\nconst j = $input.first().json || {};\nconst videoId = String(j.videoId || '');\nconst requestId = String(j.requestId || '');\nconst staticData = $getWorkflowStaticData('global');\nstaticData[kind] = staticData[kind] || {};\nlet skipped = '';\nif (videoId && !requestId && staticData[kind][videoId]) skipped = 'duplicate';\nreturn [{ json: { ...j, skipped } }];\n",
+        "mode": "runOnceForAllItems",
+        "language": "javaScript"
+      },
+      "id": "rss-dedup-mrbonzomusic",
+      "name": "RSS dedup",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1160,
+        320
+      ],
+      "notes": "Skip RSS if this videoId already storied."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "rss-dup-mrbonzomusic-c",
+              "leftValue": "={{ $json.skipped === 'duplicate' }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "id": "rss-dup-mrbonzomusic",
+      "name": "If duplicate",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1400,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "story-pack-mrbonzomusic-videoId",
+              "name": "videoId",
+              "value": "={{ $json.videoId || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "story-pack-mrbonzomusic-title",
+              "name": "title",
+              "value": "={{ $json.title || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "story-pack-mrbonzomusic-requestId",
+              "name": "requestId",
+              "value": "={{ $json.requestId || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "story-pack-mrbonzomusic-clipStart",
+              "name": "clipStart",
+              "value": "={{ $json.clipStart || 'auto' }}",
+              "type": "string"
+            },
+            {
+              "id": "story-pack-mrbonzomusic-clipSeconds",
+              "name": "clipSeconds",
+              "value": "={{ Number($json.clipSeconds) || 30 }}",
+              "type": "number"
+            },
+            {
+              "id": "story-pack-mrbonzomusic-hookText",
+              "name": "hookText",
+              "value": "={{ $json.hookText || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "story-pack-mrbonzomusic-ctaText",
+              "name": "ctaText",
+              "value": "={{ $json.ctaText || '' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": false,
+        "options": {}
+      },
+      "id": "story-pack-mrbonzomusic",
+      "name": "Story pack",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        140,
+        80
+      ]
+    },
+    {
+      "id": "story-make-mrbonzomusic",
+      "name": "Make story clip",
+      "notes": "Κόβει κάθετο απόσπασμα 5–60s. Το πλήρες αρχείο δεν ανεβαίνει.",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 4000,
+      "position": [
+        280,
+        0
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "http://n8n-reels:8080/short",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ videoId: $('Story pack').item.json.videoId, start: String($('Story pack').item.json.clipStart || 'auto'), seconds: Number($('Story pack').item.json.clipSeconds), hook: $('Story pack').item.json.hookText || '', cta: $('Story pack').item.json.ctaText || '' }) }}",
+        "options": {
+          "timeout": 600000
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "story-clip-ready-mrbonzomusic-c",
+              "leftValue": "={{ $json.ok === true && String($json.path || '').indexOf('/ytshort-') >= 0 && String($json.path || '').endsWith('.mp4') && String($json.path || '').indexOf('.src') < 0 }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "id": "story-clip-ready-mrbonzomusic",
+      "name": "Clip ready",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        520,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "throw new Error(\"Το απόσπασμα δεν κόπηκε.\");",
+        "mode": "runOnceForAllItems",
+        "language": "javaScript"
+      },
+      "id": "story-uncut-mrbonzomusic",
+      "name": "Story uncut",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        520,
+        200
+      ]
+    },
+    {
+      "id": "story-read-mrbonzomusic",
+      "name": "Read story file",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        760,
+        0
+      ],
+      "parameters": {
+        "operation": "read",
+        "fileSelector": "=/work/ytshort-{{ $('Story pack').item.json.videoId }}.mp4",
+        "options": {
+          "fileName": "=ytshort-{{ $('Story pack').item.json.videoId }}.mp4",
+          "mimeType": "video/mp4"
+        }
+      }
+    },
+    {
+      "id": "story-r2-mrbonzomusic",
+      "name": "Upload story",
+      "type": "n8n-nodes-base.s3",
+      "typeVersion": 1,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 4000,
+      "position": [
+        1000,
+        0
+      ],
+      "parameters": {
+        "operation": "upload",
+        "bucketName": "mrbonzo-reels",
+        "fileName": "={{ 'stories/' + $('Story pack').item.json.videoId + '.mp4' }}",
+        "additionalFields": {}
+      },
+      "credentials": {
+        "s3": {
+          "id": "7uiqHIsogZqpfxT8",
+          "name": "S3 account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "story-uploaded-mrbonzomusic-c",
+              "leftValue": "={{ !$json.error }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "id": "story-uploaded-mrbonzomusic",
+      "name": "Story uploaded",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1240,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "throw new Error(\"Το απόσπασμα δεν ανέβηκε.\");",
+        "mode": "runOnceForAllItems",
+        "language": "javaScript"
+      },
+      "id": "story-missing-mrbonzomusic",
+      "name": "Story missing",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1240,
+        200
+      ]
+    },
+    {
+      "id": "story-ig-create-mrbonzomusic",
+      "name": "IG story create",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 4000,
+      "onError": "continueRegularOutput",
+      "position": [
+        1480,
+        0
+      ],
+      "parameters": {
+        "graphApiVersion": "v21.0",
+        "httpRequestMethod": "POST",
+        "node": "/17841404419062410/media",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "media_type",
+                "value": "STORIES"
+              },
+              {
+                "name": "video_url",
+                "value": "={{ 'https://pub-1cb7f846eb8e4ab998a9cf2e22cc3c75.r2.dev/stories/' + $('Story pack').item.json.videoId + '.mp4' }}"
+              }
+            ]
+          }
+        }
+      },
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "HzmFdeNPMKO2sQtk",
+          "name": "Facebook Mr Bonzo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "story-ig-created-mrbonzomusic-c",
+              "leftValue": "={{ !!$json.id && !$json.error }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "id": "story-ig-created-mrbonzomusic",
+      "name": "IG story created",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1720,
+        0
+      ]
+    },
+    {
+      "id": "story-ig-wait-a-mrbonzomusic",
+      "name": "Wait IG story A",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "webhookId": "story-ig-wait-a-mrbonzomusic",
+      "position": [
+        1720,
+        180
+      ],
+      "parameters": {
+        "amount": 20
+      }
+    },
+    {
+      "id": "story-ig-poll-a-mrbonzomusic",
+      "name": "IG story poll A",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 4000,
+      "onError": "continueRegularOutput",
+      "position": [
+        1960,
+        -160
+      ],
+      "parameters": {
+        "graphApiVersion": "v21.0",
+        "httpRequestMethod": "GET",
+        "node": "=/{{ $('IG story create').first().json.id }}",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "fields",
+                "value": "status_code"
+              }
+            ]
+          }
+        }
+      },
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "HzmFdeNPMKO2sQtk",
+          "name": "Facebook Mr Bonzo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $input.first().json || {};\nconst code = String(raw.status_code || '').toUpperCase();\nreturn [{ json: Object.assign({}, raw, { igReady: code === 'FINISHED' && !raw.error }) }];\n",
+        "mode": "runOnceForAllItems",
+        "language": "javaScript"
+      },
+      "id": "story-ig-status-a-mrbonzomusic",
+      "name": "IG story status A",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1960,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "story-ig-ready-a-mrbonzomusic-c",
+              "leftValue": "={{ $json.igReady === true }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "id": "story-ig-ready-a-mrbonzomusic",
+      "name": "IG story ready A",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2200,
+        0
+      ]
+    },
+    {
+      "id": "story-ig-wait-b-mrbonzomusic",
+      "name": "Wait IG story B",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "webhookId": "story-ig-wait-b-mrbonzomusic",
+      "position": [
+        2200,
+        180
+      ],
+      "parameters": {
+        "amount": 25
+      }
+    },
+    {
+      "id": "story-ig-poll-b-mrbonzomusic",
+      "name": "IG story poll B",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 4000,
+      "onError": "continueRegularOutput",
+      "position": [
+        2440,
+        180
+      ],
+      "parameters": {
+        "graphApiVersion": "v21.0",
+        "httpRequestMethod": "GET",
+        "node": "=/{{ $('IG story create').first().json.id }}",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "fields",
+                "value": "status_code"
+              }
+            ]
+          }
+        }
+      },
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "HzmFdeNPMKO2sQtk",
+          "name": "Facebook Mr Bonzo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $input.first().json || {};\nconst code = String(raw.status_code || '').toUpperCase();\nreturn [{ json: Object.assign({}, raw, { igReady: code === 'FINISHED' && !raw.error }) }];\n",
+        "mode": "runOnceForAllItems",
+        "language": "javaScript"
+      },
+      "id": "story-ig-status-b-mrbonzomusic",
+      "name": "IG story status B",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2620,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "story-ig-ready-b-mrbonzomusic-c",
+              "leftValue": "={{ $json.igReady === true }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "id": "story-ig-ready-b-mrbonzomusic",
+      "name": "IG story ready B",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2860,
+        180
+      ]
+    },
+    {
+      "id": "story-ig-publish-mrbonzomusic",
+      "name": "IG story publish",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 4000,
+      "onError": "continueRegularOutput",
+      "position": [
+        3100,
+        0
+      ],
+      "parameters": {
+        "graphApiVersion": "v21.0",
+        "httpRequestMethod": "POST",
+        "node": "/17841404419062410/media_publish",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "creation_id",
+                "value": "={{ $('IG story create').first().json.id }}"
+              }
+            ]
+          }
+        }
+      },
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "HzmFdeNPMKO2sQtk",
+          "name": "Facebook Mr Bonzo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "story-ig-published-mrbonzomusic-c",
+              "leftValue": "={{ !!$json.id && !$json.error }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "id": "story-ig-published-mrbonzomusic",
+      "name": "IG published",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        3340,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "let storyIg = false;\ntry {\n  const row = $('IG story publish').first().json || {};\n  storyIg = !!(row.id && !row.error);\n} catch (e) {}\nreturn [{ json: { storyIg } }];\n",
+        "mode": "runOnceForAllItems",
+        "language": "javaScript"
+      },
+      "id": "story-ig-mark-mrbonzomusic",
+      "name": "IG mark",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3600,
+        0
+      ]
+    },
+    {
+      "id": "story-fb-start-mrbonzomusic",
+      "name": "FB story start",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 4000,
+      "onError": "continueRegularOutput",
+      "position": [
+        1480,
+        280
+      ],
+      "parameters": {
+        "graphApiVersion": "v21.0",
+        "httpRequestMethod": "POST",
+        "node": "/me/video_stories",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "upload_phase",
+                "value": "start"
+              }
+            ]
+          }
+        }
+      },
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "HzmFdeNPMKO2sQtk",
+          "name": "Facebook Mr Bonzo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "story-fb-started-mrbonzomusic-c",
+              "leftValue": "={{ !!$json.video_id && !!$json.upload_url && !$json.error }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "id": "story-fb-started-mrbonzomusic",
+      "name": "FB story started",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1720,
+        280
+      ]
+    },
+    {
+      "id": "story-fb-upload-mrbonzomusic",
+      "name": "FB story upload",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "onError": "continueRegularOutput",
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 4000,
+      "position": [
+        1960,
+        280
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.upload_url }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "facebookGraphApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "file_url",
+              "value": "={{ 'https://pub-1cb7f846eb8e4ab998a9cf2e22cc3c75.r2.dev/stories/' + $('Story pack').item.json.videoId + '.mp4' }}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 120000
+        }
+      },
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "HzmFdeNPMKO2sQtk",
+          "name": "Facebook Mr Bonzo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "story-fb-uploaded-mrbonzomusic-c",
+              "leftValue": "={{ !$json.error && ($json.success === true || $json.success === 'true') }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "id": "story-fb-uploaded-mrbonzomusic",
+      "name": "FB story uploaded",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2200,
+        280
+      ]
+    },
+    {
+      "id": "story-fb-finish-mrbonzomusic",
+      "name": "FB story finish",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 4000,
+      "onError": "continueRegularOutput",
+      "position": [
+        2440,
+        280
+      ],
+      "parameters": {
+        "graphApiVersion": "v21.0",
+        "httpRequestMethod": "POST",
+        "node": "/me/video_stories",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "upload_phase",
+                "value": "finish"
+              },
+              {
+                "name": "video_id",
+                "value": "={{ $('FB story start').first().json.video_id }}"
+              }
+            ]
+          }
+        }
+      },
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "HzmFdeNPMKO2sQtk",
+          "name": "Facebook Mr Bonzo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "story-fb-finished-mrbonzomusic-c",
+              "leftValue": "={{ ($json.success === true || $json.success === 'true') && !$json.error }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "id": "story-fb-finished-mrbonzomusic",
+      "name": "FB story finished",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2680,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "let storyFb = false;\ntry {\n  const row = $('FB story finish').first().json || {};\n  storyFb = (row.success === true || row.success === 'true') && !row.error;\n} catch (e) {}\nreturn [{ json: { storyFb } }];\n",
+        "mode": "runOnceForAllItems",
+        "language": "javaScript"
+      },
+      "id": "story-fb-mark-mrbonzomusic",
+      "name": "FB mark",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3600,
+        280
+      ]
+    },
+    {
+      "id": "story-both-mrbonzomusic",
+      "name": "Story both",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        3840,
+        140
+      ],
+      "parameters": {
+        "mode": "append",
+        "numberInputs": 2
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all().map(item => item.json || {});\nconst storyIg = items.some(row => row.storyIg === true);\nconst storyFb = items.some(row => row.storyFb === true);\nif (!storyIg && !storyFb) throw new Error('Το story δεν ανέβηκε ούτε στο Instagram ούτε στο Facebook.');\nreturn [{ json: { storyIg, storyFb } }];\n",
+        "mode": "runOnceForAllItems",
+        "language": "javaScript"
+      },
+      "id": "story-check-mrbonzomusic",
+      "name": "Story check",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4040,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const kind = \"story\";\nconst j = $input.first().json || {};\nlet videoId = String(j.videoId || '');\ntry { videoId = videoId || String($(\"Story pack\").first().json.videoId || ''); } catch (e) {}\nconst staticData = $getWorkflowStaticData('global');\nstaticData[kind] = staticData[kind] || {};\nif (videoId) staticData[kind][videoId] = Date.now();\nreturn [{ json: { ...j, videoId, remembered: true } }];\n",
+        "mode": "runOnceForAllItems",
+        "language": "javaScript"
+      },
+      "id": "remember-story-mrbonzomusic",
+      "name": "Remember story",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4280,
+        140
+      ]
+    }
+  ],
+  "connections": {
+    "Manual story mrbonzomusic": {
+      "main": [
+        [
+          {
+            "node": "Manual normalize",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manual normalize": {
+      "main": [
+        [
+          {
+            "node": "Story pack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS mrbonzomusic": {
+      "main": [
+        [
+          {
+            "node": "RSS age",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS age": {
+      "main": [
+        [
+          {
+            "node": "If fresh",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If fresh": {
+      "main": [
+        [
+          {
+            "node": "RSS format",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "RSS format": {
+      "main": [
+        [
+          {
+            "node": "Video info",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Video info": {
+      "main": [
+        [
+          {
+            "node": "Long check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Long check": {
+      "main": [
+        [
+          {
+            "node": "Only long videos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Only long videos": {
+      "main": [
+        [
+          {
+            "node": "RSS dedup",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "RSS dedup": {
+      "main": [
+        [
+          {
+            "node": "If duplicate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If duplicate": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Story pack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Story pack": {
+      "main": [
+        [
+          {
+            "node": "Make story clip",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Make story clip": {
+      "main": [
+        [
+          {
+            "node": "Clip ready",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clip ready": {
+      "main": [
+        [
+          {
+            "node": "Read story file",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Story uncut",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read story file": {
+      "main": [
+        [
+          {
+            "node": "Upload story",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload story": {
+      "main": [
+        [
+          {
+            "node": "Story uploaded",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Story uploaded": {
+      "main": [
+        [
+          {
+            "node": "IG story create",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "FB story start",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Story missing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IG story create": {
+      "main": [
+        [
+          {
+            "node": "IG story created",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IG story created": {
+      "main": [
+        [
+          {
+            "node": "Wait IG story A",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "IG mark",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait IG story A": {
+      "main": [
+        [
+          {
+            "node": "IG story poll A",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IG story poll A": {
+      "main": [
+        [
+          {
+            "node": "IG story status A",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IG story status A": {
+      "main": [
+        [
+          {
+            "node": "IG story ready A",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IG story ready A": {
+      "main": [
+        [
+          {
+            "node": "IG story publish",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait IG story B",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait IG story B": {
+      "main": [
+        [
+          {
+            "node": "IG story poll B",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IG story poll B": {
+      "main": [
+        [
+          {
+            "node": "IG story status B",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IG story status B": {
+      "main": [
+        [
+          {
+            "node": "IG story ready B",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IG story ready B": {
+      "main": [
+        [
+          {
+            "node": "IG story publish",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "IG mark",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IG story publish": {
+      "main": [
+        [
+          {
+            "node": "IG published",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IG published": {
+      "main": [
+        [
+          {
+            "node": "IG mark",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "IG mark",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IG mark": {
+      "main": [
+        [
+          {
+            "node": "Story both",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FB story start": {
+      "main": [
+        [
+          {
+            "node": "FB story started",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FB story started": {
+      "main": [
+        [
+          {
+            "node": "FB story upload",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "FB mark",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FB story upload": {
+      "main": [
+        [
+          {
+            "node": "FB story uploaded",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FB story uploaded": {
+      "main": [
+        [
+          {
+            "node": "FB story finish",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "FB mark",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FB story finish": {
+      "main": [
+        [
+          {
+            "node": "FB story finished",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FB story finished": {
+      "main": [
+        [
+          {
+            "node": "FB mark",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "FB mark",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FB mark": {
+      "main": [
+        [
+          {
+            "node": "Story both",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Story both": {
+      "main": [
+        [
+          {
+            "node": "Story check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Story check": {
+      "main": [
+        [
+          {
+            "node": "Remember story",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Europe/Athens",
+    "executionTimeout": 1800,
+    "errorWorkflow": "a1111111-e110-4e57-a000-00000000err1"
+  }
+}

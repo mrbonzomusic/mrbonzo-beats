@@ -1,0 +1,1021 @@
+{
+  "id": "5tmyVOFqljBzF8oI",
+  "name": "YouTube Short from long video - mrbonzomusic",
+  "active": true,
+  "nodes": [
+    {
+      "id": "5e05176f-7de5-4d94-a074-35cc8e31e984",
+      "name": "RSS mrbonzomusic",
+      "type": "n8n-nodes-base.rssFeedReadTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyX",
+              "value": 15,
+              "unit": "minutes"
+            }
+          ]
+        },
+        "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCAPju2g7sZ4z0qwMhrkhYng"
+      }
+    },
+    {
+      "id": "cf133bea-9e79-41ff-947d-f511f429258c",
+      "name": "Format mrbonzomusic",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        240,
+        0
+      ],
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a1",
+              "name": "title",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "a2",
+              "name": "link",
+              "value": "={{ $json.link }}",
+              "type": "string"
+            },
+            {
+              "id": "a3",
+              "name": "shortTitle",
+              "value": "={{ $json.shortTitle || (() => { const suffix = ' #Shorts'; const raw = String($json.title || 'New release').replace(/#Shorts/ig, '').trim(); let t = raw; const keep = 70 - suffix.length; if (t.length > keep) t = t.slice(0, keep).replace(/[\\s\\-–,|]+$/,''); return (t || 'New release') + suffix; })() }}",
+              "type": "string"
+            },
+            {
+              "id": "a4",
+              "name": "shortDescription",
+              "value": "={{ $json.shortDescription || (() => { const title = String($json.title || \"New music by Mr. Bonzo\"); const link = String($json.link || ''); const vid = (link.match(/[?&]v=([^&]+)/) || link.match(/\\/shorts\\/([^/?]+)/) || [null,''])[1]; const url = vid ? ('https://www.youtube.com/watch?v=' + vid) : link; return title + '\\n\\nWatch the full track: ' + url + '\\n\\n' + \"#Shorts #mrbonzo #hiphop #newmusic\"; })() }}",
+              "type": "string"
+            },
+            {
+              "id": "panel-requestId",
+              "name": "requestId",
+              "value": "={{ $json.requestId || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "panel-skipWait",
+              "name": "skipWait",
+              "value": "={{ $json.skipWait === true }}",
+              "type": "boolean"
+            },
+            {
+              "id": "panel-clipStart",
+              "name": "clipStart",
+              "value": "={{ $json.clipStart || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "panel-clipSeconds",
+              "name": "clipSeconds",
+              "value": "={{ ($json.clipSeconds === undefined || $json.clipSeconds === null || $json.clipSeconds === '') ? '' : String($json.clipSeconds) }}",
+              "type": "string"
+            },
+            {
+              "id": "panel-hookSet",
+              "name": "hookSet",
+              "value": "={{ $json.hookSet === true }}",
+              "type": "boolean"
+            },
+            {
+              "id": "panel-ctaSet",
+              "name": "ctaSet",
+              "value": "={{ $json.ctaSet === true }}",
+              "type": "boolean"
+            },
+            {
+              "id": "panel-hookText",
+              "name": "hookText",
+              "value": "={{ $json.hookText || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "panel-ctaText",
+              "name": "ctaText",
+              "value": "={{ $json.ctaText || '' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "552a4b3d-1e42-4432-aee1-3b2111758179",
+      "name": "Check Short music",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "onError": "continueRegularOutput",
+      "position": [
+        480,
+        0
+      ],
+      "parameters": {
+        "url": "=https://www.youtube.com/shorts/{{ ($json.link.match(/[?&]v=([^&]+)/) || $json.link.match(/\\/shorts\\/([^/?]+)/) || [null,'']).slice(-1)[0] }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {
+              "followRedirects": false
+            }
+          },
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          },
+          "timeout": 10000
+        }
+      }
+    },
+    {
+      "id": "722b1d38-8c6e-453a-9e3c-53e443ce81ad",
+      "name": "Pack music",
+      "notes": "Καταχωρεί τα στοιχεία του βίντεο και αν είναι ήδη Short.",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        720,
+        0
+      ],
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "p1",
+              "name": "title",
+              "value": "={{ $('Format mrbonzomusic').item.json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "p2",
+              "name": "link",
+              "value": "={{ $('Format mrbonzomusic').item.json.link }}",
+              "type": "string"
+            },
+            {
+              "id": "p3",
+              "name": "shortTitle",
+              "value": "={{ $('Format mrbonzomusic').item.json.shortTitle }}",
+              "type": "string"
+            },
+            {
+              "id": "p4",
+              "name": "shortDescription",
+              "value": "={{ $('Format mrbonzomusic').item.json.shortDescription }}",
+              "type": "string"
+            },
+            {
+              "id": "p5",
+              "name": "isShort",
+              "value": "={{ (() => { const title = String($('Format mrbonzomusic').item.json.title || ''); const link = String($('Format mrbonzomusic').item.json.link || ''); if (title.toLowerCase().includes('#shorts') || link.includes('/shorts/')) return true; let dur = null; try { const info = $('Video info').item.json || {}; dur = Number(info.durationSeconds || info.duration); } catch (e) { dur = null; } if (Number.isFinite(dur) && dur > 0) return dur <= 60; const h = $json.headers || {}; const loc = String(h.location || h.Location || ''); const url = String($json.url || ''); if (loc.includes('/watch')) return false; if (loc.includes('/shorts/') || url.includes('/shorts/')) return true; return Number($json.statusCode) === 200; })() }}",
+              "type": "boolean"
+            },
+            {
+              "id": "p6",
+              "name": "videoId",
+              "value": "={{ ($('Format mrbonzomusic').item.json.link.match(/[?&]v=([^&]+)/) || ['',''])[1] }}",
+              "type": "string"
+            },
+            {
+              "id": "p7",
+              "name": "r2Key",
+              "value": "=shorts/{{ (($('Format mrbonzomusic').item.json.link.match(/[?&]v=([^&]+)/) || ['',''])[1]) }}.mp4",
+              "type": "string"
+            },
+            {
+              "id": "panel-requestId",
+              "name": "requestId",
+              "value": "={{ $('Format mrbonzomusic').item.json.requestId }}",
+              "type": "string"
+            },
+            {
+              "id": "panel-skipWait",
+              "name": "skipWait",
+              "value": "={{ $('Format mrbonzomusic').item.json.skipWait }}",
+              "type": "boolean"
+            },
+            {
+              "id": "panel-clipStart",
+              "name": "clipStart",
+              "value": "={{ $('Format mrbonzomusic').item.json.clipStart }}",
+              "type": "string"
+            },
+            {
+              "id": "panel-clipSeconds",
+              "name": "clipSeconds",
+              "value": "={{ $('Format mrbonzomusic').item.json.clipSeconds }}",
+              "type": "string"
+            },
+            {
+              "id": "panel-hookSet",
+              "name": "hookSet",
+              "value": "={{ $('Format mrbonzomusic').item.json.hookSet }}",
+              "type": "boolean"
+            },
+            {
+              "id": "panel-ctaSet",
+              "name": "ctaSet",
+              "value": "={{ $('Format mrbonzomusic').item.json.ctaSet }}",
+              "type": "boolean"
+            },
+            {
+              "id": "panel-hookText",
+              "name": "hookText",
+              "value": "={{ $('Format mrbonzomusic').item.json.hookText }}",
+              "type": "string"
+            },
+            {
+              "id": "panel-ctaText",
+              "name": "ctaText",
+              "value": "={{ $('Format mrbonzomusic').item.json.ctaText }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "876712ec-0d2a-4c26-a0da-3215665df94f",
+      "name": "Only long videos",
+      "notes": "Μόνο τα κανονικά βίντεο συνεχίζουν. Τα Shorts (και αυτά που ανεβάζει το ίδιο το workflow) σταματούν εδώ, ώστε να μην υπάρχει loop.",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        960,
+        0
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ys-if-c",
+              "leftValue": "={{ $json.isShort }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "d905af14-583d-4a0b-b0b6-50e33f543cd4",
+      "name": "Settings",
+      "notes": "Ρυθμίσεις: delayDays = μέρες αναμονής, clipStart = auto (30%% του βίντεο) ή δευτερόλεπτα, clipSeconds = διάρκεια (5-170), hookText = κείμενο πάνω στο βίντεο (άδειο = χωρίς), ctaText = κείμενο κάτω (άδειο = χωρίς).",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1200,
+        0
+      ],
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "s1",
+              "name": "delayDays",
+              "value": "={{ $('Pack music').item.json.skipWait === true ? 0 : 3 }}",
+              "type": "number"
+            },
+            {
+              "id": "s2",
+              "name": "clipStart",
+              "value": "={{ (() => { const v = $('Pack music').item.json.clipStart; return (v === undefined || v === null || v === '') ? ('auto') : v; })() }}",
+              "type": "string"
+            },
+            {
+              "id": "s3",
+              "name": "clipSeconds",
+              "value": "={{ (() => { const v = $('Pack music').item.json.clipSeconds; return (v === undefined || v === null || v === '') ? (30) : v; })() }}",
+              "type": "number"
+            },
+            {
+              "id": "s5",
+              "name": "hookText",
+              "value": "={{ $('Pack music').item.json.hookSet === true ? ($('Pack music').item.json.hookText || '') : \"NEW MUSIC ♪\" }}",
+              "type": "string"
+            },
+            {
+              "id": "s6",
+              "name": "ctaText",
+              "value": "={{ $('Pack music').item.json.ctaSet === true ? ($('Pack music').item.json.ctaText || '') : \"Full video on the channel ▶\" }}",
+              "type": "string"
+            },
+            {
+              "id": "panel-skipWait",
+              "name": "skipWait",
+              "value": "={{ $('Pack music').item.json.skipWait === true }}",
+              "type": "boolean"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "9f9cf861-69d3-4124-9fd6-d9f07ffc9ae9",
+      "name": "Wait days",
+      "webhookId": "ys-wait-music-b7f1c3a2",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1440,
+        0
+      ],
+      "parameters": {
+        "amount": "={{ $('Settings').item.json.delayDays }}",
+        "unit": "days"
+      }
+    },
+    {
+      "id": "7d9f1e86-32b8-488a-98a3-97717830483c",
+      "name": "Make Short clip",
+      "notes": "n8n-reels: yt-dlp + ffmpeg, κάθετο 1080x1920 με θολό φόντο.",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 4000,
+      "position": [
+        1680,
+        0
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "http://n8n-reels:8080/short",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ videoId: $('Pack music').item.json.videoId, start: String($('Settings').item.json.clipStart), seconds: Number($('Settings').item.json.clipSeconds), hook: $('Settings').item.json.hookText, cta: $('Settings').item.json.ctaText }) }}",
+        "options": {
+          "timeout": 600000
+        }
+      }
+    },
+    {
+      "id": "30f55504-18cf-4899-ba18-245b7a9e8bfe",
+      "name": "Read Short file",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        1920,
+        0
+      ],
+      "parameters": {
+        "fileSelector": "=/work/ytshort-{{ $('Pack music').item.json.videoId }}.mp4",
+        "options": {
+          "fileName": "=ytshort-{{ $('Pack music').item.json.videoId }}.mp4",
+          "mimeType": "video/mp4"
+        }
+      }
+    },
+    {
+      "id": "b260f5ad-df46-4cdd-b357-7f5aa50882cc",
+      "name": "Upload R2",
+      "type": "n8n-nodes-base.s3",
+      "typeVersion": 1,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 4000,
+      "position": [
+        2160,
+        0
+      ],
+      "parameters": {
+        "operation": "upload",
+        "bucketName": "mrbonzo-reels",
+        "fileName": "={{ $('Pack music').item.json.r2Key }}",
+        "additionalFields": {}
+      },
+      "credentials": {
+        "s3": {
+          "id": "7uiqHIsogZqpfxT8",
+          "name": "S3 account"
+        }
+      }
+    },
+    {
+      "id": "d34b479f-324f-4ddc-80ad-96ccfc0b4e30",
+      "name": "Buffer YouTube Short",
+      "notes": "Διάλεξε στο Channel το «Mr. Bonzo (youtube - channel)».",
+      "type": "@bufferapp/n8n-nodes-buffer.buffer",
+      "typeVersion": 1,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 4000,
+      "onError": "continueRegularOutput",
+      "position": [
+        2400,
+        0
+      ],
+      "parameters": {
+        "resource": "post",
+        "organizationId": "69cfd7b30f822245c9a5a0c4",
+        "channelId": "6addbce82f1f5ed648c61d8a|youtube|channel",
+        "postText": "={{ $('Pack music').item.json.shortDescription }}",
+        "schedulingType": "automatic",
+        "youtubeTitle": "={{ $('Pack music').item.json.shortTitle }}",
+        "attachmentType": "video",
+        "videoUrl": "=https://pub-1cb7f846eb8e4ab998a9cf2e22cc3c75.r2.dev/{{ $('Pack music').item.json.r2Key }}"
+      },
+      "credentials": {
+        "bufferApi": {
+          "id": "d0uoi0tdaWQF5xxK",
+          "name": "Buffer account"
+        }
+      }
+    },
+    {
+      "id": "37e61158-8d5e-4adb-a35e-50b8184d88b9",
+      "name": "Wait Buffer fetch",
+      "webhookId": "ys-wait2-music-b7f1c3a2",
+      "notes": "Δίνει χρόνο στο Buffer να κατεβάσει το βίντεο από το R2 πριν διαγραφεί.",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2640,
+        0
+      ],
+      "parameters": {
+        "amount": 180,
+        "unit": "seconds"
+      }
+    },
+    {
+      "id": "5b9e09a0-7209-436e-8793-c633c8011ff8",
+      "name": "Delete R2",
+      "type": "n8n-nodes-base.s3",
+      "typeVersion": 1,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 4000,
+      "onError": "continueRegularOutput",
+      "position": [
+        2880,
+        0
+      ],
+      "parameters": {
+        "operation": "delete",
+        "bucketName": "mrbonzo-reels",
+        "fileKey": "={{ $('Pack music').item.json.r2Key }}",
+        "options": {}
+      },
+      "credentials": {
+        "s3": {
+          "id": "7uiqHIsogZqpfxT8",
+          "name": "S3 account"
+        }
+      }
+    },
+    {
+      "id": "5aa21a0e-7ba2-4278-91f1-38234e167e0c",
+      "name": "Cleanup local",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "onError": "continueRegularOutput",
+      "position": [
+        3120,
+        0
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "http://n8n-reels:8080/cleanup",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ videoId: $('Pack music').item.json.videoId }) }}",
+        "options": {}
+      }
+    },
+    {
+      "id": "2bbc3e84-9720-4139-95cf-68dd992cceec",
+      "name": "Check Buffer",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3360,
+        0
+      ],
+      "parameters": {
+        "jsCode": "const fails = [];\nfor (const item of $('Buffer YouTube Short').all()) {\n  const j = item.json || {};\n  if (j.error) fails.push(String((item.error && item.error.description) || j.error));\n}\nif (fails.length) {\n  throw new Error('YouTube Short via Buffer failed: ' + fails.join(' | '));\n}\nreturn [{ json: { shortOk: true, source: $('Pack music').first().json.link } }];\n"
+      }
+    },
+    {
+      "id": "wh-short-mrbonzomusic",
+      "name": "Manual short mrbonzomusic",
+      "webhookId": "short-mrbonzomusic",
+      "notes": "Το panel στέλνει εδώ ένα παλιό ή επιλεγμένο βίντεο. Το RSS δεν περνάει από αυτόν τον κόμβο.",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -280,
+        280
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "short-mrbonzomusic",
+        "responseMode": "onReceived",
+        "options": {},
+        "authentication": "headerAuth"
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "arrsEi2jlmdTTMYg",
+          "name": "n8n panel webhook"
+        }
+      }
+    },
+    {
+      "id": "norm-short-mrbonzomusic",
+      "name": "Manual normalize",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -40,
+        280
+      ],
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "norm-title",
+              "name": "title",
+              "value": "={{ ($json.body && $json.body.title) || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "norm-link",
+              "name": "link",
+              "value": "={{ ($json.body && $json.body.link) || ('https://www.youtube.com/watch?v=' + (($json.body && $json.body.videoId) || '')) }}",
+              "type": "string"
+            },
+            {
+              "id": "norm-requestId",
+              "name": "requestId",
+              "value": "={{ ($json.body && $json.body.requestId) || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "norm-shortTitle",
+              "name": "shortTitle",
+              "value": "={{ ($json.body && $json.body.shortTitle) || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "norm-shortDescription",
+              "name": "shortDescription",
+              "value": "={{ ($json.body && $json.body.shortDescription) || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "norm-skipWait",
+              "name": "skipWait",
+              "value": "={{ true }}",
+              "type": "boolean"
+            },
+            {
+              "id": "norm-clipStart",
+              "name": "clipStart",
+              "value": "={{ ($json.body && ($json.body.start || $json.body.clipStart)) || 'auto' }}",
+              "type": "string"
+            },
+            {
+              "id": "norm-clipSeconds",
+              "name": "clipSeconds",
+              "value": "={{ Number(($json.body && ($json.body.seconds || $json.body.clipSeconds)) || 30) }}",
+              "type": "number"
+            },
+            {
+              "id": "norm-hookSet",
+              "name": "hookSet",
+              "value": "={{ true }}",
+              "type": "boolean"
+            },
+            {
+              "id": "norm-ctaSet",
+              "name": "ctaSet",
+              "value": "={{ true }}",
+              "type": "boolean"
+            },
+            {
+              "id": "norm-hookText",
+              "name": "hookText",
+              "value": "={{ ($json.body && $json.body.hook != null) ? $json.body.hook : (($json.body && $json.body.hookText != null) ? $json.body.hookText : '') }}",
+              "type": "string"
+            },
+            {
+              "id": "norm-ctaText",
+              "name": "ctaText",
+              "value": "={{ ($json.body && $json.body.cta != null) ? $json.body.cta : (($json.body && $json.body.ctaText != null) ? $json.body.ctaText : '') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": false,
+        "options": {}
+      }
+    },
+    {
+      "id": "skip-wait-mrbonzomusic",
+      "name": "Skip wait",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1420,
+        0
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "skip-wait-mrbonzomusic-c",
+              "leftValue": "={{ $json.skipWait }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "video-info-mrbonzomusic",
+      "name": "Video info",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 3000,
+      "onError": "continueRegularOutput",
+      "position": [
+        420,
+        160
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ 'http://n8n-reels:8080/info?videoId=' + encodeURIComponent((($('Format mrbonzomusic').item.json.link || '').match(/[?&]v=([^&]+)/) || ($('Format mrbonzomusic').item.json.link || '').match(/\\/shorts\\/([^/?]+)/) || [null,''])[1] || '') }}",
+        "options": {
+          "timeout": 20000,
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "rss-dedup-mrbonzomusic",
+      "name": "RSS dedup",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        0
+      ],
+      "parameters": {
+        "jsCode": "const kind = \"short\";\nconst j = $input.first().json || {};\nconst videoId = String(j.videoId || '');\nconst requestId = String(j.requestId || '');\nconst staticData = $getWorkflowStaticData('global');\nstaticData[kind] = staticData[kind] || {};\nlet skipped = '';\nif (videoId && !requestId && staticData[kind][videoId]) skipped = 'duplicate';\nreturn [{ json: { ...j, skipped } }];\n"
+      }
+    },
+    {
+      "id": "if-dup-mrbonzomusic",
+      "name": "If duplicate",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1080,
+        0
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "if-dup-mrbonzomusic-c",
+              "leftValue": "={{ $json.skipped === 'duplicate' }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "remember-short-mrbonzomusic",
+      "name": "Remember short",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3580,
+        0
+      ],
+      "parameters": {
+        "jsCode": "const kind = \"short\";\nconst j = $input.first().json || {};\nlet videoId = String(j.videoId || '');\ntry { videoId = videoId || String($(\"Pack music\").first().json.videoId || ''); } catch (e) {}\nconst staticData = $getWorkflowStaticData('global');\nstaticData[kind] = staticData[kind] || {};\nif (videoId) staticData[kind][videoId] = Date.now();\nreturn [{ json: { ...j, videoId, remembered: true } }];\n"
+      }
+    }
+  ],
+  "connections": {
+    "RSS mrbonzomusic": {
+      "main": [
+        [
+          {
+            "node": "Format mrbonzomusic",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format mrbonzomusic": {
+      "main": [
+        [
+          {
+            "node": "Video info",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Short music": {
+      "main": [
+        [
+          {
+            "node": "Pack music",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pack music": {
+      "main": [
+        [
+          {
+            "node": "RSS dedup",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Only long videos": {
+      "main": [
+        [
+          {
+            "node": "Settings",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Settings": {
+      "main": [
+        [
+          {
+            "node": "Skip wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait days": {
+      "main": [
+        [
+          {
+            "node": "Make Short clip",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Make Short clip": {
+      "main": [
+        [
+          {
+            "node": "Read Short file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Short file": {
+      "main": [
+        [
+          {
+            "node": "Upload R2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload R2": {
+      "main": [
+        [
+          {
+            "node": "Buffer YouTube Short",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buffer YouTube Short": {
+      "main": [
+        [
+          {
+            "node": "Wait Buffer fetch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait Buffer fetch": {
+      "main": [
+        [
+          {
+            "node": "Check Buffer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete R2": {
+      "main": [
+        [
+          {
+            "node": "Cleanup local",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manual short mrbonzomusic": {
+      "main": [
+        [
+          {
+            "node": "Manual normalize",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manual normalize": {
+      "main": [
+        [
+          {
+            "node": "Format mrbonzomusic",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Skip wait": {
+      "main": [
+        [
+          {
+            "node": "Make Short clip",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait days",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Video info": {
+      "main": [
+        [
+          {
+            "node": "Check Short music",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS dedup": {
+      "main": [
+        [
+          {
+            "node": "If duplicate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If duplicate": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Only long videos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Buffer": {
+      "main": [
+        [
+          {
+            "node": "Remember short",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Remember short": {
+      "main": [
+        [
+          {
+            "node": "Delete R2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cleanup local": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "errorWorkflow": "a1111111-e110-4e57-a000-00000000err1",
+    "timezone": "Europe/Athens",
+    "executionTimeout": 1800
+  }
+}

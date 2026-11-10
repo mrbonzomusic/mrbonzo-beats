@@ -1,0 +1,2009 @@
+{
+  "id": "6qlT1OXNt5bywXdw",
+  "name": "YouTube to Facebook Instagram TikTok - mrbonzobeats",
+  "active": true,
+  "nodes": [
+    {
+      "id": "e1c90103-415b-4bb3-bda0-da02f2498b45",
+      "name": "RSS mrbonzobeats",
+      "type": "n8n-nodes-base.rssFeedReadTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1248,
+        80
+      ],
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyX",
+              "value": 15,
+              "unit": "minutes"
+            }
+          ]
+        },
+        "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCLzRHkxvT9HBMjNPI7L31ZQ"
+      }
+    },
+    {
+      "id": "248ccdb7-8b75-4763-a2d4-a65810265ada",
+      "name": "Format mrbonzobeats",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1008,
+        80
+      ],
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "asg-title-b",
+              "name": "title",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "asg-link-b",
+              "name": "link",
+              "value": "={{ $json.link }}",
+              "type": "string"
+            },
+            {
+              "id": "asg-ch-b",
+              "name": "channel",
+              "value": "mrbonzobeats",
+              "type": "string"
+            },
+            {
+              "id": "asg-msg-b",
+              "name": "message",
+              "value": "={{ $json.message || ([\"New Beat Out Now! 🔥\",\"Check out my latest instrumental on YouTube. Don't forget to like and subscribe for more! 🎹🎧\",\"🔗 Listen here: \" + $json.link,\"#beatmaker #greece #instrumental #typebeat #purplesound #mrbonzo #newmusic\"].join(\"\\n\")) }}",
+              "type": "string"
+            },
+            {
+              "id": "panel-platforms",
+              "name": "platforms",
+              "value": "={{ $json.platforms }}",
+              "type": "array"
+            },
+            {
+              "id": "panel-requestId",
+              "name": "requestId",
+              "value": "={{ $json.requestId || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "panel-messageFb",
+              "name": "messageFb",
+              "value": "={{ $json.messageFb || $json.message || (() => { const t = String($json.title || 'New type beat').slice(0, 120); return ['New type beat: ' + t, '', 'Stream the full instrumental on YouTube. Like and subscribe for more beats.', '', '#typebeat #instrumental #mrbonzo'].join('\\n'); })() }}",
+              "type": "string"
+            },
+            {
+              "id": "panel-messageSocial",
+              "name": "messageSocial",
+              "value": "={{ $json.messageSocial || (() => { const t = String($json.title || 'New type beat').slice(0, 80); return ['New type beat: ' + t, 'Full beat — link in bio', '', '#typebeat #beatmaker #instrumental #mrbonzo #greece'].join('\\n'); })() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "d9c29577-02d6-41eb-9a0e-ca219f07ef4e",
+      "name": "Check Short beats",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "onError": "continueRegularOutput",
+      "position": [
+        -768,
+        80
+      ],
+      "parameters": {
+        "url": "=https://www.youtube.com/shorts/{{ ($json.link.match(/[?&]v=([^&]+)/) || $json.link.match(/\\/shorts\\/([^/?]+)/) || [null,'']).slice(-1)[0] }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {
+              "followRedirects": false
+            }
+          },
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          },
+          "timeout": 10000
+        }
+      }
+    },
+    {
+      "id": "053ca3a0-65e8-4881-8ff2-826fecacc92a",
+      "name": "Pack beats",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -528,
+        80
+      ],
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "pk-title-b",
+              "name": "title",
+              "value": "={{ $('Format mrbonzobeats').item.json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "pk-link-b",
+              "name": "link",
+              "value": "={{ $('Format mrbonzobeats').item.json.link }}",
+              "type": "string"
+            },
+            {
+              "id": "pk-ch-b",
+              "name": "channel",
+              "value": "={{ $('Format mrbonzobeats').item.json.channel }}",
+              "type": "string"
+            },
+            {
+              "id": "pk-msg-b",
+              "name": "message",
+              "value": "={{ $('Format mrbonzobeats').item.json.message }}",
+              "type": "string"
+            },
+            {
+              "id": "pk-short-b",
+              "name": "isShort",
+              "value": "={{ (() => { const title = String($('Format mrbonzobeats').item.json.title || ''); const link = String($('Format mrbonzobeats').item.json.link || ''); if (title.toLowerCase().includes('#shorts') || link.includes('/shorts/')) return true; let dur = null; try { const info = $('Video info').item.json || {}; dur = Number(info.durationSeconds || info.duration); } catch (e) { dur = null; } if (Number.isFinite(dur) && dur > 0) return dur <= 60; const h = $json.headers || {}; const loc = String(h.location || h.Location || ''); const url = String($json.url || ''); if (loc.includes('/watch')) return false; if (loc.includes('/shorts/') || url.includes('/shorts/')) return true; return Number($json.statusCode) === 200; })() }}",
+              "type": "boolean"
+            },
+            {
+              "id": "pk-vid-b",
+              "name": "videoId",
+              "value": "={{ (($('Format mrbonzobeats').item.json.link || '').match(/[?&]v=([^&]+)/) || ($('Format mrbonzobeats').item.json.link || '').match(/\\/shorts\\/([^/?]+)/) || [null,''])[1] }}",
+              "type": "string"
+            },
+            {
+              "id": "panel-platforms",
+              "name": "platforms",
+              "value": "={{ $('Format mrbonzobeats').item.json.platforms }}",
+              "type": "array"
+            },
+            {
+              "id": "panel-requestId",
+              "name": "requestId",
+              "value": "={{ $('Format mrbonzobeats').item.json.requestId }}",
+              "type": "string"
+            },
+            {
+              "id": "panel-messageFb",
+              "name": "messageFb",
+              "value": "={{ $('Format mrbonzobeats').item.json.messageFb }}",
+              "type": "string"
+            },
+            {
+              "id": "panel-messageSocial",
+              "name": "messageSocial",
+              "value": "={{ $('Format mrbonzobeats').item.json.messageSocial }}",
+              "type": "string"
+            },
+            {
+              "id": "panel-durationSeconds",
+              "name": "durationSeconds",
+              "value": "={{ (() => { try { const n = Number(($('Video info').item.json.durationSeconds || $('Video info').item.json.duration)); return Number.isFinite(n) ? n : 0; } catch (e) { return 0; } })() }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "a3293992-672f-42cd-a20c-41c84fbc5814",
+      "name": "If Short beats",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -288,
+        80
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "if-short-b",
+              "leftValue": "={{ $json.isShort }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "43fa1ef1-a66f-4db0-b22f-3eadf39a56d4",
+      "name": "Facebook Purple Sound",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 4000,
+      "onError": "continueRegularOutput",
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v21.0",
+        "node": "/me/feed",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "message",
+                "value": "={{ $json.messageFb || $json.message }}"
+              },
+              {
+                "name": "link",
+                "value": "={{ $json.link }}"
+              }
+            ]
+          }
+        }
+      },
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "2j5nLm4cM61OnjnE",
+          "name": "Facebook Purple Sound"
+        }
+      }
+    },
+    {
+      "id": "fb682582-d90a-4e06-9399-854385c4aa83",
+      "name": "Facebook Mr Bonzo",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 4000,
+      "onError": "continueRegularOutput",
+      "position": [
+        0,
+        160
+      ],
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v21.0",
+        "node": "/me/feed",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "message",
+                "value": "={{ $json.messageFb || $json.message }}"
+              },
+              {
+                "name": "link",
+                "value": "={{ $json.link }}"
+              }
+            ]
+          }
+        }
+      },
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "HzmFdeNPMKO2sQtk",
+          "name": "Facebook Mr Bonzo"
+        }
+      }
+    },
+    {
+      "id": "706b0f86-8f85-43d2-863c-748ccb1376a2",
+      "name": "Merge Facebook",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        240,
+        80
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "05ff614e-0164-409e-b99d-f7d1c689b408",
+      "name": "Check Facebook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        80
+      ],
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst fails = [];\nfor (const item of items) {\n  const j = item.json || {};\n  if (j.error) {\n    const desc = (item.error && item.error.description) || j.error;\n    fails.push(String(desc));\n  }\n}\nif (fails.length) {\n  throw new Error('Facebook page post failed: ' + fails.join(' | '));\n}\nreturn [{ json: { facebookOk: true, pages: items.length } }];\n"
+      }
+    },
+    {
+      "id": "4f6675af-8ac2-43e4-9931-3b1527f0d647",
+      "name": "IG Prep",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        0,
+        368
+      ],
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "igp-title",
+              "name": "title",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "igp-link",
+              "name": "link",
+              "value": "={{ $json.link }}",
+              "type": "string"
+            },
+            {
+              "id": "igp-ch",
+              "name": "channel",
+              "value": "={{ $json.channel }}",
+              "type": "string"
+            },
+            {
+              "id": "igp-msg",
+              "name": "message",
+              "value": "={{ $json.message }}",
+              "type": "string"
+            },
+            {
+              "id": "igp-short",
+              "name": "isShort",
+              "value": "={{ $json.isShort }}",
+              "type": "boolean"
+            },
+            {
+              "id": "igp-vid",
+              "name": "videoId",
+              "value": "={{ $json.videoId }}",
+              "type": "string"
+            },
+            {
+              "id": "igp-key",
+              "name": "r2Key",
+              "value": "=reels/{{ $json.videoId }}.mp4",
+              "type": "string"
+            },
+            {
+              "id": "panel-messageSocial",
+              "name": "messageSocial",
+              "value": "={{ $json.messageSocial || $json.message }}",
+              "type": "string"
+            },
+            {
+              "id": "panel-messageFb",
+              "name": "messageFb",
+              "value": "={{ $json.messageFb || $json.message }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "b5e00709-a8fc-44c5-bf64-b3b28c8940d6",
+      "name": "Download transcode",
+      "notes": "n8n-reels helper: yt-dlp + ffmpeg. Shorts full (max 90s); long videos 18s 9:16 clip.",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 4000,
+      "position": [
+        224,
+        368
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "http://n8n-reels:8080/prep",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ videoId: $json.videoId, isShort: $json.isShort }) }}",
+        "options": {
+          "timeout": 360000
+        }
+      }
+    },
+    {
+      "id": "a08ffccd-147a-451d-aa14-f2855aa67dfe",
+      "name": "Read reel file",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        368
+      ],
+      "parameters": {
+        "fileSelector": "=/work/reels-{{ $('IG Prep').item.json.videoId }}.mp4",
+        "options": {
+          "fileName": "=reels-{{ $('IG Prep').item.json.videoId }}.mp4",
+          "mimeType": "video/mp4"
+        }
+      }
+    },
+    {
+      "id": "38581727-2ad7-4079-87b3-8cb77808e82b",
+      "name": "Upload R2",
+      "type": "n8n-nodes-base.s3",
+      "typeVersion": 1,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 4000,
+      "position": [
+        672,
+        368
+      ],
+      "parameters": {
+        "operation": "upload",
+        "bucketName": "mrbonzo-reels",
+        "fileName": "={{ $('IG Prep').item.json.r2Key }}",
+        "additionalFields": {}
+      },
+      "credentials": {
+        "s3": {
+          "id": "7uiqHIsogZqpfxT8",
+          "name": "S3 account"
+        }
+      }
+    },
+    {
+      "id": "abbd9ac1-cff0-4aba-9178-94c5efc481d9",
+      "name": "Instagram create",
+      "notes": "IG 17841404419062410. Public R2 mp4 then poll FINISHED then publish. Cleanup always deletes R2 object.",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 4000,
+      "onError": "continueRegularOutput",
+      "position": [
+        880,
+        368
+      ],
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v21.0",
+        "node": "/17841404419062410/media",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "caption",
+                "value": "={{ $('IG Prep').item.json.messageSocial || $('IG Prep').item.json.message || '' }}"
+              },
+              {
+                "name": "media_type",
+                "value": "REELS"
+              },
+              {
+                "name": "video_url",
+                "value": "={{ 'https://pub-1cb7f846eb8e4ab998a9cf2e22cc3c75.r2.dev/' + $('IG Prep').item.json.r2Key }}"
+              }
+            ]
+          }
+        }
+      },
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "HzmFdeNPMKO2sQtk",
+          "name": "Facebook Mr Bonzo"
+        }
+      }
+    },
+    {
+      "id": "27cfb636-f83e-4c9d-ab97-5ddb5f6e353b",
+      "name": "Wait IG A",
+      "webhookId": "ig-wait-a-wh-mrbonzobeats",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        480,
+        368
+      ],
+      "parameters": {
+        "amount": 25
+      }
+    },
+    {
+      "id": "4f51b4ee-1163-4a00-9b60-e9989374d519",
+      "name": "IG poll A",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 4000,
+      "onError": "continueRegularOutput",
+      "position": [
+        608,
+        480
+      ],
+      "parameters": {
+        "graphApiVersion": "v21.0",
+        "node": "=/{{ $('Instagram create').item.json.id }}",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "fields",
+                "value": "status_code"
+              }
+            ]
+          }
+        }
+      },
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "HzmFdeNPMKO2sQtk",
+          "name": "Facebook Mr Bonzo"
+        }
+      }
+    },
+    {
+      "id": "5f26fd6f-e8cb-4bf1-9f6a-d57e28c8f496",
+      "name": "If IG ready A",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        720,
+        480
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ig-if-a-c",
+              "leftValue": "={{ $json.igReady }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "0cf30488-7191-4785-af5a-1498dcc8d560",
+      "name": "Wait IG B",
+      "webhookId": "ig-wait-b-wh-mrbonzobeats",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        480,
+        608
+      ],
+      "parameters": {
+        "amount": 30
+      }
+    },
+    {
+      "id": "d8f5709a-67b5-4746-8732-3f03a38ca97a",
+      "name": "IG poll B",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 4000,
+      "onError": "continueRegularOutput",
+      "position": [
+        608,
+        608
+      ],
+      "parameters": {
+        "graphApiVersion": "v21.0",
+        "node": "=/{{ $('Instagram create').item.json.id }}",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "fields",
+                "value": "status_code"
+              }
+            ]
+          }
+        }
+      },
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "HzmFdeNPMKO2sQtk",
+          "name": "Facebook Mr Bonzo"
+        }
+      }
+    },
+    {
+      "id": "d22b01f0-1cbc-4a08-9928-d2df1e0baed9",
+      "name": "If IG ready B",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        720,
+        608
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ig-if-b-c",
+              "leftValue": "={{ $json.igReady }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "0c75576d-8fc2-4a2f-8bd9-70251ba36ced",
+      "name": "Wait IG C",
+      "webhookId": "ig-wait-c-wh-mrbonzobeats",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        480,
+        720
+      ],
+      "parameters": {
+        "amount": 45
+      }
+    },
+    {
+      "id": "a1759f70-20d9-4680-a571-52de94380f81",
+      "name": "IG poll C",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 4000,
+      "onError": "continueRegularOutput",
+      "position": [
+        608,
+        720
+      ],
+      "parameters": {
+        "graphApiVersion": "v21.0",
+        "node": "=/{{ $('Instagram create').item.json.id }}",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "fields",
+                "value": "status_code"
+              }
+            ]
+          }
+        }
+      },
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "HzmFdeNPMKO2sQtk",
+          "name": "Facebook Mr Bonzo"
+        }
+      }
+    },
+    {
+      "id": "dd2ec0d9-2161-4083-9fb3-a819c4dc7e5e",
+      "name": "If IG ready C",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        720,
+        720
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ig-if-c-c",
+              "leftValue": "={{ $json.igReady }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "b40405ab-8ad0-4975-bc92-dac4c8a388c5",
+      "name": "Instagram publish",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 4000,
+      "onError": "continueRegularOutput",
+      "position": [
+        960,
+        208
+      ],
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v21.0",
+        "node": "/17841404419062410/media_publish",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "creation_id",
+                "value": "={{ $('Instagram create').item.json.id }}"
+              }
+            ]
+          }
+        }
+      },
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "HzmFdeNPMKO2sQtk",
+          "name": "Facebook Mr Bonzo"
+        }
+      }
+    },
+    {
+      "id": "0ab76c4e-909a-4ccf-98fb-e136e558a0fe",
+      "name": "Delete R2",
+      "type": "n8n-nodes-base.s3",
+      "typeVersion": 1,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 4000,
+      "onError": "continueRegularOutput",
+      "position": [
+        1424,
+        368
+      ],
+      "parameters": {
+        "operation": "delete",
+        "bucketName": "mrbonzo-reels",
+        "fileKey": "={{ $('IG Prep').item.json.r2Key }}",
+        "options": {}
+      },
+      "credentials": {
+        "s3": {
+          "id": "7uiqHIsogZqpfxT8",
+          "name": "S3 account"
+        }
+      }
+    },
+    {
+      "id": "08214ec3-e05c-43ef-9a7a-14ca38ccc249",
+      "name": "Cleanup local",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "onError": "continueRegularOutput",
+      "position": [
+        1648,
+        368
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "http://n8n-reels:8080/cleanup",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ videoId: $('IG Prep').item.json.videoId }) }}",
+        "options": {}
+      }
+    },
+    {
+      "id": "02ac1d88-a1d6-401f-ba09-35c1413debd3",
+      "name": "Join IG Buffer",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1200,
+        368
+      ],
+      "parameters": {
+        "mode": "chooseBranch",
+        "output": "empty"
+      }
+    },
+    {
+      "id": "6b58cec3-fd58-4f22-8f98-fef52db4cf88",
+      "name": "Buffer TikTok",
+      "notes": "Publishes the TikTok now, at the same time as Facebook and Instagram. Do not use homelab TikTok Developer OAuth.",
+      "type": "@bufferapp/n8n-nodes-buffer.buffer",
+      "typeVersion": 1,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 4000,
+      "onError": "continueRegularOutput",
+      "position": [
+        880,
+        608
+      ],
+      "parameters": {
+        "resource": "post",
+        "organizationId": "69cfd7b30f822245c9a5a0c4",
+        "channelId": "69cfd928af47dacb6985c5c2|tiktok|account",
+        "postText": "={{ $('IG Prep').item.json.messageSocial || $('IG Prep').item.json.message || '' }}",
+        "schedulingType": "automatic",
+        "attachmentType": "video",
+        "videoUrl": "=https://pub-1cb7f846eb8e4ab998a9cf2e22cc3c75.r2.dev/{{ $('IG Prep').item.json.r2Key }}"
+      },
+      "credentials": {
+        "bufferApi": {
+          "id": "d0uoi0tdaWQF5xxK",
+          "name": "Buffer account"
+        }
+      }
+    },
+    {
+      "id": "3b49408c-5c81-40d2-b0f7-c1d31beddef5",
+      "name": "Wait Buffer fetch",
+      "webhookId": "wait-r2-buffer-wh-mrbonzobeats",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1312,
+        368
+      ],
+      "parameters": {
+        "amount": 180,
+        "unit": "seconds"
+      }
+    },
+    {
+      "id": "wh-post-mrbonzobeats",
+      "name": "Manual post mrbonzobeats",
+      "webhookId": "post-mrbonzobeats",
+      "notes": "Το panel στέλνει εδώ ένα παλιό ή επιλεγμένο βίντεο. Το RSS δεν περνάει από αυτόν τον κόμβο.",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -280,
+        280
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "post-mrbonzobeats",
+        "responseMode": "onReceived",
+        "options": {},
+        "authentication": "headerAuth"
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "arrsEi2jlmdTTMYg",
+          "name": "n8n panel webhook"
+        }
+      }
+    },
+    {
+      "id": "norm-post-mrbonzobeats",
+      "name": "Manual normalize",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -40,
+        280
+      ],
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "norm-title",
+              "name": "title",
+              "value": "={{ ($json.body && $json.body.title) || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "norm-link",
+              "name": "link",
+              "value": "={{ ($json.body && $json.body.link) || ('https://www.youtube.com/watch?v=' + (($json.body && $json.body.videoId) || '')) }}",
+              "type": "string"
+            },
+            {
+              "id": "norm-requestId",
+              "name": "requestId",
+              "value": "={{ ($json.body && $json.body.requestId) || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "norm-message",
+              "name": "message",
+              "value": "={{ ($json.body && $json.body.message) || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "norm-messageFb",
+              "name": "messageFb",
+              "value": "={{ ($json.body && ($json.body.messageFb || $json.body.message)) || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "norm-messageSocial",
+              "name": "messageSocial",
+              "value": "={{ ($json.body && $json.body.messageSocial) || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "norm-platforms",
+              "name": "platforms",
+              "value": "={{ ($json.body && $json.body.platforms) || null }}",
+              "type": "array"
+            }
+          ]
+        },
+        "includeOtherFields": false,
+        "options": {}
+      }
+    },
+    {
+      "id": "gate-fb-mrbonzobeats",
+      "name": "Gate Facebook",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -68,
+        -60
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "gate-fb-mrbonzobeats-c",
+              "leftValue": "={{ (() => { const p = $('Pack beats').item.json.platforms; if (p == null || p === '' || (Array.isArray(p) && p.length === 0)) return true; const list = Array.isArray(p) ? p.map(String) : String(p).split(','); return list.includes('facebook'); })() }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "gate-reel-mrbonzobeats",
+      "name": "Gate Reel",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -68,
+        220
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "gate-reel-mrbonzobeats-c",
+              "leftValue": "={{ (() => { const p = $('Pack beats').item.json.platforms; if (p == null || p === '' || (Array.isArray(p) && p.length === 0)) return true; const list = Array.isArray(p) ? p.map(String) : String(p).split(','); return list.includes('instagram') || list.includes('tiktok'); })() }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "gate-ig-mrbonzobeats",
+      "name": "Gate Instagram",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        892,
+        288
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "gate-ig-mrbonzobeats-c",
+              "leftValue": "={{ (() => { const p = $('Pack beats').item.json.platforms; if (p == null || p === '' || (Array.isArray(p) && p.length === 0)) return true; const list = Array.isArray(p) ? p.map(String) : String(p).split(','); return list.includes('instagram'); })() }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "gate-tt-mrbonzobeats",
+      "name": "Gate TikTok",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        892,
+        448
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "gate-tt-mrbonzobeats-c",
+              "leftValue": "={{ (() => { const p = $('Pack beats').item.json.platforms; if (p == null || p === '' || (Array.isArray(p) && p.length === 0)) return true; const list = Array.isArray(p) ? p.map(String) : String(p).split(','); return list.includes('tiktok'); })() }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "skip-short-mrbonzobeats",
+      "name": "Skip Short social",
+      "notes": "YouTube Shorts δεν πάνε σε Facebook, Instagram, TikTok ή Plunk.",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -68,
+        -200
+      ],
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "skip-short-flag",
+              "name": "skipped",
+              "value": "short",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "gate-plunk-mrbonzobeats",
+      "name": "Gate Plunk",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -68,
+        380
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "gate-plunk-mrbonzobeats-c",
+              "leftValue": "={{ (() => { const id = String($json.requestId || ''); const key = String($env.PLUNK_SECRET_KEY || ''); const from = String($env.PLUNK_FROM_EMAIL || ''); return id === '' && key !== '' && from !== ''; })() }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "plunk-create-mrbonzobeats",
+      "name": "Plunk create campaign",
+      "notes": "RSS long video μόνο. Το secret είναι env στο n8n, όχι στο workflow JSON.",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 4000,
+      "onError": "continueRegularOutput",
+      "position": [
+        172,
+        380
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "http://plunk:8080/v1/campaigns",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $env.PLUNK_SECRET_KEY }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify((() => { const title = String($json.title || 'New video'); const link = String($json.link || ''); const vid = String($json.videoId || ((link.match(/[?&]v=([^&]+)/) || link.match(/\\/shorts\\/([^/?]+)/) || [null,''])[1] || '')); const thumb = vid ? ('https://i.ytimg.com/vi/' + vid + '/hqdefault.jpg') : ''; const html = '<div style=\"font-family:system-ui,sans-serif;max-width:560px;margin:0 auto;color:#111\">' + '<p style=\"color:#666;font-size:13px;margin:0 0 8px\">' + \"Mr. Bonzo Beats\" + '</p>' + '<h1 style=\"font-size:22px;line-height:1.3;margin:0 0 16px\">' + title.replace(/</g,'&lt;') + '</h1>' + (thumb ? ('<p><a href=\"' + link + '\"><img src=\"' + thumb + '\" alt=\"' + title.replace(/\"/g,'') + '\" width=\"560\" style=\"width:100%;max-width:560px;border-radius:12px\"></a></p>') : '') + '<p style=\"color:#666;font-size:13px\">Watch on YouTube</p>' + '<p><a href=\"' + link + '\" style=\"display:inline-block;background:#7c5cbf;color:#fff;text-decoration:none;padding:12px 18px;border-radius:10px;font-weight:600\">Watch on YouTube</a></p>' + '<p style=\"margin-top:16px\"><a href=\"https://mrbonzo-beats.pages.dev/\" style=\"color:#7c5cbf\">mrbonzo-beats.pages.dev</a></p>' + '</div>'; return { name: 'YouTube · ' + title.slice(0, 80), subject: title.slice(0, 120), body: html, from: $env.PLUNK_FROM_EMAIL, fromName: \"Mr. Bonzo Beats\", audienceType: 'ALL' }; })()) }}",
+        "options": {}
+      }
+    },
+    {
+      "id": "plunk-send-mrbonzobeats",
+      "name": "Plunk send campaign",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "onError": "continueRegularOutput",
+      "position": [
+        632,
+        380
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "=http://plunk:8080/v1/campaigns/{{ ($json.data && $json.data.id) || $json.id }}/send",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $env.PLUNK_SECRET_KEY }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ scheduledFor: null }) }}",
+        "options": {}
+      }
+    },
+    {
+      "id": "gate-plunk-send-mrbonzobeats",
+      "name": "Gate Plunk send",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        412,
+        380
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "gate-plunk-send-mrbonzobeats-c",
+              "leftValue": "={{ String($env.PLUNK_AUTO_SEND || '').toLowerCase() === 'true' }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "video-info-mrbonzobeats",
+      "name": "Video info",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 3000,
+      "onError": "continueRegularOutput",
+      "position": [
+        -828,
+        240
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ 'http://n8n-reels:8080/info?videoId=' + encodeURIComponent((($('Format mrbonzobeats').item.json.link || '').match(/[?&]v=([^&]+)/) || ($('Format mrbonzobeats').item.json.link || '').match(/\\/shorts\\/([^/?]+)/) || [null,''])[1] || '') }}",
+        "options": {
+          "timeout": 20000,
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "rss-dedup-mrbonzobeats",
+      "name": "RSS dedup",
+      "notes": "Skip RSS if this videoId already posted.",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -368,
+        80
+      ],
+      "parameters": {
+        "jsCode": "const kind = \"post\";\nconst j = $input.first().json || {};\nconst videoId = String(j.videoId || '');\nconst requestId = String(j.requestId || '');\nconst staticData = $getWorkflowStaticData('global');\nstaticData[kind] = staticData[kind] || {};\nlet skipped = '';\nif (videoId && !requestId && staticData[kind][videoId]) skipped = 'duplicate';\nreturn [{ json: { ...j, skipped } }];\n"
+      }
+    },
+    {
+      "id": "if-dup-mrbonzobeats",
+      "name": "If duplicate",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -168,
+        80
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "if-dup-mrbonzobeats-c",
+              "leftValue": "={{ $json.skipped === 'duplicate' }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "ig-status-a-mrbonzobeats",
+      "name": "IG status A",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        688,
+        500
+      ],
+      "parameters": {
+        "jsCode": "const raw = $input.first().json || {};\nconst code = String(raw.status_code || '').toUpperCase();\nif (code === 'ERROR' || raw.error) {\n  throw new Error('Instagram media ERROR: ' + JSON.stringify(raw).slice(0, 400));\n}\nreturn [{ json: { ...raw, igReady: code === 'FINISHED' } }];\n"
+      }
+    },
+    {
+      "id": "ig-status-b-mrbonzobeats",
+      "name": "IG status B",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        688,
+        628
+      ],
+      "parameters": {
+        "jsCode": "const raw = $input.first().json || {};\nconst code = String(raw.status_code || '').toUpperCase();\nif (code === 'ERROR' || raw.error) {\n  throw new Error('Instagram media ERROR: ' + JSON.stringify(raw).slice(0, 400));\n}\nreturn [{ json: { ...raw, igReady: code === 'FINISHED' } }];\n"
+      }
+    },
+    {
+      "id": "ig-status-c-mrbonzobeats",
+      "name": "IG status C",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        688,
+        740
+      ],
+      "parameters": {
+        "jsCode": "const raw = $input.first().json || {};\nconst code = String(raw.status_code || '').toUpperCase();\nif (code === 'ERROR' || raw.error) {\n  throw new Error('Instagram media ERROR: ' + JSON.stringify(raw).slice(0, 400));\n}\nreturn [{ json: { ...raw, igReady: code === 'FINISHED' } }];\n"
+      }
+    },
+    {
+      "id": "ig-not-ready-mrbonzobeats",
+      "name": "IG not ready",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        940,
+        800
+      ],
+      "parameters": {
+        "jsCode": "const raw = $input.first().json || {};\nthrow new Error('Instagram reel not FINISHED: ' + String(raw.status_code || 'unknown'));\n"
+      }
+    },
+    {
+      "id": "check-social-mrbonzobeats",
+      "name": "Check social",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1480,
+        328
+      ],
+      "parameters": {
+        "jsCode": "function ran(name) { try { return $(name).all(); } catch (e) { return null; } }\nfunction failed(items) {\n  if (!items) return true;\n  for (const item of items) {\n    const j = item.json || {};\n    if (j.error || (item.error && item.error.message)) return true;\n  }\n  return false;\n}\nconst pack = $(\"Pack beats\").first().json;\nconst p = pack.platforms;\nconst all = p == null || p === '' || (Array.isArray(p) && p.length === 0);\nconst want = (n) => all || (Array.isArray(p) && p.map(String).includes(n));\nconst fails = [];\nif (want('instagram')) {\n  const items = ran('Instagram publish');\n  if (!items || failed(items)) fails.push('instagram');\n}\nif (want('tiktok')) {\n  const items = ran('Buffer TikTok');\n  if (!items || failed(items)) fails.push('tiktok');\n}\nif (fails.length) throw new Error('Social post failed: ' + fails.join(', '));\nreturn [{ json: { socialOk: true, videoId: pack.videoId } }];\n"
+      }
+    },
+    {
+      "id": "remember-post-mrbonzobeats",
+      "name": "Remember post",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1700,
+        328
+      ],
+      "parameters": {
+        "jsCode": "const kind = \"post\";\nconst j = $input.first().json || {};\nlet videoId = String(j.videoId || '');\ntry { videoId = videoId || String($(\"Pack beats\").first().json.videoId || ''); } catch (e) {}\nconst staticData = $getWorkflowStaticData('global');\nstaticData[kind] = staticData[kind] || {};\nif (videoId) staticData[kind][videoId] = Date.now();\nreturn [{ json: { ...j, videoId, remembered: true } }];\n"
+      }
+    },
+    {
+      "id": "remember-post-fb-mrbonzobeats",
+      "name": "Remember post FB",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1720,
+        -80
+      ],
+      "parameters": {
+        "jsCode": "const kind = \"post\";\nconst j = $input.first().json || {};\nlet videoId = String(j.videoId || '');\ntry { videoId = videoId || String($(\"Pack beats\").first().json.videoId || ''); } catch (e) {}\nconst staticData = $getWorkflowStaticData('global');\nstaticData[kind] = staticData[kind] || {};\nif (videoId) staticData[kind][videoId] = Date.now();\nreturn [{ json: { ...j, videoId, remembered: true } }];\n"
+      }
+    }
+  ],
+  "connections": {
+    "RSS mrbonzobeats": {
+      "main": [
+        [
+          {
+            "node": "Format mrbonzobeats",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format mrbonzobeats": {
+      "main": [
+        [
+          {
+            "node": "Video info",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Short beats": {
+      "main": [
+        [
+          {
+            "node": "Pack beats",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pack beats": {
+      "main": [
+        [
+          {
+            "node": "RSS dedup",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Short beats": {
+      "main": [
+        [
+          {
+            "node": "Skip Short social",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Gate Facebook",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Gate Reel",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Gate Plunk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IG Prep": {
+      "main": [
+        [
+          {
+            "node": "Download transcode",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download transcode": {
+      "main": [
+        [
+          {
+            "node": "Read reel file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read reel file": {
+      "main": [
+        [
+          {
+            "node": "Upload R2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload R2": {
+      "main": [
+        [
+          {
+            "node": "Gate Instagram",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Gate TikTok",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Instagram create": {
+      "main": [
+        [
+          {
+            "node": "Wait IG A",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait IG A": {
+      "main": [
+        [
+          {
+            "node": "IG poll A",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IG poll A": {
+      "main": [
+        [
+          {
+            "node": "IG status A",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If IG ready A": {
+      "main": [
+        [
+          {
+            "node": "Instagram publish",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait IG B",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait IG B": {
+      "main": [
+        [
+          {
+            "node": "IG poll B",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IG poll B": {
+      "main": [
+        [
+          {
+            "node": "IG status B",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If IG ready B": {
+      "main": [
+        [
+          {
+            "node": "Instagram publish",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait IG C",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait IG C": {
+      "main": [
+        [
+          {
+            "node": "IG poll C",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IG poll C": {
+      "main": [
+        [
+          {
+            "node": "IG status C",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If IG ready C": {
+      "main": [
+        [
+          {
+            "node": "Instagram publish",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "IG not ready",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Instagram publish": {
+      "main": [
+        [
+          {
+            "node": "Join IG Buffer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete R2": {
+      "main": [
+        [
+          {
+            "node": "Cleanup local",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buffer TikTok": {
+      "main": [
+        [
+          {
+            "node": "Join IG Buffer",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Join IG Buffer": {
+      "main": [
+        [
+          {
+            "node": "Wait Buffer fetch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait Buffer fetch": {
+      "main": [
+        [
+          {
+            "node": "Check social",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Facebook Purple Sound": {
+      "main": [
+        [
+          {
+            "node": "Merge Facebook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Facebook Mr Bonzo": {
+      "main": [
+        [
+          {
+            "node": "Merge Facebook",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge Facebook": {
+      "main": [
+        [
+          {
+            "node": "Check Facebook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manual post mrbonzobeats": {
+      "main": [
+        [
+          {
+            "node": "Manual normalize",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manual normalize": {
+      "main": [
+        [
+          {
+            "node": "Format mrbonzobeats",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gate Facebook": {
+      "main": [
+        [
+          {
+            "node": "Facebook Mr Bonzo",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Gate Reel": {
+      "main": [
+        [
+          {
+            "node": "IG Prep",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Gate Instagram": {
+      "main": [
+        [
+          {
+            "node": "Instagram create",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Join IG Buffer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gate TikTok": {
+      "main": [
+        [
+          {
+            "node": "Buffer TikTok",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Join IG Buffer",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Gate Plunk": {
+      "main": [
+        [
+          {
+            "node": "Plunk create campaign",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Plunk create campaign": {
+      "main": [
+        [
+          {
+            "node": "Gate Plunk send",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Video info": {
+      "main": [
+        [
+          {
+            "node": "Check Short beats",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS dedup": {
+      "main": [
+        [
+          {
+            "node": "If duplicate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If duplicate": {
+      "main": [
+        [],
+        [
+          {
+            "node": "If Short beats",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gate Plunk send": {
+      "main": [
+        [
+          {
+            "node": "Plunk send campaign",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "IG status A": {
+      "main": [
+        [
+          {
+            "node": "If IG ready A",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IG status B": {
+      "main": [
+        [
+          {
+            "node": "If IG ready B",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IG status C": {
+      "main": [
+        [
+          {
+            "node": "If IG ready C",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check social": {
+      "main": [
+        [
+          {
+            "node": "Remember post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Remember post": {
+      "main": [
+        [
+          {
+            "node": "Delete R2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Facebook": {
+      "main": [
+        [
+          {
+            "node": "Remember post FB",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "errorWorkflow": "a1111111-e110-4e57-a000-00000000err1",
+    "timezone": "Europe/Athens"
+  }
+}

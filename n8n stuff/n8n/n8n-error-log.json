@@ -1,0 +1,63 @@
+{
+  "id": "a1111111-e110-4e57-a000-00000000err1",
+  "name": "n8n error log",
+  "active": true,
+  "nodes": [
+    {
+      "id": "err-trig",
+      "name": "Error Trigger",
+      "notes": "Runs when YouTube social posting fails (Facebook/IG/TikTok/Shorts).",
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "err-mail",
+      "name": "Email errors",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "onError": "stopWorkflow",
+      "position": [
+        280,
+        0
+      ],
+      "parameters": {
+        "fromEmail": "Purple Sound Homelab <purplesoundaudio@gmail.com>",
+        "toEmail": "purplesoundaudio@gmail.com",
+        "subject": "={{ 'n8n error: ' + ($json.workflow?.name || 'workflow') }}",
+        "emailFormat": "text",
+        "options": {},
+        "text": "={{ (() => { const wf = $json.workflow || {}; const ex = $json.execution || {}; const id = String(ex.id || ''); const wfid = String(wf.id || ''); const last = String(ex.lastNodeExecuted || ''); const msg = String(ex.error?.message || $json.error?.message || JSON.stringify($json, null, 2)); const url = (wfid && id) ? ('https://n8n.homelab.lan/workflow/' + wfid + '/executions/' + id) : 'https://n8n.homelab.lan/'; return ['n8n workflow failed.', '', 'Workflow: ' + (wf.name || ''), 'Execution: ' + id, 'Last node: ' + last, 'Open: ' + url, '', 'Error:', msg].join('\\n'); })() }}"
+      },
+      "webhookId": "13a78a3d-bad5-479c-a4c8-7e123b6fe327",
+      "credentials": {
+        "smtp": {
+          "id": "pGqUSmRMTfn2VzqB",
+          "name": "Gmail SMTP Purple Sound"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Email errors",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false,
+    "timezone": "Europe/Athens"
+  }
+}

@@ -1,0 +1,215 @@
+{
+  "name": "Panel Facebook delete",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "facebook-delete",
+        "responseMode": "lastNode",
+        "options": {},
+        "authentication": "headerAuth"
+      },
+      "id": "wh-facebook-delete",
+      "name": "Facebook delete",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 200],
+      "webhookId": "facebook-delete",
+      "notes": "Το panel στέλνει postId και page. Το credential της σελίδας μένει στο n8n.",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "arrsEi2jlmdTTMYg",
+          "name": "n8n panel webhook"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const raw = $input.first().json || {};\nconst body = (raw.body && typeof raw.body === 'object') ? raw.body : raw;\nlet page = String(body.page || '').trim().toLowerCase();\nif (page === 'purple' || page === 'purplesound') page = 'studio';\nconst postId = String(body.postId || '').trim();\nif (!/^\\d{6,}_\\d{6,}$/.test(postId) && !/^\\d{8,}$/.test(postId)) throw new Error('Άκυρο Facebook post id');\nif (!['mrbonzo', 'studio', 'basebox'].includes(page)) throw new Error('Άγνωστη σελίδα');\nreturn [{ json: { page, postId } }];"
+      },
+      "id": "code-facebook-delete",
+      "name": "Delete normalize",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [280, 200]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "cond-del-mrbonzo",
+              "leftValue": "={{ $json.page }}",
+              "rightValue": "mrbonzo",
+              "operator": { "type": "string", "operation": "equals" }
+            }
+          ]
+        }
+      },
+      "id": "if-del-mrbonzo",
+      "name": "Page is Mr Bonzo",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [560, 80]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "cond-del-studio",
+              "leftValue": "={{ $json.page }}",
+              "rightValue": "studio",
+              "operator": { "type": "string", "operation": "equals" }
+            }
+          ]
+        }
+      },
+      "id": "if-del-studio",
+      "name": "Page is Purple Sound",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [560, 280]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "cond-del-basebox",
+              "leftValue": "={{ $json.page }}",
+              "rightValue": "basebox",
+              "operator": { "type": "string", "operation": "equals" }
+            }
+          ]
+        }
+      },
+      "id": "if-del-basebox",
+      "name": "Page is BaseBox",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [560, 480]
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "DELETE",
+        "graphApiVersion": "v21.0",
+        "node": "={{ '/' + $json.postId }}",
+        "options": {}
+      },
+      "id": "fb-del-mrbonzo",
+      "name": "Delete Mr Bonzo",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [900, 0],
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "HzmFdeNPMKO2sQtk",
+          "name": "Facebook Mr Bonzo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "DELETE",
+        "graphApiVersion": "v21.0",
+        "node": "={{ '/' + $json.postId }}",
+        "options": {}
+      },
+      "id": "fb-del-studio",
+      "name": "Delete Purple Sound",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [900, 200],
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "2j5nLm4cM61OnjnE",
+          "name": "Facebook Purple Sound"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "DELETE",
+        "graphApiVersion": "v21.0",
+        "node": "={{ '/' + $json.postId }}",
+        "options": {}
+      },
+      "id": "fb-del-basebox",
+      "name": "Delete BaseBox",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [900, 400],
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "Om8mOVmDSmWGMcEb",
+          "name": "Facebook BaseBox"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "throw new Error('Άγνωστη σελίδα Facebook');"
+      },
+      "id": "code-facebook-unknown",
+      "name": "Delete unknown",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 560]
+    }
+  ],
+  "connections": {
+    "Facebook delete": {
+      "main": [[{ "node": "Delete normalize", "type": "main", "index": 0 }]]
+    },
+    "Delete normalize": {
+      "main": [[{ "node": "Page is Mr Bonzo", "type": "main", "index": 0 }]]
+    },
+    "Page is Mr Bonzo": {
+      "main": [
+        [{ "node": "Delete Mr Bonzo", "type": "main", "index": 0 }],
+        [{ "node": "Page is Purple Sound", "type": "main", "index": 0 }]
+      ]
+    },
+    "Page is Purple Sound": {
+      "main": [
+        [{ "node": "Delete Purple Sound", "type": "main", "index": 0 }],
+        [{ "node": "Page is BaseBox", "type": "main", "index": 0 }]
+      ]
+    },
+    "Page is BaseBox": {
+      "main": [
+        [{ "node": "Delete BaseBox", "type": "main", "index": 0 }],
+        [{ "node": "Delete unknown", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

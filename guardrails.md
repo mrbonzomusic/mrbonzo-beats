@@ -1,6 +1,6 @@
 # Guardrails — UI, i18n, and layout
 
-> **Last save:** 2026-11-10 11:14
+> **Last save:** 2026-11-10 11:31
 
 Rules for future changes so the site stays consistent and flicker-free.
 

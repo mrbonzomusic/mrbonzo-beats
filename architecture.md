@@ -1,6 +1,6 @@
 # Architecture — Mr. Bonzo Beats (Astro)
 
-> **Last save:** 2026-11-10 11:14
+> **Last save:** 2026-11-10 11:31
 
 ## Overview
 
@@ -73,7 +73,7 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 ## SEO
 
 - Canonical / OG / JSON-LD / robots / sitemap use **`https://mrbonzo.com/`**.
-- Domain is at Papaki; DNS stays on Papaki nameservers: apex **ALIAS** + `www` **CNAME** → `mrbonzo-beats.pages.dev`. Both hostnames are custom domains on the Cloudflare Pages project `mrbonzo-beats`.
+- Domain is registered at Papaki. **Nameservers** are Cloudflare (`alla.ns.cloudflare.com`, `lee.ns.cloudflare.com`). Apex + `www` are **CNAME** (proxied) → `mrbonzo-beats.pages.dev` on the Cloudflare zone; both hostnames are custom domains on Pages project `mrbonzo-beats`. Mail records stay DNS-only.
 - Newsletter remains paused until a named tunnel for Plunk.
 
 ## Visual effects (runtime)
@@ -121,6 +121,8 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 - **Audit log:** `.git/git-save-doc-audit.log` (local, not committed).
 
 ## Save log
+
+- 2026-11-10 11:31 — docs: Cloudflare nameservers for mrbonzo.com HTTPS — 28 files (n8n stuff/n8n-panel/Dockerfile, n8n stuff/n8n-panel/__pycache__/app.cpython-315.pyc, n8n stuff/n8n-panel/__pycache__/campaigns.cpython-315.pyc, n8n stuff/n8n-panel/__pycache__/captions.cpython-315.pyc, n8n stuff/n8n-panel/__pycache__/workflow_patch.cpython-315.pyc, n8n stuff/n8n-panel/app.py, n8n stuff/n8n-panel/campaigns.py, n8n stuff/n8n-panel/captions.py (+19 more))
 
 - 2026-11-10 11:14 — feat: use mrbonzo.com as canonical site URL — 8 files (.gitignore, astro.config.mjs, public/robots.txt, public/sitemap.xml, src/layouts/BaseLayout.astro, src/lib/spotify.ts)
 
