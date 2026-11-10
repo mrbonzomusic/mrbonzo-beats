@@ -1,6 +1,6 @@
 # Architecture — Mr. Bonzo Beats (Astro)
 
-> **Last save:** 2026-10-28 10:24
+> **Last save:** 2026-11-10 11:14
 
 ## Overview
 
@@ -65,15 +65,16 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 
 ## Analytics
 
-- **Google Analytics 4** in `BaseLayout.astro` (`gtag.js`, Measurement ID `G-XBS5WKEGPE`, stream URL `https://mrbonzo-beats.pages.dev/`).
+- **Google Analytics 4** in `BaseLayout.astro` (`gtag.js`, Measurement ID `G-XBS5WKEGPE`, canonical site `https://mrbonzo.com/`; Pages fallback `https://mrbonzo-beats.pages.dev/`).
 - Outbound clicks (Beatstars, Discord, Spotify, TikTok, Instagram, YouTube, Pond5) send `gtag('event', 'outbound_click', { link_url, link_host })`.
 - GTM/GA `preconnect` is without `crossorigin` so it matches classic `<script src>` (avoids Chrome `ERR_BLOCKED_BY_ORB` on gtag.js).
 - GoatCounter was removed (account deleted; no `gc.zgo.at` script or CSP hosts).
 
 ## SEO
 
-- `public/robots.txt` + `public/sitemap.xml` (homepage). JSON-LD `MusicGroup` + `sameAs` in `BaseLayout`. OG image `/og-image-v2.jpg`. Hero has `sr-only` `<h1>`.
-- Newsletter remains paused until a public domain.
+- Canonical / OG / JSON-LD / robots / sitemap use **`https://mrbonzo.com/`**.
+- Domain is at Papaki; DNS stays on Papaki nameservers: apex **ALIAS** + `www` **CNAME** → `mrbonzo-beats.pages.dev`. Both hostnames are custom domains on the Cloudflare Pages project `mrbonzo-beats`.
+- Newsletter remains paused until a named tunnel for Plunk.
 
 ## Visual effects (runtime)
 
@@ -90,9 +91,9 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 - Extra attributes: `data-i18n-placeholder` (kept for the paused newsletter field).
 - Collaboration marquee: order in `src/config/collaborations.ts`; labels in `collaborations.artists` (`en.ts` / `el.ts`). Greek script only for names whose Greek spelling is confirmed. The name sits in its own span so `textContent` updates do not remove the separator.
 
-## Newsletter (Plunk) — paused until a public domain
+## Newsletter (Plunk) — paused until a named tunnel
 
-- Form is **not** on the site. Copy stays in `newsletter.*` (`en.ts` / `el.ts`). Function `functions/api/subscribe.js` returns 503 until re-enabled.
+- Public domain is live (`mrbonzo.com`). Form is still **not** on the site until Plunk has a stable public API hostname. Copy stays in `newsletter.*` (`en.ts` / `el.ts`). Function `functions/api/subscribe.js` returns 503 until re-enabled.
 - When bringing it back: named Cloudflare Tunnel (stable hostname) + `PLUNK_API_URL` / `PLUNK_SECRET_KEY` Pages secrets. Homelab API is `https://plunk-api.homelab.lan/` (`POST /contacts`). Do not put the secret in git or the browser.
 - Quick `trycloudflare.com` tunnels were a stopgap; do not leave `plunk-tunnel` running without a domain (URL changes on PC reboot).
 
@@ -120,6 +121,8 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 - **Audit log:** `.git/git-save-doc-audit.log` (local, not committed).
 
 ## Save log
+
+- 2026-11-10 11:14 — feat: use mrbonzo.com as canonical site URL — 8 files (.gitignore, astro.config.mjs, public/robots.txt, public/sitemap.xml, src/layouts/BaseLayout.astro, src/lib/spotify.ts)
 
 - 2026-10-28 10:24 — feat: SEO, canonical YouTube, and conversion polish — 13 files (dist/index.html, public/manifest.json, public/robots.txt, public/sitemap.xml, src/components/FeaturedBeatstars.astro, src/components/Hero.astro, src/components/SiteFooter.astro, src/components/TypeBeatGrid.astro (+4 more))
 

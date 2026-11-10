@@ -126,7 +126,7 @@ export async function getReleasesFromItunes({
     query.searchParams.set("country", "US");
 
     const response = await fetch(query, {
-      headers: { "User-Agent": "MrBonzoBeats/1.0 (+https://mrbonzo-beats.pages.dev)" },
+      headers: { "User-Agent": "MrBonzoBeats/1.0 (+https://mrbonzo.com)" },
     });
     if (!response.ok) {
       throw new Error(`iTunes search failed: ${response.status}`);
@@ -396,7 +396,7 @@ export async function getReleasesFromRss({
 
     const response = await fetch(feedUrl, {
       headers: {
-        "User-Agent": "MrBonzoBeats/1.0 (+https://mrbonzo-beats.pages.dev)",
+        "User-Agent": "MrBonzoBeats/1.0 (+https://mrbonzo.com)",
         Accept: "application/rss+xml, application/xml, text/xml;q=0.9, */*;q=0.8",
       },
     });
