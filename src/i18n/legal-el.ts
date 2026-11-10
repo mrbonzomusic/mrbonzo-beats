@@ -20,7 +20,7 @@ export const privacyHtml = `
 <li><strong>Αναλυτικά:</strong> Google Analytics 4 (G-XBS5WKEGPE) καταγράφει κατά προσέγγιση χρήση (σελίδες, συσκευή/browser, αδρή τοποθεσία, εξερχόμενα κλικ προς καταστήματα και social). Το GA χρησιμοποιεί cookies/αναγνωριστικά Google. Η Google ενεργεί ως επεξεργαστής· βλ. <a href="https://policies.google.com/privacy" rel="noopener noreferrer" target="_blank">Πολιτική απορρήτου Google</a>.</li>
 <li><strong>Τεχνικά αρχεία καταγραφής:</strong> η Cloudflare μπορεί να καταγράφει IP, user-agent και μεταδεδομένα αιτήματος για CDN, προστασία DDoS και TLS, σύμφωνα με τις πολιτικές της.</li>
 <li><strong>Επικοινωνία:</strong> αν στείλετε email, μήνυμα Discord ή Instagram, λαμβάνουμε ό,τι μας δίνετε (όνομα, handle, μήνυμα, συνημμένα όπως αποδείξεις για ξεμπλοκάρισμα claim).</li>
-<li><strong>Newsletter (όταν ενεργοποιηθεί):</strong> διεύθυνση email, χρόνος εγγραφής και honeypot κατά spam. Αποθήκευση στο αυτοφιλοξενούμενο Plunk. Δεν πωλείται. Η δημόσια φόρμα είναι κλειστή μέχρι σταθερό hostname API.</li>
+<li><strong>Newsletter:</strong> διεύθυνση email, προτίμηση γλώσσας, χρόνος εγγραφής και honeypot κατά spam. Αποθήκευση στο αυτοφιλοξενούμενο Plunk πίσω από το <code>newsletter.mrbonzo.com</code>. Δεν πωλείται. Unsubscribe οποιαδήποτε στιγμή από τον σύνδεσμο σε κάθε email.</li>
 <li><strong>Αγορές:</strong> Beatstars, PayPal, Pond5 κ.λπ. επεξεργάζονται πληρωμές. Δεν λαμβάνουμε πλήρη στοιχεία κάρτας. Μπορεί να δούμε username καταστήματος, αριθμό παραγγελίας ή απόδειξη που μας προωθείτε για whitelist σε YouTube claim.</li>
 </ul>
 <p>Δεν υπάρχει σύστημα λογαριασμών χρηστών σε αυτόν τον ιστότοπο. Δεν πωλούμε δεδομένα προσωπικού χαρακτήρα.</p>
@@ -49,7 +49,7 @@ export const privacyHtml = `
 <h2>7. Νομικές βάσεις (GDPR)</h2>
 <ul>
 <li><strong>Έννομο συμφέρον:</strong> λειτουργία ιστότοπου, ασφάλεια, συγκεντρωτική κίνηση, δημοσίευση καταλόγου, εκκαθάριση claims που ζητάτε.</li>
-<li><strong>Συγκατάθεση:</strong> newsletter (όταν η φόρμα είναι ενεργή)· μη απαραίτητα analytics όπου το απαιτεί το δίκαιο σας.</li>
+<li><strong>Συγκατάθεση:</strong> εγγραφή στο newsletter· μη απαραίτητα analytics όπου το απαιτεί το δίκαιο σας.</li>
 <li><strong>Σύμβαση:</strong> εκτέλεση άδειας ή κράτησης στούντιο που ζητάτε.</li>
 <li><strong>Νομική υποχρέωση:</strong> φορολογία, λογιστική, νόμιμα αιτήματα.</li>
 </ul>

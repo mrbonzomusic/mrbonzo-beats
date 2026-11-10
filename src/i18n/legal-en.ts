@@ -20,7 +20,7 @@ export const privacyHtml = `
 <li><strong>Analytics:</strong> Google Analytics 4 (measurement ID G-XBS5WKEGPE) records approximate usage (pages, device/browser, coarse location, outbound clicks to stores and socials). GA uses Google cookies/identifiers. Google acts as processor; see <a href="https://policies.google.com/privacy" rel="noopener noreferrer" target="_blank">Google’s Privacy Policy</a>.</li>
 <li><strong>Technical logs:</strong> Cloudflare may log IP address, user-agent, and request metadata to operate the CDN, DDoS protection, and TLS. Logs are retained according to Cloudflare’s policies.</li>
 <li><strong>Contact:</strong> if you email us, message Discord, or write on Instagram, we receive whatever you send (name, handle, message, attachments such as receipts for claim clearance).</li>
-<li><strong>Newsletter (when enabled):</strong> email address, signup time, and anti-spam honeypot fields. Stored in our self-hosted Plunk instance. Not sold. The public form is off until a stable API hostname exists.</li>
+<li><strong>Newsletter:</strong> email address, language preference, signup time, and anti-spam honeypot fields. Stored in our self-hosted Plunk instance behind <code>newsletter.mrbonzo.com</code>. Not sold. Unsubscribe any time via the link in each email.</li>
 <li><strong>Purchases:</strong> Beatstars, PayPal, Pond5, and similar platforms process payments. We do not receive your full card data. We may see your store username, order ID, or a receipt you forward so we can whitelist a YouTube claim.</li>
 </ul>
 <p>We do not run a user account system on this website. We do not sell personal data.</p>
@@ -49,7 +49,7 @@ export const privacyHtml = `
 <h2>7. Legal bases (GDPR)</h2>
 <ul>
 <li><strong>Legitimate interests:</strong> running the site, security, understanding aggregate traffic, publishing our own catalogues, clearing copyright claims you ask us to clear.</li>
-<li><strong>Consent:</strong> newsletter (when the form is live); non-essential analytics where required by your jurisdiction.</li>
+<li><strong>Consent:</strong> newsletter signup; non-essential analytics where required by your jurisdiction.</li>
 <li><strong>Contract:</strong> performing a licence or studio booking you request.</li>
 <li><strong>Legal obligation:</strong> tax, accounting, or lawful requests.</li>
 </ul>

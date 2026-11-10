@@ -1,6 +1,6 @@
 # Architecture — Mr. Bonzo Beats (Astro)
 
-> **Last save:** 2026-11-10 14:33
+> **Last save:** 2026-11-10 14:37
 
 ## Overview
 
@@ -74,7 +74,7 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 
 - Canonical / OG / JSON-LD / robots / sitemap use **`https://mrbonzo.com/`**.
 - Domain is registered at Papaki. **Nameservers** are Cloudflare (`alla.ns.cloudflare.com`, `lee.ns.cloudflare.com`). Apex + `www` are **CNAME** (proxied) → `mrbonzo-beats.pages.dev` on the Cloudflare zone; both hostnames are custom domains on Pages project `mrbonzo-beats`. Mail records stay DNS-only.
-- Newsletter remains paused until a named tunnel for Plunk.
+- Newsletter is live via named tunnel `newsletter.mrbonzo.com` → Plunk API.
 
 ## Visual effects (runtime)
 
@@ -88,7 +88,7 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 - Inline script at end of `<body>`; `localStorage['selected-lang']` is only `en` | `el`.
 - Keys: `data-i18n`, `data-i18n-alt`, `data-i18n-title`, `data-i18n-aria-label`.
 - HTML allowlist (`htmlKeys`): `drumkits.title`, `about.titleHtml`, `contact.title`, `legal.privacyHtml`, `legal.termsHtml`.
-- Extra attributes: `data-i18n-placeholder` (kept for the paused newsletter field).
+- Extra attributes: `data-i18n-placeholder` (newsletter email field).
 - Collaboration marquee: order in `src/config/collaborations.ts`; labels in `collaborations.artists` (`en.ts` / `el.ts`). Greek script only for names whose Greek spelling is confirmed. The name sits in its own span so `textContent` updates do not remove the separator.
 
 ## Newsletter (Plunk)
@@ -122,6 +122,8 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 - **Audit log:** `.git/git-save-doc-audit.log` (local, not committed).
 
 ## Save log
+
+- 2026-11-10 14:37 — fix: legal copy now that newsletter is live — 3 files (src/i18n/legal-el.ts, src/i18n/legal-en.ts)
 
 - 2026-11-10 14:33 — feat: newsletter popup with Plunk tunnel — 13 files (.env.example, .gitignore, functions/api/subscribe.js, src/components/ContactSection.astro, src/components/NewsletterForm.astro, src/components/NewsletterModal.astro, src/i18n/el.ts, src/i18n/en.ts (+3 more))
 
