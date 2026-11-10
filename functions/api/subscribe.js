@@ -1,5 +1,5 @@
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const NEWSLETTER_ENABLED = false;
+const NEWSLETTER_ENABLED = true;
 
 function json(body, status) {
   return new Response(JSON.stringify(body), {

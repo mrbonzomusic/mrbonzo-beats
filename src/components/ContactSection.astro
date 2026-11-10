@@ -1,5 +1,6 @@
 ---
 import { socialLinks } from "../config/links";
+import NewsletterForm from "./NewsletterForm.astro";
 ---
 
 <section id="contact" class="relative mt-20 py-20 px-6 overflow-hidden rounded-[2.5rem] border border-fuchsia-500/20 bg-black/50 backdrop-blur-md">
@@ -63,6 +64,12 @@ import { socialLinks } from "../config/links";
         <span class="text-base text-gray-400 group-hover:text-fuchsia-200 transition-colors" data-i18n="contact.joinStudio">Join the Studio</span>
       </a>
 
+    </div>
+
+    <div class="mt-16 mx-auto max-w-xl text-left sm:text-center">
+      <p class="text-sm font-black uppercase tracking-widest text-fuchsia-400 mb-3" data-i18n="newsletter.eyebrow">Newsletter</p>
+      <p class="text-gray-300 mb-6" data-i18n="newsletter.question">Want new drops and free beats in your inbox?</p>
+      <NewsletterForm idPrefix="nl-contact" compact={true} />
     </div>
   </div>
 </section>

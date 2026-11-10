@@ -102,7 +102,15 @@ const el = {
     success: "Μπήκες στη λίστα. Κοίτα το inbox σου για νέα drops.",
     invalid: "Βάλε ένα έγκυρο email.",
     notReady: "Η λίστα δεν είναι ακόμη live. Στείλε μου email και θα σε βάλω.",
-    error: "Κάτι πήγε στραβά. Δοκίμασε ξανά, ή στείλε μου email."
+    error: "Κάτι πήγε στραβά. Δοκίμασε ξανά, ή στείλε μου email.",
+    eyebrow: "Newsletter",
+    headline: "Μείνε στο στούντιο",
+    body: "Νέα drops, δωρεάν beats και καμιά φορά νέα από το στούντιο. Μία λίστα, χωρίς spam.",
+    later: "Όχι τώρα",
+    close: "Κλείσιμο",
+    privacyBefore: "Με την εγγραφή δέχεσαι email για drops και νέα του στούντιο. Unsubscribe όποτε θες. Δες την ",
+    privacyLink: "Πολιτική Απορρήτου",
+    privacyAfter: "."
   },
   collaborations: {
     title: "Συνεργασίες",

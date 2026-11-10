@@ -1,6 +1,6 @@
 # Architecture — Mr. Bonzo Beats (Astro)
 
-> **Last save:** 2026-11-10 11:39
+> **Last save:** 2026-11-10 14:33
 
 ## Overview
 
@@ -17,7 +17,7 @@ Order in `src/pages/index.astro` (inside `BaseLayout` → `<main>`):
 5. **Drum kits** — `#drumkits` → `DrumKits.astro`
 6. **Latest Releases** — `#latest-releases` → `DiscographySection.astro` (inner `#releases`)
 7. **About** — `#about` → `AboutSection.astro` + `ServicesSection.astro`
-8. **Contact** — `#contact` → `ContactSection.astro` (email / Instagram / Discord)
+8. **Contact** — `#contact` → `ContactSection.astro` (email / Instagram / Discord + newsletter form)
 9. **Footer** — `SiteFooter.astro` (copyright + social + **Privacy** `/privacy` + **Terms** `/terms`)
 
 Standalone legal pages: `src/pages/privacy.astro` and `src/pages/terms.astro` (`LegalArticle.astro`). Copy lives in `src/i18n/legal-en.ts` / `legal-el.ts` (HTML allowlisted). Covers the site, Beatstars licences, studio services, GA4/Cloudflare, and the private n8n/YouTube Data API publisher (Google Cloud OAuth for channels we own). Header section links use `/#…`.
@@ -91,11 +91,12 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 - Extra attributes: `data-i18n-placeholder` (kept for the paused newsletter field).
 - Collaboration marquee: order in `src/config/collaborations.ts`; labels in `collaborations.artists` (`en.ts` / `el.ts`). Greek script only for names whose Greek spelling is confirmed. The name sits in its own span so `textContent` updates do not remove the separator.
 
-## Newsletter (Plunk) — paused until a named tunnel
+## Newsletter (Plunk)
 
-- Public domain is live (`mrbonzo.com`). Form is still **not** on the site until Plunk has a stable public API hostname. Copy stays in `newsletter.*` (`en.ts` / `el.ts`). Function `functions/api/subscribe.js` returns 503 until re-enabled.
-- When bringing it back: named Cloudflare Tunnel (stable hostname) + `PLUNK_API_URL` / `PLUNK_SECRET_KEY` Pages secrets. Homelab API is `https://plunk-api.homelab.lan/` (`POST /contacts`). Do not put the secret in git or the browser.
-- Quick `trycloudflare.com` tunnels were a stopgap; do not leave `plunk-tunnel` running without a domain (URL changes on PC reboot).
+- Popup (`NewsletterModal.astro` in `BaseLayout`) after ~12s or 40% scroll; skipped on `/privacy` and `/terms`; dismiss stored 30 days in `localStorage['mb-newsletter-dismiss']`. Inline form also in `ContactSection.astro`.
+- Posts to same-origin `functions/api/subscribe.js` (honeypot `company_url`). Secret `PLUNK_SECRET_KEY` is a Pages env var only. Public API hostname: `https://newsletter.mrbonzo.com` (named Cloudflare Tunnel to LAN Plunk API; dashboard stays on `plunk.homelab.lan`).
+- Copy in `newsletter.*` (`en.ts` / `el.ts`). Campaigns still need AWS SES later; signup stores contacts without SES.
+- Do not use `trycloudflare.com` for production.
 
 ## Latest Releases (build-time)
 
@@ -121,6 +122,8 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 - **Audit log:** `.git/git-save-doc-audit.log` (local, not committed).
 
 ## Save log
+
+- 2026-11-10 14:33 — feat: newsletter popup with Plunk tunnel — 13 files (.env.example, .gitignore, functions/api/subscribe.js, src/components/ContactSection.astro, src/components/NewsletterForm.astro, src/components/NewsletterModal.astro, src/i18n/el.ts, src/i18n/en.ts (+3 more))
 
 - 2026-11-10 11:39 — feat: add privacy and terms pages for site and YouTube API — 15 files (.gitignore, dist/index.html, public/_redirects, public/sitemap.xml, src/components/LegalArticle.astro, src/components/SiteFooter.astro, src/i18n/el.ts, src/i18n/en.ts (+5 more))
 

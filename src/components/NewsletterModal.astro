@@ -1,0 +1,173 @@
+---
+import NewsletterForm from "./NewsletterForm.astro";
+
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const hide = path === "/privacy" || path === "/terms";
+---
+
+{hide ? null : (
+<dialog
+  id="newsletter-modal"
+  class="newsletter-modal m-0 max-h-[100dvh] w-full max-w-none bg-transparent p-0 backdrop:bg-black/70"
+  aria-labelledby="newsletter-modal-title"
+>
+  <div class="flex min-h-[100dvh] items-center justify-center p-4">
+    <div class="relative w-full max-w-md rounded-[2rem] border border-fuchsia-500/30 bg-black/95 p-8 shadow-[0_0_80px_rgba(217,70,239,0.18)]">
+      <button
+        type="button"
+        class="js-newsletter-close absolute right-4 top-4 rounded-full border border-white/10 px-3 py-1 text-xs uppercase tracking-widest text-gray-400 hover:text-white"
+        data-i18n="newsletter.close"
+        data-i18n-aria-label="newsletter.close"
+      >
+        Close
+      </button>
+      <p class="text-xs font-bold uppercase tracking-[0.18em] text-fuchsia-400/90" data-i18n="newsletter.eyebrow">Newsletter</p>
+      <h2 id="newsletter-modal-title" class="mt-3 text-3xl font-black uppercase tracking-tight text-white" data-i18n="newsletter.headline">
+        Stay in the studio
+      </h2>
+      <p class="mt-3 mb-6 text-sm leading-relaxed text-gray-300" data-i18n="newsletter.body">
+        New drops, free beats, and the occasional studio note. One list, no spam.
+      </p>
+      <NewsletterForm idPrefix="nl-modal" />
+      <button type="button" class="js-newsletter-later mt-4 text-xs uppercase tracking-widest text-gray-500 hover:text-gray-300" data-i18n="newsletter.later">
+        Not now
+      </button>
+    </div>
+  </div>
+</dialog>
+)}
+
+<style>
+  #newsletter-modal {
+    z-index: 500000;
+  }
+  #newsletter-modal[open] {
+    display: grid;
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    var KEY = "mb-newsletter-dismiss";
+    var DAYS = 30;
+
+    function dict() {
+      var lang = "en";
+      try {
+        var stored = localStorage.getItem("selected-lang");
+        if (stored === "el" || stored === "en") lang = stored;
+      } catch (e) {}
+      var pack = window.__MB_I18N && (window.__MB_I18N[lang] || window.__MB_I18N.en);
+      return (pack && pack.newsletter) || {};
+    }
+
+    function dismissed() {
+      try {
+        var raw = localStorage.getItem(KEY);
+        if (!raw) return false;
+        var ts = parseInt(raw, 10);
+        if (!ts) return false;
+        return Date.now() - ts < DAYS * 86400000;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    function dismiss() {
+      try { localStorage.setItem(KEY, String(Date.now())); } catch (e) {}
+      var dlg = document.getElementById("newsletter-modal");
+      if (dlg && dlg.open) dlg.close();
+    }
+
+    function maybeOpen() {
+      var dlg = document.getElementById("newsletter-modal");
+      if (!dlg || dismissed() || dlg.open) return;
+      if (typeof dlg.showModal === "function") dlg.showModal();
+    }
+
+    document.querySelectorAll(".js-newsletter-form").forEach(function (form) {
+      form.addEventListener("submit", function (ev) {
+        ev.preventDefault();
+        var emailEl = form.querySelector('input[name="email"]');
+        var honey = form.querySelector('input[name="company_url"]');
+        var msg = form.querySelector(".js-newsletter-msg");
+        var copy = dict();
+        var email = emailEl ? String(emailEl.value || "").trim() : "";
+        var lang = "en";
+        try {
+          var stored = localStorage.getItem("selected-lang");
+          if (stored === "el") lang = "el";
+        } catch (e) {}
+        function show(text, ok) {
+          if (!msg) return;
+          msg.textContent = text;
+          msg.classList.remove("hidden", "text-red-400", "text-emerald-400");
+          msg.classList.add(ok ? "text-emerald-400" : "text-red-400");
+        }
+        fetch("/api/subscribe", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({
+            email: email,
+            lang: lang,
+            company_url: honey ? honey.value : "",
+          }),
+        })
+          .then(function (res) {
+            return res.json().then(function (body) {
+              return { res: res, body: body };
+            });
+          })
+          .then(function (pack) {
+            if (pack.body && pack.body.ok) {
+              show(copy.success || "You're on the list.", true);
+              dismiss();
+              return;
+            }
+            var err = pack.body && pack.body.error;
+            if (err === "email" || pack.res.status === 400) show(copy.invalid || "Enter a valid email address.", false);
+            else if (err === "not_ready" || pack.res.status === 503) show(copy.notReady || copy.error || "Try again later.", false);
+            else show(copy.error || "Something went wrong.", false);
+          })
+          .catch(function () {
+            show(copy.error || "Something went wrong.", false);
+          });
+      });
+    });
+
+    document.querySelectorAll(".js-newsletter-close, .js-newsletter-later").forEach(function (btn) {
+      btn.addEventListener("click", dismiss);
+    });
+    var dlg = document.getElementById("newsletter-modal");
+    if (dlg) {
+      dlg.addEventListener("cancel", function (ev) {
+        ev.preventDefault();
+        dismiss();
+      });
+    }
+
+    if (!dlg || dismissed()) return;
+    var opened = false;
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var delay = reduce ? 400 : 12000;
+    window.setTimeout(function () {
+      if (!opened) {
+        opened = true;
+        maybeOpen();
+      }
+    }, delay);
+    window.addEventListener(
+      "scroll",
+      function () {
+        if (opened) return;
+        var doc = document.documentElement;
+        var max = doc.scrollHeight - window.innerHeight;
+        if (max > 0 && window.scrollY / max >= 0.4) {
+          opened = true;
+          maybeOpen();
+        }
+      },
+      { passive: true }
+    );
+  })();
+</script>

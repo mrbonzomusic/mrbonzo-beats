@@ -1,6 +1,7 @@
 node_modules
 .env
 dist
+Entities Management/
 .astro
 scripts/cf-*.mjs
 **/__pycache__/

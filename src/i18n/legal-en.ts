@@ -9,7 +9,7 @@ export const privacyHtml = `
 <li>an official artist website with beats, drum kits, discography, contact, and language choice (English / Greek);</li>
 <li>licensing and downloads fulfilled by third-party stores, mainly <a href="https://www.beatstars.com/mrbonzobeats">Beatstars</a> (and Pond5 for stock audio);</li>
 <li>studio services (production, recording, mixing and mastering, sound design, scoring) arranged by enquiry;</li>
-<li>optional newsletter signup (currently paused until the mailing system is publicly reachable);</li>
+<li>optional newsletter signup (Plunk, via the site popup and contact form);</li>
 <li>internal publishing software (n8n workflows and a private uploader) that posts videos and related assets to channels we own, including YouTube, using Google APIs.</li>
 </ul>
 

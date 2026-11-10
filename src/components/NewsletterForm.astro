@@ -1,0 +1,41 @@
+---
+interface Props {
+  idPrefix?: string;
+  compact?: boolean;
+}
+
+const { idPrefix = "nl", compact = false } = Astro.props;
+const emailId = `${idPrefix}-email`;
+---
+
+<form class="js-newsletter-form space-y-3 text-left" novalidate>
+  <label class="sr-only" for={emailId} data-i18n="newsletter.placeholder">you@email.com</label>
+  <div class:list={["flex gap-3", compact ? "flex-col sm:flex-row" : "flex-col"]}>
+    <input
+      id={emailId}
+      name="email"
+      type="email"
+      autocomplete="email"
+      inputmode="email"
+      maxlength="254"
+      required
+      data-i18n-placeholder="newsletter.placeholder"
+      placeholder="you@email.com"
+      class="w-full rounded-2xl border border-white/15 bg-black/60 px-4 py-3 text-sm text-white placeholder:text-gray-500 outline-none focus:border-fuchsia-500/70"
+    />
+    <input type="text" name="company_url" value="" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+    <button
+      type="submit"
+      class="shrink-0 rounded-2xl bg-fuchsia-600 px-5 py-3 text-sm font-black uppercase tracking-widest text-white hover:bg-fuchsia-500 transition-colors"
+      data-i18n="newsletter.submit"
+    >
+      Join the list
+    </button>
+  </div>
+  <p class="text-xs text-gray-400 leading-relaxed">
+    <span data-i18n="newsletter.privacyBefore">By joining you agree we may email you about drops and studio news. Unsubscribe any time. See our </span>
+    <a href="/privacy" class="text-fuchsia-300 underline-offset-2 hover:underline" data-i18n="newsletter.privacyLink">Privacy Policy</a>
+    <span data-i18n="newsletter.privacyAfter">.</span>
+  </p>
+  <p class="js-newsletter-msg hidden text-sm" role="status"></p>
+</form>

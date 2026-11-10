@@ -9,7 +9,7 @@ export const privacyHtml = `
 <li>επίσημο artist website με beats, drum kits, δισκογραφία, επικοινωνία και επιλογή γλώσσας (Αγγλικά / Ελληνικά)·</li>
 <li>αδειοδότηση και λήψεις μέσω τρίτων καταστημάτων, κυρίως <a href="https://www.beatstars.com/mrbonzobeats">Beatstars</a> (και Pond5 για stock audio)·</li>
 <li>υπηρεσίες στούντιο (παραγωγή, ηχογράφηση, μίξη και mastering, sound design, scoring) κατόπιν επικοινωνίας·</li>
-<li>προαιρετικό newsletter (προς το παρόν σε παύση μέχρι να είναι δημόσια προσβάσιμο το σύστημα αλληλογραφίας)·</li>
+<li>προαιρετικό newsletter (Plunk, μέσω popup και φόρμας επικοινωνίας)·</li>
 <li>εσωτερικό λογισμικό δημοσίευσης (ροές n8n και ιδιωτικός uploader) που ανεβάζει βίντεο στα κανάλια μας, συμπεριλαμβανομένου του YouTube, μέσω Google APIs.</li>
 </ul>
 

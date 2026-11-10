@@ -102,7 +102,15 @@ const en = {
     success: "You're on the list. Watch your inbox for drops.",
     invalid: "Enter a valid email address.",
     notReady: "The list is not live yet. Email me and I will add you.",
-    error: "Something went wrong. Try again, or email me."
+    error: "Something went wrong. Try again, or email me.",
+    eyebrow: "Newsletter",
+    headline: "Stay in the studio",
+    body: "New drops, free beats, and the occasional studio note. One list, no spam.",
+    later: "Not now",
+    close: "Close",
+    privacyBefore: "By joining you agree we may email you about drops and studio news. Unsubscribe any time. See our ",
+    privacyLink: "Privacy Policy",
+    privacyAfter: "."
   },
   collaborations: {
     title: "Collaborations",

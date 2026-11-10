@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import { basebox, beatstarsLinks, socialLinks } from "../config/links";
+import NewsletterModal from "../components/NewsletterModal.astro";
 import en from "../i18n/en";
 import el from "../i18n/el";
 
@@ -328,8 +329,10 @@ const jsonLd = JSON.stringify({
     <main class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <slot />
     </main>
+    <NewsletterModal />
 
     <script is:inline define:vars={{ translations }}>
+      window.__MB_I18N = translations;
       function resolveString(dict, path) {
         if (!dict || !path || typeof path !== 'string') return null;
         var parts = path.split('.');

@@ -1,6 +1,6 @@
 # Guardrails — UI, i18n, and layout
 
-> **Last save:** 2026-11-10 11:39
+> **Last save:** 2026-11-10 14:33
 
 Rules for future changes so the site stays consistent and flicker-free.
 
@@ -75,7 +75,7 @@ Document new overlay layers here if added.
 
 - Never add a third-party `<script src>` without updating CSP in `BaseLayout.astro` and noting it in `architecture.md`.
 - Do not inject untrusted HTML into `en.ts` / `el.ts`.
-- Newsletter is paused (no form) until a named Cloudflare Tunnel for Plunk. When re-enabled: honeypot `company_url`, validate email in `functions/api/subscribe.js`, never expose `PLUNK_SECRET_KEY` to the client.
+- Newsletter: honeypot `company_url`, validate email in `functions/api/subscribe.js`, never expose `PLUNK_SECRET_KEY` to the client. Public API is `newsletter.mrbonzo.com` (tunnel); Plunk dashboard stays LAN-only.
 - Keep `/privacy` and `/terms` as real pages (footer + Google Cloud OAuth consent). Do not 301 them to `/` unless the user asks.
 
 ## 12. Checklist (self-review)
