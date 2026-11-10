@@ -1,6 +1,6 @@
 # Architecture — Mr. Bonzo Beats (Astro)
 
-> **Last save:** 2026-11-10 15:23
+> **Last save:** 2026-11-10 16:21
 
 ## Overview
 
@@ -96,7 +96,7 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 - Popup (`NewsletterModal.astro` in `BaseLayout`) after ~12s or 40% scroll; skipped on `/privacy` and `/terms`; dismiss stored 30 days in `localStorage['mb-newsletter-dismiss']`. Inline form also in `ContactSection.astro`.
 - Posts to same-origin `functions/api/subscribe.js` (honeypot `company_url`) → MailerLite `POST /api/subscribers`. Secrets `MAILERLITE_API_TOKEN` and `MAILERLITE_GROUP_ID` are Pages env vars only.
 - Campaigns are composed and sent in the MailerLite dashboard (free plan). n8n may create a draft campaign for YouTube longs; auto-send stays off until tested. Do not use AWS SES.
-- Self-hosted Plunk on LAN is leftover (signup no longer uses `newsletter.mrbonzo.com`). Do not change apex MX for MailerLite DKIM/SPF.
+- Self-hosted Plunk on LAN is leftover (signup no longer uses `newsletter.mrbonzo.com`). Do not change apex MX for MailerLite DKIM/SPF. MailerLite DKIM is CNAME `litesrv._domainkey` → `litesrv._domainkey.mlsend.com` (DNS only, not proxied). SPF is an include on the existing TXT, not a second SPF and not an MX change.
 - Copy in `newsletter.*` (`en.ts` / `el.ts`).
 - Do not use `trycloudflare.com` for production.
 
@@ -124,6 +124,8 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 - **Audit log:** `.git/git-save-doc-audit.log` (local, not committed).
 
 ## Save log
+
+- 2026-11-10 16:21 — chore: note MailerLite DKIM CNAME and trigger Pages env — 2 files (dist/index.html)
 
 - 2026-11-10 15:23 — feat: point newsletter signup at MailerLite — 6 files (.env.example, functions/api/subscribe.js, src/i18n/legal-el.ts, src/i18n/legal-en.ts)
 
