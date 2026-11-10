@@ -355,7 +355,7 @@ const jsonLd = JSON.stringify({
         var dict = translations[lang] || translations.en;
         document.documentElement.lang = lang;
 
-        var htmlKeys = { 'drumkits.title': true, 'about.titleHtml': true, 'contact.title': true };
+        var htmlKeys = { 'drumkits.title': true, 'about.titleHtml': true, 'contact.title': true, 'legal.privacyHtml': true, 'legal.termsHtml': true };
 
         function safeAttr(val) {
           return String(val).replace(/[\u0000-\u001F<>]/g, '');

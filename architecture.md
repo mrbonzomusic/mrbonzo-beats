@@ -1,6 +1,6 @@
 # Architecture — Mr. Bonzo Beats (Astro)
 
-> **Last save:** 2026-11-10 11:31
+> **Last save:** 2026-11-10 11:39
 
 ## Overview
 
@@ -18,9 +18,9 @@ Order in `src/pages/index.astro` (inside `BaseLayout` → `<main>`):
 6. **Latest Releases** — `#latest-releases` → `DiscographySection.astro` (inner `#releases`)
 7. **About** — `#about` → `AboutSection.astro` + `ServicesSection.astro`
 8. **Contact** — `#contact` → `ContactSection.astro` (email / Instagram / Discord)
-9. **Footer** — `SiteFooter.astro` (copyright + social links)
+9. **Footer** — `SiteFooter.astro` (copyright + social + **Privacy** `/privacy` + **Terms** `/terms`)
 
-Old `/terms` and `/privacy` redirect to `/` (`public/_redirects`). Header section links use `/#…`.
+Standalone legal pages: `src/pages/privacy.astro` and `src/pages/terms.astro` (`LegalArticle.astro`). Copy lives in `src/i18n/legal-en.ts` / `legal-el.ts` (HTML allowlisted). Covers the site, Beatstars licences, studio services, GA4/Cloudflare, and the private n8n/YouTube Data API publisher (Google Cloud OAuth for channels we own). Header section links use `/#…`.
 
 Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#main-header` (nav, share, EN/EL, Store, burger + mobile menu) → `#nav-hover-ring`.
 
@@ -87,7 +87,7 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 
 - Inline script at end of `<body>`; `localStorage['selected-lang']` is only `en` | `el`.
 - Keys: `data-i18n`, `data-i18n-alt`, `data-i18n-title`, `data-i18n-aria-label`.
-- HTML allowlist (`htmlKeys`): `drumkits.title`, `about.titleHtml`, `contact.title`.
+- HTML allowlist (`htmlKeys`): `drumkits.title`, `about.titleHtml`, `contact.title`, `legal.privacyHtml`, `legal.termsHtml`.
 - Extra attributes: `data-i18n-placeholder` (kept for the paused newsletter field).
 - Collaboration marquee: order in `src/config/collaborations.ts`; labels in `collaborations.artists` (`en.ts` / `el.ts`). Greek script only for names whose Greek spelling is confirmed. The name sits in its own span so `textContent` updates do not remove the separator.
 
@@ -121,6 +121,8 @@ Chrome outside `<main>` (in `BaseLayout.astro`): BaseBox banner → sticky `#mai
 - **Audit log:** `.git/git-save-doc-audit.log` (local, not committed).
 
 ## Save log
+
+- 2026-11-10 11:39 — feat: add privacy and terms pages for site and YouTube API — 15 files (.gitignore, dist/index.html, public/_redirects, public/sitemap.xml, src/components/LegalArticle.astro, src/components/SiteFooter.astro, src/i18n/el.ts, src/i18n/en.ts (+5 more))
 
 - 2026-11-10 11:31 — docs: Cloudflare nameservers for mrbonzo.com HTTPS — 28 files (n8n stuff/n8n-panel/Dockerfile, n8n stuff/n8n-panel/__pycache__/app.cpython-315.pyc, n8n stuff/n8n-panel/__pycache__/campaigns.cpython-315.pyc, n8n stuff/n8n-panel/__pycache__/captions.cpython-315.pyc, n8n stuff/n8n-panel/__pycache__/workflow_patch.cpython-315.pyc, n8n stuff/n8n-panel/app.py, n8n stuff/n8n-panel/campaigns.py, n8n stuff/n8n-panel/captions.py (+19 more))
 

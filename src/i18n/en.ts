@@ -1,3 +1,5 @@
+import { privacyHtml, termsHtml } from "./legal-en";
+
 const en = {
   ui: {
     logoAlt: "Mr. Bonzo logo",
@@ -167,7 +169,23 @@ const en = {
     tiktok: "TikTok",
     spotify: "Spotify",
     store: "Beatstars",
-    discord: "Discord"
+    discord: "Discord",
+    privacy: "Privacy",
+    terms: "Terms"
+  },
+  legal: {
+    updated: "Effective 10 November 2026 · Last updated 10 November 2026",
+    backHome: "Back to the site",
+    privacyNav: "Privacy Policy",
+    termsNav: "Terms of Service",
+    privacyTitle: "Privacy Policy",
+    termsTitle: "Terms of Service",
+    privacyDocTitle: "Privacy Policy | Mr. Bonzo",
+    termsDocTitle: "Terms of Service | Mr. Bonzo",
+    privacyDescription: "How Mr. Bonzo / Purple Sound Studio handles personal data, cookies, analytics, and YouTube API access for studio publishing.",
+    termsDescription: "Terms for using mrbonzo.com, beat licences, studio services, and automated YouTube publishing.",
+    privacyHtml,
+    termsHtml
   },
   player: {
     noIframeSupport: "-- Your browser does not support iframes --",

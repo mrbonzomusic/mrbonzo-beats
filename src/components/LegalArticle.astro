@@ -1,0 +1,73 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteFooter from "./SiteFooter.astro";
+import en from "../i18n/en";
+
+interface Props {
+  kind: "privacy" | "terms";
+}
+
+const { kind } = Astro.props;
+const isPrivacy = kind === "privacy";
+const canonicalUrl = isPrivacy ? "https://mrbonzo.com/privacy" : "https://mrbonzo.com/terms";
+const title = isPrivacy ? en.legal.privacyDocTitle : en.legal.termsDocTitle;
+const titleI18n = isPrivacy ? "legal.privacyDocTitle" : "legal.termsDocTitle";
+const heading = isPrivacy ? en.legal.privacyTitle : en.legal.termsTitle;
+const headingI18n = isPrivacy ? "legal.privacyTitle" : "legal.termsTitle";
+const description = isPrivacy ? en.legal.privacyDescription : en.legal.termsDescription;
+const body = isPrivacy ? en.legal.privacyHtml : en.legal.termsHtml;
+const bodyI18n = isPrivacy ? "legal.privacyHtml" : "legal.termsHtml";
+---
+
+<BaseLayout title={title} titleI18n={titleI18n} description={description} canonicalUrl={canonicalUrl}>
+  <article class="legal-article mx-auto max-w-3xl px-4 pb-8 pt-16 sm:px-6 sm:pt-24">
+    <p class="text-xs font-bold uppercase tracking-[0.18em] text-fuchsia-400/90" data-i18n="legal.updated">
+      {en.legal.updated}
+    </p>
+    <h1 class="display-heading mt-4 text-4xl font-black uppercase tracking-tight text-white sm:text-5xl" data-i18n={headingI18n}>
+      {heading}
+    </h1>
+    <nav class="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm font-black uppercase tracking-wide">
+      <a href="/" class="text-white/55 hover:text-fuchsia-400 transition" data-i18n="legal.backHome">Back to the site</a>
+      <a href="/privacy" class:list={["hover:text-fuchsia-400 transition", isPrivacy ? "text-fuchsia-400" : "text-white/55"]} data-i18n="legal.privacyNav">Privacy Policy</a>
+      <a href="/terms" class:list={["hover:text-fuchsia-400 transition", !isPrivacy ? "text-fuchsia-400" : "text-white/55"]} data-i18n="legal.termsNav">Terms of Service</a>
+    </nav>
+    <div class="legal-body mt-12 text-base leading-relaxed text-gray-300 sm:text-lg" data-i18n={bodyI18n} set:html={body}></div>
+  </article>
+  <SiteFooter />
+</BaseLayout>
+
+<style is:global>
+  .legal-body h2 {
+    margin-top: 2.25rem;
+    margin-bottom: 0.75rem;
+    font-size: 1.15rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #fff;
+  }
+  .legal-body p,
+  .legal-body ul {
+    margin-bottom: 1rem;
+  }
+  .legal-body ul {
+    padding-left: 1.25rem;
+    list-style: disc;
+  }
+  .legal-body li {
+    margin-bottom: 0.4rem;
+  }
+  .legal-body a {
+    color: #e879f9;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .legal-body a:hover {
+    color: #f0abfc;
+  }
+  .legal-body code {
+    font-size: 0.9em;
+    color: #f5d0fe;
+  }
+</style>

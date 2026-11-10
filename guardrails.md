@@ -1,6 +1,6 @@
 # Guardrails — UI, i18n, and layout
 
-> **Last save:** 2026-11-10 11:31
+> **Last save:** 2026-11-10 11:39
 
 Rules for future changes so the site stays consistent and flicker-free.
 
@@ -8,7 +8,7 @@ Rules for future changes so the site stays consistent and flicker-free.
 
 - Every **new user-visible string** must have a matching entry in **`src/i18n/en.ts` and `src/i18n/el.ts`** (same key path).
 - Prefer dotted keys: `data-i18n="hero.label"`.
-- HTML only via **`htmlKeys`** allowlist in `BaseLayout.astro` (`drumkits.title`, `about.titleHtml`, `contact.title`); otherwise `textContent`.
+- HTML only via **`htmlKeys`** allowlist in `BaseLayout.astro` (`drumkits.title`, `about.titleHtml`, `contact.title`, `legal.privacyHtml`, `legal.termsHtml`); otherwise `textContent`.
 
 ## 2. English defaults in `.astro` files (flicker / CLS)
 
@@ -76,6 +76,7 @@ Document new overlay layers here if added.
 - Never add a third-party `<script src>` without updating CSP in `BaseLayout.astro` and noting it in `architecture.md`.
 - Do not inject untrusted HTML into `en.ts` / `el.ts`.
 - Newsletter is paused (no form) until a named Cloudflare Tunnel for Plunk. When re-enabled: honeypot `company_url`, validate email in `functions/api/subscribe.js`, never expose `PLUNK_SECRET_KEY` to the client.
+- Keep `/privacy` and `/terms` as real pages (footer + Google Cloud OAuth consent). Do not 301 them to `/` unless the user asks.
 
 ## 12. Checklist (self-review)
 

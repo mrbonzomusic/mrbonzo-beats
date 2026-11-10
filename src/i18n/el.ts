@@ -1,3 +1,5 @@
+import { privacyHtml, termsHtml } from "./legal-el";
+
 const el = {
   ui: {
     logoAlt: "Λογότυπο Mr. Bonzo",
@@ -167,7 +169,23 @@ const el = {
     tiktok: "TikTok",
     spotify: "Spotify",
     store: "Beatstars",
-    discord: "Discord"
+    discord: "Discord",
+    privacy: "Απόρρητο",
+    terms: "Όροι"
+  },
+  legal: {
+    updated: "Ισχύει από 10 Νοεμβρίου 2026 · Τελευταία ενημέρωση 10 Νοεμβρίου 2026",
+    backHome: "Επιστροφή στον ιστότοπο",
+    privacyNav: "Πολιτική Απορρήτου",
+    termsNav: "Όροι Χρήσης",
+    privacyTitle: "Πολιτική Απορρήτου",
+    termsTitle: "Όροι Χρήσης",
+    privacyDocTitle: "Πολιτική Απορρήτου | Mr. Bonzo",
+    termsDocTitle: "Όροι Χρήσης | Mr. Bonzo",
+    privacyDescription: "Πώς ο Mr. Bonzo / Purple Sound Studio χειρίζεται δεδομένα, cookies, analytics και πρόσβαση YouTube API για δημοσίευση στούντιο.",
+    termsDescription: "Όροι χρήσης του mrbonzo.com, αδειών beat, υπηρεσιών στούντιο και αυτοματοποιημένης δημοσίευσης στο YouTube.",
+    privacyHtml,
+    termsHtml
   },
   player: {
     noIframeSupport: "-- Ο browser σου δεν υποστηρίζει iframes --",
